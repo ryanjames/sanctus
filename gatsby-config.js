@@ -16,9 +16,9 @@ module.exports = {
     {
       resolve: `gatsby-source-dropbox`,
       options: {
-        accessToken: `sl.AoQBP_9jbiSp5dvUvziiHy_DiPNfRtWXxEFtHsBb3B7hgG4nR_cvbrkuhIQdArwafILBnaALs5xxVdODMvg0FpFHTFyaFA6XChkiiDFBTL8QHq-yNpq3lArL1TP-1Hkr7yt01Jc`,
-        extensions: ['.mp3'],
-        path: '/Ryan/DK Library 256 mp3s',
+        accessToken: `mV7kb464gvoAAAAAAAAAAfZQPRWSWGYLX1YzFfZWcO_JVIAQpaV3qRH6p15H1-Uz`,
+        extensions: [".mp3"],
+        path: "/Ryan/DK Library 256 mp3s",
         recursive: false,
         createFolderNodes: false,
       },
@@ -62,7 +62,6 @@ module.exports = {
         ],
       },
     },
-    
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
