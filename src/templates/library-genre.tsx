@@ -37,8 +37,8 @@ interface Props {
 
 const LibraryGenrePage: React.FC<Props> = ({ data }) => {
   const tracksData = data.tracks.edges.map(track => ({
+    query: `<strong>${track.node.data.Track_Title}</strong>`,
     id: track.node.id,
-    title: track.node.data.Track_Title,
   }))
   const genre = data.genre.edges.map(genre => ({
     name: pluralize(genre.node.data.Genre_Name),

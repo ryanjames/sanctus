@@ -11,6 +11,7 @@ import queryAirtableTracks from "../staticQueries/queryAirtableTracks"
 
 const Library: React.FC = () => {
   const tracksData = queryAirtableTracks()
+  console.log(tracksData)
 
   return (
     <Layout>

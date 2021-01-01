@@ -61,7 +61,7 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
     <StyledTracksTable tw="w-full overflow-hidden -ml-3">
       <div tw="xs:flex justify-between items-center">
         <h2 tw="hidden xs:inline mb-0 ml-3 leading-none">
-          <strong>{genre ? genre.name : "All Parts"}</strong>
+          <strong>{genre ? genre.name : "All Tracks"}</strong>
         </h2>
         {SearchInput}
       </div>
@@ -82,17 +82,12 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
                   rowGetter={({ index }) => filteredData[index]}
                 >
                   <Column
-                    label="Part"
                     dataKey="query"
                     width={500}
                     cellRenderer={({ cellData }) => (
                       <div className="row" dangerouslySetInnerHTML={{ __html: cellData }} />
                     )}
                   />
-                  <Column width={150} label="Variation" dataKey="variation" />
-                  <Column width={120} label="Equivalents" dataKey="eq1" />
-                  <Column width={100} label="" dataKey="eq2" />
-                  <Column width={100} label="" dataKey="eq3" />
                 </Table>
               )}
             </AutoSizer>
