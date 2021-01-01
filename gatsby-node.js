@@ -1,5 +1,5 @@
-const path = require('path')
-const slugify = require('slugify')
+const path = require("path")
+const slugify = require("slugify")
 
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
@@ -45,6 +45,6 @@ exports.onCreateWebpackConfig = ({ getConfig }) => {
   // https://github.com/bradlc/babel-plugin-tailwind-components/issues/39#issuecomment-526892633
   const config = getConfig()
   config.node = {
-    fs: 'empty',
+    fs: "empty",
   }
 }

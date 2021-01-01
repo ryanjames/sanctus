@@ -1,12 +1,10 @@
-import React from 'react'
-import { Global, css } from '@emotion/core'
-import { rhythm } from './typographyBase'
-import typography from './typography'
-import tw from 'twin.macro'
+import React from "react"
+import { Global, css } from "@emotion/react"
+import { rhythm } from "./typographyBase"
+import typography from "./typography"
+import tw from "twin.macro"
 
-/* ${typography} */
-
-const GlobalCss = () => (
+const GlobalCss: React.FC = () => (
   <>
     <Global
       styles={css`
@@ -18,7 +16,7 @@ const GlobalCss = () => (
           margin-top: -${rhythm(1)};
           font-style: italic;
           font-size: 0.85rem;
-        };
+        }
         figure img {
           width: 100%;
         }

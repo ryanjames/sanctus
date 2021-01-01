@@ -1,21 +1,34 @@
-import React, { useMemo, useState } from "react"
+/** @jsx jsx */ import { jsx } from "@emotion/react"
+import React, { useMemo, useState, SyntheticEvent } from "react"
 //import Downshift from 'downshift'
 import { Column, Table, AutoSizer } from "react-virtualized"
 import "react-virtualized/styles.css"
 import withLocation from "../utils/withLocation"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-import PropTypes from "prop-types"
-import { matchSorter } from 'match-sorter'
+import { matchSorter } from "match-sorter"
 
 import highlightSearch from "../utils/highlightSearch"
 
-const TracksTableComponent = ({ data, category, className, navigate, search, placeholder, heading }) => {
-  const memoizedData = useMemo(() => data)
+interface Props {
+  data: []
+  navigate: Function
+  search: {
+    s: string
+  }
+  genre: {
+    name: string
+  }
+  placeholder: {}
+  heading: {}
+}
+
+const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placeholder, heading }) => {
+  const memoizedData = useMemo(() => data, [data])
 
   const searchFields = ["query"]
 
-  const filterResults = inputValue => {
+  const filterResults = (inputValue: string) => {
     const query = inputValue
     const filteredData = matchSorter(memoizedData, inputValue, {
       keys: searchFields,
@@ -27,8 +40,8 @@ const TracksTableComponent = ({ data, category, className, navigate, search, pla
   const [filteredData, setFilteredData] = useState(filterResults(search.s))
   const [searchValue, setSearchValue] = useState(search.s || "")
 
-  const handleSearch = e => {
-    const inputValue = e.target.value
+  const handleSearch = (e: SyntheticEvent<HTMLInputElement>) => {
+    const inputValue: string = (e.target as HTMLInputElement).value
     setSearchValue(inputValue)
     setFilteredData(filterResults(inputValue))
     navigate(`?s=${inputValue}`)
@@ -40,15 +53,15 @@ const TracksTableComponent = ({ data, category, className, navigate, search, pla
       type="text"
       value={searchValue}
       onChange={handleSearch}
-      placeholder={`Search ${category ? category.name : "All Parts"}`}
+      placeholder={`Search ${genre ? genre.name : "All Tracks"}`}
     />
   )
 
   return (
-    <div className={className} tw="w-full overflow-hidden -ml-3">
+    <StyledTracksTable tw="w-full overflow-hidden -ml-3">
       <div tw="xs:flex justify-between items-center">
         <h2 tw="hidden xs:inline mb-0 ml-3 leading-none">
-          <strong>{category ? category.name : "All Parts"}</strong>
+          <strong>{genre ? genre.name : "All Parts"}</strong>
         </h2>
         {SearchInput}
       </div>
@@ -86,21 +99,11 @@ const TracksTableComponent = ({ data, category, className, navigate, search, pla
           </div>
         </div>
       )}
-    </div>
+    </StyledTracksTable>
   )
 }
 
-TracksTableComponent.propTypes = {
-  className: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
-  navigate: PropTypes.func.isRequired,
-  search: PropTypes.object.isRequired,
-  category: PropTypes.object,
-  placeholder: PropTypes.object,
-  heading: PropTypes.object,
-}
-
-const TracksTable = styled(TracksTableComponent)`
+const StyledTracksTable = styled.div`
   .parts-table {
     ${tw`mb-12`}
     height: 50vh;

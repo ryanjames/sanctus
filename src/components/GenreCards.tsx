@@ -1,39 +1,43 @@
-/** @jsx jsx */ import { jsx } from '@emotion/react'
-import React from 'react'
-import styled from '@emotion/styled'
-import tw from 'twin.macro'
-import PropTypes from 'prop-types'
-import PageLink from './PageLink'
-import slugify from 'slugify'
+import React from "react"
+import styled from "@emotion/styled"
+import tw from "twin.macro"
+import PageLink from "./PageLink"
+import slugify from "slugify"
 
-import queryAirtableGenres from '../staticQueries/queryAirtableGenres'
+import queryAirtableGenres from "../staticQueries/queryAirtableGenres"
 
-const GenreCardsComponent = ({ className }) => {
+const GenreCards: React.FC = () => {
+  interface Genre {
+    id: string
+    title: string
+    image: {
+      thumbnail: string
+    }
+  }
+
   return (
-    <ul tw="list-none flex flex-wrap -mx-2 md:-mx-3 pt-8" className={className}>
-      {queryAirtableGenres().map(genre => (
+    <StyledGenreCards tw="list-none flex flex-wrap -mx-2 md:-mx-3 pt-8" className="genre-cards">
+      {queryAirtableGenres().map((genre: Genre) => (
         <li tw="w-1/2 sm:w-1/3 pb-0 sm:pb-2 md:pb-3 px-1 sm:px-3" key={genre.id}>
-          <PageLink tw="block rounded-lg bg-gray-light p-2 xs:p-4 lg:p-8 text-sm h-full relative flex justify-center items-center"
-            to={`/library/${slugify(genre.title, { lower: true })}`}>
+          <PageLink
+            tw="block rounded-lg bg-gray-light p-2 xs:p-4 lg:p-8 text-sm h-full relative flex justify-center items-center"
+            to={`/library/${slugify(genre.title, { lower: true })}`}
+          >
             <div tw="w-full pt-full relative mb-12">
-              <img src={genre.image != null ? genre.image.thumbnail : '/images/part-placeholder.jpg'} tw="object-contain absolute w-full h-full top-0 left-0" />
+              <img
+                src={genre.image != null ? genre.image.thumbnail : "/images/part-placeholder.jpg"}
+                tw="object-contain absolute w-full h-full top-0 left-0"
+              />
             </div>
-            <span tw="absolute w-full bottom-0 left-0 px-3 pb-4 xs:pb-5 sm:pb-8 text-center">
-              {genre.title}
-            </span>
+            <span tw="absolute w-full bottom-0 left-0 px-3 pb-4 xs:pb-5 sm:pb-8 text-center">{genre.title}</span>
           </PageLink>
         </li>
       ))}
-    </ul>
+    </StyledGenreCards>
   )
 }
 
-GenreCardsComponent.propTypes = {
-  className: PropTypes.string.isRequired,
-  full: PropTypes.bool,
-}
-
-const GenreCards = styled(GenreCardsComponent)`
+const StyledGenreCards = styled.ul`
   ${tw``}
 `
 export default GenreCards

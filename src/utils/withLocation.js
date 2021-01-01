@@ -1,9 +1,9 @@
-import React from 'react'
-import { Location } from '@reach/router'
-import queryString from 'query-string'
+import React from "react"
+import { Location } from "@reach/router"
+import queryString from "query-string"
 
 const withLocation = ComponentToWrap => {
-  const WithLocation = (props) => {
+  const WithLocation = props => {
     return (
       <Location>
         {({ location, navigate }) => (
@@ -15,9 +15,9 @@ const withLocation = ComponentToWrap => {
           />
         )}
       </Location>
-    );
+    )
   }
-  WithLocation.displayName = 'With Location'
+  WithLocation.displayName = "With Location"
   return WithLocation
 }
 

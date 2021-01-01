@@ -1,9 +1,13 @@
 import React from "react"
 import { Link } from "gatsby"
-import PropTypes from "prop-types"
 import { Location } from "@reach/router"
 
-const PageLink = ({ to, className, children }) => {
+interface Props {
+  to: string
+  className?: string
+}
+
+const PageLink: React.FC<Props> = ({ to, className, children }) => {
   return (
     <Location>
       {({ location }) => {
@@ -20,12 +24,6 @@ const PageLink = ({ to, className, children }) => {
       }}
     </Location>
   )
-}
-
-PageLink.propTypes = {
-  children: PropTypes.node.isRequired,
-  to: PropTypes.string.isRequired,
-  className: PropTypes.string,
 }
 
 export default PageLink

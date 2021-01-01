@@ -1,6 +1,5 @@
-
-const tailwind = require('../../tailwind.config')
-import tw, { css } from 'twin.macro'
+const tailwind = require("../../tailwind.config")
+import tw, { css } from "twin.macro"
 
 const screens = tailwind.theme.screens
 
@@ -31,15 +30,16 @@ const typography = () => {
       h3: tw`text-xl leading-10`,
     },
     xl: {
-      h1: tw`text-4xl mb-10`
+      h1: tw`text-4xl mb-10`,
     },
-    xxl: {
-    }
+    xxl: {},
   }
   const generatedStyles = Object.entries(styles).map(([key, value]) => ({
-    [`@media (min-width: ${screens[key]})`]: value
+    [`@media (min-width: ${screens[key]})`]: value,
   }))
-  return css`${generatedStyles}`
+  return css`
+    ${generatedStyles}
+  `
 }
 
 export default typography

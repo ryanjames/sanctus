@@ -1,26 +1,26 @@
 const tailwind = require("../../tailwind.config")
+
 const screens = tailwind.theme.screens
 
-let sizesObj = {}
+const sizes = new Map()
 Object.entries(screens)
   .filter(([key]) => !["v", "base"].some(item => key.includes(item)))
   .map(([key, value]) => {
-    sizesObj[key] = value
+    sizes.set(key, value)
   })
-export const sizes = sizesObj
 
-let widthsObj = {}
+const mQw = new Map()
 Object.entries(screens)
   .filter(([key]) => !["v", "base"].some(item => key.includes(item)))
   .map(([key, value]) => {
-    widthsObj[key] = `min-width: ${value}`
+    mQw.set(key, `min-width: ${value}`)
   })
-export const mQw = widthsObj
 
-let heightsObj = {}
+const mQh = new Map()
 Object.entries(screens)
   .filter(([key]) => !["v", "base"].some(item => key.includes(item)))
   .map(([key, value]) => {
-    heightsObj[key] = `min-height: ${value}`
+    mQh.set(key, `min-height: ${value}`)
   })
-export const mQh = heightsObj
+
+export { mQw, mQh, sizes }

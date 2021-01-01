@@ -1,6 +1,5 @@
 import React from "react"
 import { Helmet } from "react-helmet"
-import PropTypes from "prop-types"
 import { graphql } from "gatsby"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
@@ -9,20 +8,44 @@ import Layout from "../components/Layout"
 import Container, { Col } from "../components/Container"
 import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
-import PageLink from "../components/PageLink"
 import pluralize from "pluralize"
 
-const LibraryGenrePageComponent = ({ data, location }) => {
+interface Props {
+  data: {
+    tracks: {
+      edges: {
+        node: {
+          id: string
+          data: {
+            Track_Title: string
+          }
+        }
+      }[]
+    }
+    genre: {
+      edges: {
+        node: {
+          id: string
+          data: {
+            Genre_Name: string
+          }
+        }
+      }[]
+    }
+  }
+}
+
+const LibraryGenrePage: React.FC<Props> = ({ data }) => {
   const tracksData = data.tracks.edges.map(track => ({
     id: track.node.id,
-    title: track.node.data.TrackTitle,
+    title: track.node.data.Track_Title,
   }))
   const genre = data.genre.edges.map(genre => ({
     name: pluralize(genre.node.data.Genre_Name),
   }))[0]
 
   return (
-    <Layout>
+    <StyledLibraryGenrePage>
       <Helmet titleTemplate="%s - Techna NDT">
         <title>{genre.name}</title>
         <meta name="description" content="{category.description}" />
@@ -37,17 +60,11 @@ const LibraryGenrePageComponent = ({ data, location }) => {
           </Col>
         </div>
       </Container>
-    </Layout>
+    </StyledLibraryGenrePage>
   )
 }
 
-LibraryGenrePageComponent.propTypes = {
-  helmet: PropTypes.object,
-  data: PropTypes.object.isRequired,
-  location: PropTypes.object,
-}
-
-const LibraryGenrePage = styled(LibraryGenrePageComponent)`
+const StyledLibraryGenrePage = styled(Layout)`
   ${tw``}
 `
 
