@@ -9,7 +9,7 @@ import Container, { Col } from "../components/Container"
 import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
 
-import { getTracks, QueryShape, VibeQueryShape } from "../staticQueries/queryAirtableTracks"
+import { getTracks, QueryShape, VibeQueryShape } from "../models/tracks"
 
 type Props = {
   data: {

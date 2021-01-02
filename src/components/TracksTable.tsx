@@ -4,7 +4,7 @@ import styled from "@emotion/styled"
 import { Link } from "gatsby"
 import tw from "twin.macro"
 import { matchSorter } from "match-sorter"
-import { ParentTrackShape, CategoryShape } from "../staticQueries/queryAirtableTracks"
+import { ParentTrackShape, CategoryShape } from "../models/tracks"
 
 import highlightSearch from "../utils/highlightSearch"
 

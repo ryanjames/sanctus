@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import PageLink from "./PageLink"
 
-import queryAirtableGenres from "../staticQueries/queryAirtableGenres"
+import queryAirtableGenres from "../staticQueries/genres"
 
 const GenreCards: React.FC = () => {
   interface Genre {

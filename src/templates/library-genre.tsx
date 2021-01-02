@@ -9,7 +9,7 @@ import Container, { Col } from "../components/Container"
 import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
 
-import { getTracks, QueryShape, GenreQueryShape } from "../staticQueries/queryAirtableTracks"
+import { getTracks, QueryShape, GenreQueryShape } from "../models/tracks"
 
 type Props = {
   data: {
@@ -37,7 +37,7 @@ const LibraryGenrePage: React.FC<Props> = ({ data }) => {
         <div tw="flex flex-nowrap w-full">
           <Col tw="flex-1 pt-10 overflow-auto">
             <div tw="lg:pl-4">
-              <TracksTable data={tracksData} title={`Vibe: ${genre}`} />
+              <TracksTable data={tracksData} title={`Genre: ${genre}`} />
             </div>
           </Col>
         </div>

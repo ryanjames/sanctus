@@ -7,7 +7,7 @@ import PageHeading from "../../components/PageHeading"
 import TracksTable from "../../components/TracksTable"
 import GenreCards from "../../components/GenreCards"
 
-import { getTracks, QueryShape } from "../../staticQueries/queryAirtableTracks"
+import { getTracks, QueryShape } from "../../models/tracks"
 
 type Props = { data: { tracks: QueryShape } }
 

@@ -14,7 +14,7 @@ interface GenreShape {
   map: Function
 }
 
-const queryAirtableGenres = (): GenreShape => {
+const genres= (): GenreShape => {
   const query = useStaticQuery(
     graphql`
       query GenresQuery {
@@ -75,4 +75,4 @@ const queryAirtableGenres = (): GenreShape => {
   return Genres
 }
 
-export default queryAirtableGenres
+export default genres
