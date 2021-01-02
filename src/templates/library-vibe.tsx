@@ -9,27 +9,27 @@ import Container, { Col } from "../components/Container"
 import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
 
-import { getTracks, QueryShape, GenreQueryShape } from "../staticQueries/queryAirtableTracks"
+import { getTracks, QueryShape, VibeQueryShape } from "../staticQueries/queryAirtableTracks"
 
 type Props = {
   data: {
     tracks: QueryShape
-    genre: {
+    vibe: {
       edges: {
-        node: GenreQueryShape
+        node: VibeQueryShape
       }[]
     }
   }
 }
 
-const LibraryGenrePage: React.FC<Props> = ({ data }) => {
+const LibraryVibePage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
-  const genre = data.genre.edges[0].node.data.Genre_Name
+  const vibe = data.vibe.edges[0].node.data.Vibe_Name
 
   return (
-    <StyledLibraryGenrePage>
+    <StyledLibraryVibePage>
       <Helmet titleTemplate="%s - Techna NDT">
-        <title>{genre}</title>
+        <title>{vibe}</title>
         <meta name="description" content="{category.description}" />
       </Helmet>
       <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
@@ -37,24 +37,24 @@ const LibraryGenrePage: React.FC<Props> = ({ data }) => {
         <div tw="flex flex-nowrap w-full">
           <Col tw="flex-1 pt-10 overflow-auto">
             <div tw="lg:pl-4">
-              <TracksTable data={tracksData} title={`Vibe: ${genre}`} />
+              <TracksTable data={tracksData} title={`Vibe: ${vibe}`} />
             </div>
           </Col>
         </div>
       </Container>
-    </StyledLibraryGenrePage>
+    </StyledLibraryVibePage>
   )
 }
 
-const StyledLibraryGenrePage = styled(Layout)`
+const StyledLibraryVibePage = styled(Layout)`
   ${tw``}
 `
 
-export default LibraryGenrePage
+export default LibraryVibePage
 
 export const pageQuery = graphql`
-  query GenreTracksQuery($id: String!) {
-    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Genres: { elemMatch: { id: { eq: $id } } } } }) {
+  query VibeTracksQuery($id: String!) {
+    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Vibes: { elemMatch: { id: { eq: $id } } } } }) {
       edges {
         node {
           data {
@@ -82,12 +82,12 @@ export const pageQuery = graphql`
         }
       }
     }
-    genre: allAirtable(filter: { table: { eq: "Genres" }, id: { eq: $id } }) {
+    vibe: allAirtable(filter: { table: { eq: "Vibes" }, id: { eq: $id } }) {
       edges {
         node {
           id
           data {
-            Genre_Name
+            Vibe_Name
           }
         }
       }

@@ -7,10 +7,12 @@ import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
 import GenreCards from "../components/GenreCards"
 
-import { shapeTracks, QueryShape } from "../staticQueries/queryAirtableTracks"
+import { getTracks, QueryShape } from "../staticQueries/queryAirtableTracks"
 
-const Library: React.FC = ({ data }) => {
-  const tracksData = shapeTracks(data)
+type Props = { data: { tracks: QueryShape } }
+
+const Library: React.FC<Props> = ({ data }) => {
+  const tracksData = getTracks(data.tracks)
 
   return (
     <Layout>
@@ -29,7 +31,7 @@ export default Library
 
 export const pageQuery = graphql`
   query TracksQuery {
-    query: allAirtable(filter: { table: { eq: "Tracks" } }) {
+    tracks: allAirtable(filter: { table: { eq: "Tracks" } }) {
       edges {
         node {
           data {

@@ -1,5 +1,4 @@
 import slugify from "slugify"
-import { graphql, useStaticQuery } from "gatsby"
 
 export interface CategoryShape {
   name: string
@@ -27,20 +26,22 @@ export interface ParentTrackShape {
   filter?: Function
 }
 
-interface GenreQueryShape {
+export interface GenreQueryShape {
   id: string
   data: {
     Genre_Name: string
   }
+  map: Function
 }
-interface VibeQueryShape {
+export interface VibeQueryShape {
   id: string
   data: {
     Vibe_Name: string
   }
+  map: Function
 }
 
-interface QueryNodeShape {
+export interface QueryNodeShape {
   node: {
     id: string
     data: {
@@ -62,16 +63,11 @@ interface QueryNodeShape {
 }
 
 export interface QueryShape {
-  query: {
-    edges: QueryNodeShape
-  }
+  edges: QueryNodeShape
 }
 
-export const shapeTracks = (query: QueryShape): ParentTrackShape => {
-  const {
-    query: { edges: tracksData },
-  } = query
-
+export const getTracks = (query: QueryShape): ParentTrackShape => {
+  const tracksData = query.edges
   const tracks = tracksData.reduce((filtered: Array<ParentTrackShape>, track: QueryNodeShape) => {
     if (track.node.data.Parent === null) {
       const parentTrack = {
@@ -137,8 +133,7 @@ export const shapeTracks = (query: QueryShape): ParentTrackShape => {
     // Return everything
     return filtered
   }, [])
+  tracks.sort((a: ParentTrackShape, b: ParentTrackShape) => (a.priority > b.priority ? 1 : -1)).reverse()
 
   return tracks
 }
-
-export default shapeTracks

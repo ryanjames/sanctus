@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect, useState, SyntheticEvent } from "react"
 import withLocation from "../utils/withLocation"
 import styled from "@emotion/styled"
+import { Link } from "gatsby"
 import tw from "twin.macro"
 import { matchSorter } from "match-sorter"
 import { ParentTrackShape, CategoryShape } from "../staticQueries/queryAirtableTracks"
@@ -13,12 +14,12 @@ interface Props {
   search: {
     s: string
   }
-  genre: string
+  title: string
   placeholder: React.FC | HTMLElement
   heading: React.FC | HTMLElement
 }
 
-const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placeholder, heading }) => {
+const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placeholder, heading }) => {
   const memoizedData = useMemo(() => data, [data])
 
   const searchFields = ["search"]
@@ -52,7 +53,7 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
       type="text"
       value={searchValue}
       onChange={handleSearch}
-      placeholder={`Search ${genre || "All Tracks"}`}
+      placeholder={`Search ${title || "All Tracks"}`}
     />
   )
 
@@ -60,12 +61,14 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
   const TrackRow: React.FC<Track> = ({ track }) => {
     return (
       <>
-        <div tw="w-2/7">{track.title}</div>
+        <div tw="w-2/7">
+          {track.title} - {track.priority}
+        </div>
         <div tw="w-1/7">{track.energy}</div>
         <div tw="w-1/7">
           {track.genres.map((genre: CategoryShape, index) => (
             <span key={genre.id}>
-              <a href={`/library/genres/${genre.slug}`}>{genre.name}</a>
+              <Link to={`/library/genre/${genre.slug}`}>{genre.name}</Link>
               {index < track.genres.length - 1 ? ", " : ""}
             </span>
           ))}
@@ -73,7 +76,7 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
         <div tw="w-3/7">
           {track.vibes.map((vibe: CategoryShape, index) => (
             <span key={vibe.id}>
-              <a href={`/library/vibes/${vibe.slug}`}>{vibe.name}</a>
+              <Link to={`/library/vibe/${vibe.slug}`}>{vibe.name}</Link>
               {index < track.vibes.length - 1 ? ", " : ""}
             </span>
           ))}
@@ -86,7 +89,7 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
     <StyledTracksTable>
       <div tw="xs:flex justify-between items-center">
         <h2 tw="hidden xs:inline mb-0 leading-none">
-          <strong>{genre || "All Tracks"}</strong>
+          <strong>{title || "All Tracks"}</strong>
         </h2>
         {SearchInput}
       </div>

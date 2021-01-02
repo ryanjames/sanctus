@@ -16,6 +16,16 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
+      vibes: allAirtable(filter: { table: { eq: "Vibes" } }) {
+        edges {
+          node {
+            id
+            data {
+              Vibe_Name
+            }
+          }
+        }
+      }
     }
   `).then(result => {
     if (result.errors) {
@@ -24,13 +34,26 @@ exports.createPages = ({ actions, graphql }) => {
     }
 
     const genres = result.data.genres.edges
-
     genres.forEach(genre => {
       const id = genre.node.id
       const slug = slugify(genre.node.data.Genre_Name, { lower: true })
       createPage({
         path: "/library/genre/" + slug,
         component: path.resolve(`src/templates/library-genre.tsx`),
+        // additional data can be passed via context
+        context: {
+          id,
+        },
+      })
+    })
+
+    const vibes = result.data.vibes.edges
+    vibes.forEach(vibe => {
+      const id = vibe.node.id
+      const slug = slugify(vibe.node.data.Vibe_Name, { lower: true })
+      createPage({
+        path: "/library/vibe/" + slug,
+        component: path.resolve(`src/templates/library-vibe.tsx`),
         // additional data can be passed via context
         context: {
           id,
