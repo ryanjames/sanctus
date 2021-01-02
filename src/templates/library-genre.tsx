@@ -1,61 +1,37 @@
 import React from "react"
 import { Helmet } from "react-helmet"
-import { graphql } from "gatsby"
 import styled from "@emotion/styled"
+import withLocation from "../utils/withLocation"
+import { lastUrlSegment, toTitle } from "../utils/strings"
 import tw from "twin.macro"
 
 import Layout from "../components/Layout"
 import Container, { Col } from "../components/Container"
 import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
-import pluralize from "pluralize"
 
-interface Props {
-  data: {
-    tracks: {
-      edges: {
-        node: {
-          id: string
-          data: {
-            Track_Title: string
-          }
-        }
-      }[]
-    }
-    genre: {
-      edges: {
-        node: {
-          id: string
-          data: {
-            Genre_Name: string
-          }
-        }
-      }[]
-    }
-  }
-}
+import queryAirtableTracks, { ParentTrackShape } from "../staticQueries/queryAirtableTracks"
 
-const LibraryGenrePage: React.FC<Props> = ({ data }) => {
-  const tracksData = data.tracks.edges.map(track => ({
-    query: `<strong>${track.node.data.Track_Title}</strong>`,
-    id: track.node.id,
-  }))
-  const genre = data.genre.edges.map(genre => ({
-    name: pluralize(genre.node.data.Genre_Name),
-  }))[0]
+const LibraryGenrePage: React.FC = () => {
+  const genreSlug = lastUrlSegment(location.pathname)
+  const genreName = toTitle(genreSlug)
+
+  const tracks = queryAirtableTracks().filter((track: ParentTrackShape) => {
+    return track.genres.some(genre => genre.slug === genreSlug)
+  })
 
   return (
     <StyledLibraryGenrePage>
       <Helmet titleTemplate="%s - Techna NDT">
-        <title>{genre.name}</title>
+        <title>{genreName}</title>
         <meta name="description" content="{category.description}" />
       </Helmet>
-      <PageHeading tw="hidden lg:block" title="Music Library" />
+      <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
       <Container>
         <div tw="flex flex-nowrap w-full">
           <Col tw="flex-1 pt-10 overflow-auto">
             <div tw="lg:pl-4">
-              <TracksTable data={tracksData} genre={genre} />
+              <TracksTable data={tracks} genre={genreName} />
             </div>
           </Col>
         </div>
@@ -68,29 +44,4 @@ const StyledLibraryGenrePage = styled(Layout)`
   ${tw``}
 `
 
-export default LibraryGenrePage
-
-export const pageQuery = graphql`
-  query PageQuery($id: String!) {
-    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Genres: { elemMatch: { id: { eq: $id } } } } }) {
-      edges {
-        node {
-          data {
-            Track_Title
-          }
-          id
-        }
-      }
-    }
-    genre: allAirtable(filter: { table: { eq: "Genres" }, id: { eq: $id } }) {
-      edges {
-        node {
-          id
-          data {
-            Genre_Name
-          }
-        }
-      }
-    }
-  }
-`
+export default withLocation(LibraryGenrePage)

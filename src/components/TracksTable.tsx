@@ -1,8 +1,6 @@
 /** @jsx jsx */ import { jsx } from "@emotion/react"
 import React, { useMemo, useState, SyntheticEvent } from "react"
-//import Downshift from 'downshift'
-import { Column, Table, AutoSizer } from "react-virtualized"
-import "react-virtualized/styles.css"
+import { Column, Table } from "react-virtualized"
 import withLocation from "../utils/withLocation"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
@@ -26,7 +24,7 @@ interface Props {
 const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placeholder, heading }) => {
   const memoizedData = useMemo(() => data, [data])
 
-  const searchFields = ["query"]
+  const searchFields = ["search"]
 
   const filterResults = (inputValue: string) => {
     const query = inputValue
@@ -53,12 +51,12 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
       type="text"
       value={searchValue}
       onChange={handleSearch}
-      placeholder={`Search ${genre ? genre.name : "All Tracks"}`}
+      placeholder={`Search ${genre || "All Tracks"}`}
     />
   )
 
   return (
-    <StyledTracksTable tw="w-full overflow-hidden -ml-3">
+    <StyledTracksTable tw="w-full -ml-3">
       <div tw="xs:flex justify-between items-center">
         <h2 tw="hidden xs:inline mb-0 ml-3 leading-none">
           <strong>{genre ? genre.name : "All Tracks"}</strong>
@@ -68,29 +66,27 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
       {!searchValue && placeholder ? (
         <>{placeholder}</>
       ) : (
-        <div tw="overflow-scroll w-full">
+        <div>
           {!searchValue && heading && <>{heading}</>}
           <div className="parts-table" tw="mt-8">
-            <AutoSizer>
-              {({ height, width }) => (
-                <Table
-                  width={width}
-                  height={height}
-                  headerHeight={30}
-                  rowHeight={50}
-                  rowCount={filteredData.length}
-                  rowGetter={({ index }) => filteredData[index]}
-                >
-                  <Column
-                    dataKey="query"
-                    width={500}
-                    cellRenderer={({ cellData }) => (
-                      <div className="row" dangerouslySetInnerHTML={{ __html: cellData }} />
-                    )}
-                  />
-                </Table>
-              )}
-            </AutoSizer>
+            <Table
+              width={900}
+              height={20000}
+              headerHeight={30}
+              rowHeight={50}
+              rowCount={filteredData.length}
+              rowGetter={({ index }) => filteredData[index]}
+            >
+              <Column
+                dataKey="search"
+                width={900}
+                cellRenderer={({ cellData }) => (
+                  <div className="row">
+                    <div className="search-string" dangerouslySetInnerHTML={{ __html: cellData }} />
+                  </div>
+                )}
+              />
+            </Table>
           </div>
         </div>
       )}
@@ -99,34 +95,20 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
 }
 
 const StyledTracksTable = styled.div`
-  .parts-table {
-    ${tw`mb-12`}
-    height: 50vh;
-    width: 1100px;
-  }
   .ReactVirtualized__Grid {
     outline: none;
+    height: auto !important;
+    overflow: visible !important;
   }
-  .ReactVirtualized__Table__headerRow {
-    ${tw`border-0 border-b border-solid border-gray-400 py-4`}
-    font-size: 0.7rem;
-    letter-spacing: 0.1rem;
+  .ReactVirtualized__Grid__innerScrollContainer {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
   }
   .ReactVirtualized__Table__row {
-    ${tw`border-0 border-b border-solid border-gray-400 py-4 text-xs`}
-    span {
-      ${tw`font-bold px-1 rounded bg-techna-blue bg-opacity-20`}
-      font-weight: 700;
-    }
-    small {
-      ${tw`block font-normal tracking-normal capitalize`}
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 0.7rem;
-      margin-right: 20px;
-    }
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
   }
 `
 

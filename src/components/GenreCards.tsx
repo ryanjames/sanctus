@@ -2,7 +2,6 @@ import React from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import PageLink from "./PageLink"
-import slugify from "slugify"
 
 import queryAirtableGenres from "../staticQueries/queryAirtableGenres"
 
@@ -10,6 +9,7 @@ const GenreCards: React.FC = () => {
   interface Genre {
     id: string
     title: string
+    slug: string
     image: {
       thumbnail: string
     }
@@ -21,7 +21,7 @@ const GenreCards: React.FC = () => {
         <li tw="w-1/2 sm:w-1/3 pb-0 sm:pb-2 md:pb-3 px-1 sm:px-3" key={genre.id}>
           <PageLink
             tw="block rounded-lg bg-gray-light p-2 xs:p-4 lg:p-8 text-sm h-full relative flex justify-center items-center"
-            to={`/library/${slugify(genre.title, { lower: true })}`}
+            to={`/library/${genre.slug}`}
           >
             <div tw="w-full pt-full relative mb-12">
               <img

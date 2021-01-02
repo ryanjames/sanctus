@@ -1,25 +1,35 @@
+import slugify from "slugify"
 import { graphql, useStaticQuery } from "gatsby"
 
-interface TrackShape {
+interface ChildTrackShape {
+  id: string
+  title: string
+  length: string
+  parent: string
+}
+
+export interface ParentTrackShape {
   id: string
   title: string
   length: string
   priority: string
+  search: string
   energy: string
-  parent?: string
-  children?: TrackShape
   genres: {
     name: string
     id: string
+    slug: string
   }[]
   vibes: {
     name: string
     id: string
+    slug: string
   }[]
-  map: Function
+  children?: ChildTrackShape[]
+  filter: Function
 }
 
-const queryAirtableTracks = (): TrackShape => {
+const queryAirtableTracks = (): ParentTrackShape => {
   const query = useStaticQuery(
     graphql`
       query TracksQuery {
@@ -91,37 +101,72 @@ const queryAirtableTracks = (): TrackShape => {
         Energy: string
       }
     }
-    map: Function
   }
 
-  const allTracks = tracksData.map((track: QueryShape) => ({
-    id: track.node.id,
-    title: track.node.data.Track_Title,
-    parent: track.node.data.Parent ? track.node.data.Parent[0].id : null,
-    length: track.node.data.Length,
-    priority: track.node.data.Priority,
-    energy: track.node.data.Energy,
-    genres: track.node.data.Genres.map((genre: GenreQueryShape) => ({
-      id: genre.id,
-      name: genre.data.Genre_Name,
-    })),
-    vibes: track.node.data.Vibes.map((genre: VibeQueryShape) => ({
-      id: genre.id,
-      name: genre.data.Vibe_Name,
-    })),
-  }))
+  const tracks = tracksData.reduce((filtered: Array<ParentTrackShape>, track: QueryShape) => {
+    if (track.node.data.Parent === null) {
+      const parentTrack = {
+        id: track.node.id,
+        title: track.node.data.Track_Title,
+        length: track.node.data.Length,
+        priority: track.node.data.Priority,
+        energy: track.node.data.Energy,
+        genres: track.node.data.Genres.map((genre: GenreQueryShape) => ({
+          id: genre.id,
+          name: genre.data.Genre_Name,
+          slug: slugify(genre.data.Genre_Name, { lower: true }),
+        })),
+        vibes: track.node.data.Vibes.map((genre: VibeQueryShape) => ({
+          id: genre.id,
+          name: genre.data.Vibe_Name,
+        })),
+        search: "",
+        children: [],
+      }
 
-  const tracks = allTracks.filter((track: TrackShape) => {
-    return track.parent === null
-  })
+      // Assemble search string from title, genres and vibes
+      const genres = parentTrack.genres.reduce(function (
+        prevVal: { name: string },
+        currVal: { name: string },
+        idx: number
+      ) {
+        return idx == 0 ? currVal.name : prevVal + ", " + currVal.name
+      },
+      "")
 
-  tracks.forEach((track: TrackShape) => {
-    const childTracks = allTracks.filter((childTrack: TrackShape) => {
-      return childTrack.parent === track.id
-    })
-    track.children = childTracks
-    delete track.parent
-  })
+      const vibes = parentTrack.vibes.reduce(function (
+        prevVal: { name: string },
+        currVal: { name: string },
+        idx: number
+      ) {
+        return idx == 0 ? currVal.name : prevVal + ", " + currVal.name
+      },
+      "")
+      parentTrack.search = "".concat(parentTrack.title, " | ", genres, " | ", vibes)
+
+      // Add child tracks
+      const childTracks = tracksData.reduce((filtered: Array<ChildTrackShape>, track: QueryShape) => {
+        if (track.node.data.Parent !== null) {
+          if (track.node.data.Parent[0].id === parentTrack.id) {
+            const childTrack = {
+              id: track.node.id,
+              title: track.node.data.Track_Title,
+              length: track.node.data.Length,
+              parent: track.node.data.Parent[0].id,
+            }
+            filtered.push(childTrack)
+          }
+        }
+        return filtered
+      }, [])
+      parentTrack.children = childTracks
+
+      filtered.push(parentTrack)
+    }
+
+    // Return everything
+    return filtered
+  }, [])
 
   return tracks
 }
