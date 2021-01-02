@@ -26,6 +26,16 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
+      energies: allAirtable(filter: { table: { eq: "Energies" } }) {
+        edges {
+          node {
+            id
+            data {
+              Energy_Name
+            }
+          }
+        }
+      }
     }
   `).then(result => {
     if (result.errors) {
@@ -54,6 +64,20 @@ exports.createPages = ({ actions, graphql }) => {
       createPage({
         path: "/library/vibe/" + slug,
         component: path.resolve(`src/templates/library-vibe.tsx`),
+        // additional data can be passed via context
+        context: {
+          id,
+        },
+      })
+    })
+
+    const energies = result.data.energies.edges
+    energies.forEach(energy => {
+      const id = energy.node.id
+      const slug = slugify(energy.node.data.Energy_Name, { lower: true })
+      createPage({
+        path: "/library/energy/" + slug,
+        component: path.resolve(`src/templates/library-energy.tsx`),
         // additional data can be passed via context
         context: {
           id,

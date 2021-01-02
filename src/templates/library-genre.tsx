@@ -74,9 +74,14 @@ export const pageQuery = graphql`
               }
               id
             }
+            Energy {
+              data {
+                Energy_Name
+              }
+              id
+            }
             Length
             Priority
-            Energy
           }
           id
         }

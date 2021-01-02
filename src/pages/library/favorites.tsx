@@ -1,13 +1,12 @@
 import React from "react"
 import { graphql } from "gatsby"
-import Layout from "../components/Layout"
-import SEO from "../components/SEO"
-import Container, { Col } from "../components/Container"
-import PageHeading from "../components/PageHeading"
-import TracksTable from "../components/TracksTable"
-import GenreCards from "../components/GenreCards"
+import Layout from "../../components/Layout"
+import SEO from "../../components/SEO"
+import Container, { Col } from "../../components/Container"
+import PageHeading from "../../components/PageHeading"
+import TracksTable from "../../components/TracksTable"
 
-import { getTracks, QueryShape } from "../staticQueries/queryAirtableTracks"
+import { getTracks, QueryShape } from "../../staticQueries/queryAirtableTracks"
 
 type Props = { data: { tracks: QueryShape } }
 
@@ -19,8 +18,8 @@ const Library: React.FC<Props> = ({ data }) => {
       <Container>
         <Col>
           <SEO title="Music Library" />
-          <PageHeading tw="hidden lg:block" title="Music Library" />
-          <TracksTable placeholder={<GenreCards />} data={tracksData} />
+          <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
+          <TracksTable data={tracksData} title="Favorites" />
         </Col>
       </Container>
     </Layout>
@@ -30,8 +29,8 @@ const Library: React.FC<Props> = ({ data }) => {
 export default Library
 
 export const pageQuery = graphql`
-  query TracksQuery {
-    tracks: allAirtable(filter: { table: { eq: "Tracks" } }) {
+  query FavoriteTracksQuery {
+    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Favorite: { eq: true } } }) {
       edges {
         node {
           data {
@@ -51,9 +50,15 @@ export const pageQuery = graphql`
               }
               id
             }
+            Energy {
+              data {
+                Energy_Name
+              }
+              id
+            }
             Length
             Priority
-            Energy
+            Favorite
           }
           id
         }

@@ -61,10 +61,10 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
   const TrackRow: React.FC<Track> = ({ track }) => {
     return (
       <>
-        <div tw="w-2/7">
-          {track.title} - {track.priority}
+        <div tw="w-2/7">{track.title}</div>
+        <div tw="w-1/7">
+          <Link to={`/library/energy/${track.energy.slug}`}>{track.energy.name}</Link>
         </div>
-        <div tw="w-1/7">{track.energy}</div>
         <div tw="w-1/7">
           {track.genres.map((genre: CategoryShape, index) => (
             <span key={genre.id}>

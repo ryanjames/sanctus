@@ -19,25 +19,28 @@ export interface ParentTrackShape {
   length: string
   priority: string
   search: string
-  energy: string
+  new: boolean
+  favorite: boolean
   genres: CategoryShape[]
   vibes: CategoryShape[]
+  energy: CategoryShape
   children?: ChildTrackShape[]
   filter?: Function
 }
 
 export interface GenreQueryShape {
   id: string
-  data: {
-    Genre_Name: string
-  }
+  data: { Genre_Name: string }
+  map: Function
+}
+export interface EnergyQueryShape {
+  id: string
+  data: { Energy_Name: string }
   map: Function
 }
 export interface VibeQueryShape {
   id: string
-  data: {
-    Vibe_Name: string
-  }
+  data: { Vibe_Name: string }
   map: Function
 }
 
@@ -53,10 +56,12 @@ export interface QueryNodeShape {
         }
       }[]
       Length: string
+      New: boolean
+      Favorite: boolean
       Genres: GenreQueryShape
       Vibes: VibeQueryShape
+      Energy: EnergyQueryShape[]
       Priority: string
-      Energy: string
     }
   }
   reduce: Function
@@ -66,7 +71,7 @@ export interface QueryShape {
   edges: QueryNodeShape
 }
 
-export const getTracks = (query: QueryShape): ParentTrackShape => {
+export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
   const tracksData = query.edges
   const tracks = tracksData.reduce((filtered: Array<ParentTrackShape>, track: QueryNodeShape) => {
     if (track.node.data.Parent === null) {
@@ -75,7 +80,13 @@ export const getTracks = (query: QueryShape): ParentTrackShape => {
         title: track.node.data.Track_Title,
         length: track.node.data.Length,
         priority: track.node.data.Priority,
-        energy: track.node.data.Energy,
+        energy: {
+          id: track.node.data.Energy[0].id,
+          name: track.node.data.Energy[0].data.Energy_Name,
+          slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true }),
+        },
+        new: track.node.data.New,
+        favorite: track.node.data.Favorite,
         genres: track.node.data.Genres.map((genre: GenreQueryShape) => ({
           id: genre.id,
           name: genre.data.Genre_Name,
