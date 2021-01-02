@@ -64,22 +64,18 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
         <div tw="w-1/7">{track.energy}</div>
         <div tw="w-1/7">
           {track.genres.map((genre: CategoryShape, index) => (
-            <>
-              <a key={genre.id} href={`/library/genres/${genre.slug}`}>
-                {genre.name}
-              </a>
+            <span key={genre.id}>
+              <a href={`/library/genres/${genre.slug}`}>{genre.name}</a>
               {index < track.genres.length - 1 ? ", " : ""}
-            </>
+            </span>
           ))}
         </div>
         <div tw="w-3/7">
           {track.vibes.map((vibe: CategoryShape, index) => (
-            <>
-              <a key={vibe.id} href={`/library/vibes/${vibe.slug}`}>
-                {vibe.name}
-              </a>
+            <span key={vibe.id}>
+              <a href={`/library/vibes/${vibe.slug}`}>{vibe.name}</a>
               {index < track.vibes.length - 1 ? ", " : ""}
-            </>
+            </span>
           ))}
         </div>
       </>

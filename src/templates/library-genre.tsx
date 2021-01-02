@@ -1,4 +1,5 @@
 import React from "react"
+import { graphql } from "gatsby"
 import { Helmet } from "react-helmet"
 import styled from "@emotion/styled"
 import withLocation from "../utils/withLocation"
@@ -45,3 +46,36 @@ const StyledLibraryGenrePage = styled(Layout)`
 `
 
 export default withLocation(LibraryGenrePage)
+
+export const pageQuery = graphql`
+  query TracksQuery($id: String!) {
+    query: allAirtable(filter: { table: { eq: "Tracks" }, data: { Genre: { elemMatch: { id: { eq: $id } } } } }) {
+      edges {
+        node {
+          data {
+            Track_Title
+            Parent {
+              id
+            }
+            Genres {
+              data {
+                Genre_Name
+              }
+              id
+            }
+            Vibes {
+              data {
+                Vibe_Name
+              }
+              id
+            }
+            Length
+            Priority
+            Energy
+          }
+          id
+        }
+      }
+    }
+  }
+`

@@ -24,84 +24,55 @@ export interface ParentTrackShape {
   genres: CategoryShape[]
   vibes: CategoryShape[]
   children?: ChildTrackShape[]
-  filter: Function
+  filter?: Function
 }
 
-const queryAirtableTracks = (): ParentTrackShape => {
-  const query = useStaticQuery(
-    graphql`
-      query TracksQuery {
-        query: allAirtable(filter: { table: { eq: "Tracks" } }) {
-          edges {
-            node {
-              data {
-                Track_Title
-                Parent {
-                  id
-                }
-                Genres {
-                  data {
-                    Genre_Name
-                  }
-                  id
-                }
-                Vibes {
-                  data {
-                    Vibe_Name
-                  }
-                  id
-                }
-                Length
-                Priority
-                Energy
-              }
-              id
-            }
-          }
+interface GenreQueryShape {
+  id: string
+  data: {
+    Genre_Name: string
+  }
+}
+interface VibeQueryShape {
+  id: string
+  data: {
+    Vibe_Name: string
+  }
+}
+
+interface QueryNodeShape {
+  node: {
+    id: string
+    data: {
+      Track_Title: string
+      Parent: {
+        id: string
+        data: {
+          Track_Title: string
         }
-      }
-    `
-  )
+      }[]
+      Length: string
+      Genres: GenreQueryShape
+      Vibes: VibeQueryShape
+      Priority: string
+      Energy: string
+    }
+  }
+  reduce: Function
+}
+
+export interface QueryShape {
+  query: {
+    edges: QueryNodeShape
+  }
+}
+
+export const shapeTracks = (query: QueryShape): ParentTrackShape => {
   const {
     query: { edges: tracksData },
   } = query
 
-  interface GenreQueryShape {
-    id: string
-    data: {
-      Genre_Name: string
-    }
-    map: Function
-  }
-  interface VibeQueryShape {
-    id: string
-    data: {
-      Vibe_Name: string
-    }
-    map: Function
-  }
-
-  interface QueryShape {
-    node: {
-      id: string
-      data: {
-        Track_Title: string
-        Parent: {
-          id: string
-          data: {
-            Track_Title: string
-          }
-        }[]
-        Length: string
-        Genres: GenreQueryShape
-        Vibes: VibeQueryShape
-        Priority: string
-        Energy: string
-      }
-    }
-  }
-
-  const tracks = tracksData.reduce((filtered: Array<ParentTrackShape>, track: QueryShape) => {
+  const tracks = tracksData.reduce((filtered: Array<ParentTrackShape>, track: QueryNodeShape) => {
     if (track.node.data.Parent === null) {
       const parentTrack = {
         id: track.node.id,
@@ -144,7 +115,7 @@ const queryAirtableTracks = (): ParentTrackShape => {
       parentTrack.search = "".concat(parentTrack.title, " | ", genres, " | ", vibes)
 
       // Add child tracks
-      const childTracks = tracksData.reduce((filtered: Array<ChildTrackShape>, track: QueryShape) => {
+      const childTracks = tracksData.reduce((filtered: Array<ChildTrackShape>, track: QueryNodeShape) => {
         if (track.node.data.Parent !== null) {
           if (track.node.data.Parent[0].id === parentTrack.id) {
             const childTrack = {
@@ -170,4 +141,4 @@ const queryAirtableTracks = (): ParentTrackShape => {
   return tracks
 }
 
-export default queryAirtableTracks
+export default shapeTracks

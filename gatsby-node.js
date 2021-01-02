@@ -29,7 +29,7 @@ exports.createPages = ({ actions, graphql }) => {
       const id = genre.node.id
       const slug = slugify(genre.node.data.Genre_Name, { lower: true })
       createPage({
-        path: "/library/" + slug,
+        path: "/library/genre/" + slug,
         component: path.resolve(`src/templates/library-genre.tsx`),
         // additional data can be passed via context
         context: {
