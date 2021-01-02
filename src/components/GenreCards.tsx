@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import PageLink from "./PageLink"
 
-import queryAirtableGenres from "../staticQueries/genres"
+import genres from "../staticQueries/genres"
 
 const GenreCards: React.FC = () => {
   interface Genre {
@@ -17,7 +17,7 @@ const GenreCards: React.FC = () => {
 
   return (
     <StyledGenreCards tw="list-none flex flex-wrap -mx-2 md:-mx-3 pt-8" className="genre-cards">
-      {queryAirtableGenres().map((genre: Genre) => (
+      {genres().map((genre: Genre) => (
         <li tw="w-1/2 sm:w-1/3 pb-0 sm:pb-2 md:pb-3 px-1 sm:px-3" key={genre.id}>
           <PageLink
             tw="block rounded-lg bg-gray-light p-2 xs:p-4 lg:p-8 text-sm h-full relative flex justify-center items-center"
