@@ -1,10 +1,9 @@
-/** @jsx jsx */ import { jsx } from "@emotion/react"
-import React, { useMemo, useState, SyntheticEvent } from "react"
-import { Column, Table } from "react-virtualized"
+import React, { useMemo, useEffect, useState, SyntheticEvent } from "react"
 import withLocation from "../utils/withLocation"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { matchSorter } from "match-sorter"
+import { ParentTrackShape, CategoryShape } from "../staticQueries/queryAirtableTracks"
 
 import highlightSearch from "../utils/highlightSearch"
 
@@ -14,11 +13,9 @@ interface Props {
   search: {
     s: string
   }
-  genre: {
-    name: string
-  }
-  placeholder: {}
-  heading: {}
+  genre: string
+  placeholder: React.FC | HTMLElement
+  heading: React.FC | HTMLElement
 }
 
 const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placeholder, heading }) => {
@@ -38,11 +35,15 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
   const [filteredData, setFilteredData] = useState(filterResults(search.s))
   const [searchValue, setSearchValue] = useState(search.s || "")
 
+  useEffect(() => {
+    const timeOutId = setTimeout(() => navigate(`?s=${searchValue}`), 500)
+    return () => clearTimeout(timeOutId)
+  }, [searchValue])
+
   const handleSearch = (e: SyntheticEvent<HTMLInputElement>) => {
     const inputValue: string = (e.target as HTMLInputElement).value
     setSearchValue(inputValue)
     setFilteredData(filterResults(inputValue))
-    navigate(`?s=${inputValue}`)
   }
 
   const SearchInput = (
@@ -55,11 +56,41 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
     />
   )
 
+  type Track = { track: ParentTrackShape }
+  const TrackRow: React.FC<Track> = ({ track }) => {
+    return (
+      <>
+        <div tw="w-2/7">{track.title}</div>
+        <div tw="w-1/7">{track.energy}</div>
+        <div tw="w-1/7">
+          {track.genres.map((genre: CategoryShape, index) => (
+            <>
+              <a key={genre.id} href={`/library/genres/${genre.slug}`}>
+                {genre.name}
+              </a>
+              {index < track.genres.length - 1 ? ", " : ""}
+            </>
+          ))}
+        </div>
+        <div tw="w-3/7">
+          {track.vibes.map((vibe: CategoryShape, index) => (
+            <>
+              <a key={vibe.id} href={`/library/vibes/${vibe.slug}`}>
+                {vibe.name}
+              </a>
+              {index < track.vibes.length - 1 ? ", " : ""}
+            </>
+          ))}
+        </div>
+      </>
+    )
+  }
+
   return (
-    <StyledTracksTable tw="w-full -ml-3">
+    <StyledTracksTable>
       <div tw="xs:flex justify-between items-center">
-        <h2 tw="hidden xs:inline mb-0 ml-3 leading-none">
-          <strong>{genre ? genre.name : "All Tracks"}</strong>
+        <h2 tw="hidden xs:inline mb-0 leading-none">
+          <strong>{genre || "All Tracks"}</strong>
         </h2>
         {SearchInput}
       </div>
@@ -68,25 +99,14 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
       ) : (
         <div>
           {!searchValue && heading && <>{heading}</>}
-          <div className="parts-table" tw="mt-8">
-            <Table
-              width={900}
-              height={20000}
-              headerHeight={30}
-              rowHeight={50}
-              rowCount={filteredData.length}
-              rowGetter={({ index }) => filteredData[index]}
-            >
-              <Column
-                dataKey="search"
-                width={900}
-                cellRenderer={({ cellData }) => (
-                  <div className="row">
-                    <div className="search-string" dangerouslySetInnerHTML={{ __html: cellData }} />
-                  </div>
-                )}
-              />
-            </Table>
+          <div className="tracks-table" tw="mt-8 flex flex-wrap w-full">
+            <div tw="w-2/7">Title</div>
+            <div tw="w-1/7">Energy</div>
+            <div tw="w-1/7">Genres</div>
+            <div tw="w-3/7">Vibes</div>
+            {filteredData.map(track => (
+              <TrackRow key={track.id} track={track} />
+            ))}
           </div>
         </div>
       )}
@@ -95,21 +115,7 @@ const TracksTable: React.FC<Props> = ({ data, genre, search, navigate, placehold
 }
 
 const StyledTracksTable = styled.div`
-  .ReactVirtualized__Grid {
-    outline: none;
-    height: auto !important;
-    overflow: visible !important;
-  }
-  .ReactVirtualized__Grid__innerScrollContainer {
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-  .ReactVirtualized__Table__row {
-    position: relative !important;
-    top: auto !important;
-    height: auto !important;
-  }
+  ${tw``}
 `
 
 export default withLocation(TracksTable)

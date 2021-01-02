@@ -1,6 +1,12 @@
 import slugify from "slugify"
 import { graphql, useStaticQuery } from "gatsby"
 
+export interface CategoryShape {
+  name: string
+  id: string
+  slug: string
+}
+
 interface ChildTrackShape {
   id: string
   title: string
@@ -15,16 +21,8 @@ export interface ParentTrackShape {
   priority: string
   search: string
   energy: string
-  genres: {
-    name: string
-    id: string
-    slug: string
-  }[]
-  vibes: {
-    name: string
-    id: string
-    slug: string
-  }[]
+  genres: CategoryShape[]
+  vibes: CategoryShape[]
   children?: ChildTrackShape[]
   filter: Function
 }
@@ -116,9 +114,10 @@ const queryAirtableTracks = (): ParentTrackShape => {
           name: genre.data.Genre_Name,
           slug: slugify(genre.data.Genre_Name, { lower: true }),
         })),
-        vibes: track.node.data.Vibes.map((genre: VibeQueryShape) => ({
-          id: genre.id,
-          name: genre.data.Vibe_Name,
+        vibes: track.node.data.Vibes.map((vibe: VibeQueryShape) => ({
+          id: vibe.id,
+          name: vibe.data.Vibe_Name,
+          slug: slugify(vibe.data.Vibe_Name, { lower: true }),
         })),
         search: "",
         children: [],
