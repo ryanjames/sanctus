@@ -14,7 +14,7 @@ interface GenreShape {
   map: Function
 }
 
-const genres= (): GenreShape => {
+const genres = (): GenreShape => {
   const query = useStaticQuery(
     graphql`
       query GenresQuery {

@@ -5,6 +5,7 @@ import { Link } from "gatsby"
 import tw from "twin.macro"
 import { matchSorter } from "match-sorter"
 import { ParentTrackShape, CategoryShape } from "../models/tracks"
+import Player from "./Player"
 
 import highlightSearch from "../utils/highlightSearch"
 
@@ -73,13 +74,16 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
             </span>
           ))}
         </div>
-        <div tw="w-3/7">
+        <div tw="w-2/7">
           {track.vibes.map((vibe: CategoryShape, index) => (
             <span key={vibe.id}>
               <Link to={`/library/vibe/${vibe.slug}`}>{vibe.name}</Link>
               {index < track.vibes.length - 1 ? ", " : ""}
             </span>
           ))}
+        </div>
+        <div tw="w-full">
+          <Player file={track.url} />
         </div>
       </>
     )

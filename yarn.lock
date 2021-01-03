@@ -11838,6 +11838,11 @@ react-virtualized@^9.22.3:
     prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.4"
 
+react-wavesurfer@^0.8.6:
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/react-wavesurfer/-/react-wavesurfer-0.8.6.tgz#da05f3f501e566a63853f9babec45a5251111538"
+  integrity sha1-2gXz9QHlZqY4U/m6vsRaUlERFTg=
+
 react@^16.12.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
@@ -14432,6 +14437,11 @@ watchpack@^1.7.4:
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"
+
+wavesurfer.js@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-1.4.0.tgz#4dba66098e736615d963fa85c7476fbd7e09c565"
+  integrity sha1-TbpmCY5zZhXZY/qFx0dvvX4JxWU=
 
 wbuf@^1.1.0, wbuf@^1.7.3:
   version "1.7.3"

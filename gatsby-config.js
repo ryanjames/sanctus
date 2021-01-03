@@ -16,9 +16,9 @@ module.exports = {
     {
       resolve: `gatsby-source-dropbox`,
       options: {
-        accessToken: `mV7kb464gvoAAAAAAAAAAfZQPRWSWGYLX1YzFfZWcO_JVIAQpaV3qRH6p15H1-Uz`,
+        accessToken: `MQa_dFZwV4cAAAAAAAAAAZYyhuJKLv2_TWj-sh-VW4QreVM9uBnhwCAfo4P-vNqc`,
         extensions: [".mp3"],
-        path: "/Ryan/DK Library 256 mp3s",
+        path: "/DK Library 256 mp3s/Website",
         recursive: false,
         createFolderNodes: false,
       },

@@ -1,4 +1,5 @@
 import slugify from "slugify"
+import dropboxFiles from "../staticQueries/dropboxFiles"
 
 export interface CategoryShape {
   name: string
@@ -11,6 +12,7 @@ interface ChildTrackShape {
   title: string
   length: string
   parent: string
+  url?: string
 }
 
 export interface ParentTrackShape {
@@ -25,6 +27,7 @@ export interface ParentTrackShape {
   vibes: CategoryShape[]
   energy: CategoryShape
   children?: ChildTrackShape[]
+  url?: string
   filter?: Function
 }
 
@@ -71,6 +74,11 @@ export interface QueryShape {
   edges: QueryNodeShape
 }
 
+const addDropboxFile = (trackName: string) => {
+  const response = dropboxFiles().find(x => x.name === trackName + ".mp3")
+  return response ? response.url : undefined
+}
+
 export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
   const tracksData = query.edges
   const tracks = tracksData.reduce((filtered: Array<ParentTrackShape>, track: QueryNodeShape) => {
@@ -99,6 +107,7 @@ export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
         })),
         search: "",
         children: [],
+        url: addDropboxFile(track.node.data.Track_Title),
       }
 
       // Assemble search string from title, genres and vibes
@@ -130,6 +139,7 @@ export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
               title: track.node.data.Track_Title,
               length: track.node.data.Length,
               parent: track.node.data.Parent[0].id,
+              url: addDropboxFile(track.node.data.Track_Title),
             }
             filtered.push(childTrack)
           }
@@ -144,6 +154,7 @@ export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
     // Return everything
     return filtered
   }, [])
+
   tracks.sort((a: ParentTrackShape, b: ParentTrackShape) => (a.priority > b.priority ? 1 : -1)).reverse()
 
   return tracks
