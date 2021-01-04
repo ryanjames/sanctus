@@ -1,6 +1,7 @@
 /** @jsx jsx */ import { jsx } from "@emotion/react"
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
+import { Helmet } from "react-helmet"
 
 import Header from "./Header"
 
@@ -17,17 +18,12 @@ const Layout: React.FC = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
+      <Header siteTitle="Dan Koch" />
       <main>{children}</main>
-      <footer
-        style={{
-          marginTop: `2rem`,
-        }}
-      >
-        © {new Date().getFullYear()}, Built with
-        {` `}
-        <a href="https://www.gatsbyjs.com">Gatsby</a>
-      </footer>
+      <Helmet>
+        <script src="https://unpkg.com/wavesurfer.js"></script>
+      </Helmet>
+      <footer>Copyright Dan Koch</footer>
     </>
   )
 }

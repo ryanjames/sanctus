@@ -13,6 +13,7 @@
     "@types/pluralize": "^0.0.29",
     "@types/react-helmet": "^6.1.0",
     "@types/react-virtualized": "^9.21.10",
+    "@types/wavesurfer.js": "^3.3.1",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
     "autoprefixer": "^10.1.0",
@@ -29,7 +30,7 @@
     "gatsby-plugin-sharp": "^2.8.0",
     "gatsby-plugin-typescript": "^2.9.0",
     "gatsby-source-airtable": "^2.1.1",
-    "gatsby-source-dropbox": "https://github.com/ryanjames/gatsby-source-dropbox.git",
+    "gatsby-source-dropbox": "https://github.com/ryanjames/gatsby-source-dropbox",
     "gatsby-source-filesystem": "^2.5.0",
     "gatsby-transformer-sharp": "^2.6.0",
     "match-sorter": "^6.0.2",
@@ -39,12 +40,11 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^6.1.0",
+    "react-select": "^3.1.1",
     "react-virtualized": "^9.22.3",
-    "react-wavesurfer": "^0.8.6",
     "slugify": "^1.4.6",
     "tailwindcss": "^2.0.2",
-    "twin.macro": "^2.0.7",
-    "wavesurfer.js": "1.4.0"
+    "twin.macro": "^2.0.7"
   },
   "devDependencies": {
     "prettier": "^2.2.1",

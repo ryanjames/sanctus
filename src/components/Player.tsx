@@ -1,49 +1,39 @@
-require("wavesurfer.js")
-import React, { useState } from "react"
-import styled from "@emotion/styled"
-import tw from "twin.macro"
-import Wavesurfer from "react-wavesurfer"
+import React, { useEffect, useState } from "react"
 
-interface Props {
-  file: string
+type Props = {
+  track: {
+    id: string
+    url: string
+  }
 }
 
-const xhr = {
-  cache: "default",
-  mode: "cors",
-  method: "GET",
-  credentials: "same-origin",
-  redirect: "follow",
-  referrer: "client",
-  headers: [
-    {
-      key: "Authorization",
-      value: "Bearer MQa_dFZwV4cAAAAAAAAAAZYyhuJKLv2_TWj-sh-VW4QreVM9uBnhwCAfo4P-vNqc",
-    },
-  ],
-}
+const Player: React.FC<Props> = ({ track }) => {
+  const [play, setPlay] = useState(false)
+  const [ws, setWS] = useState()
 
-const Player: React.FC<Props> = ({ file }) => {
-  const [playing, setPlaying] = useState(false)
-  const [pos, setPos] = useState(0)
-
-  const handleTogglePlay = () => {
-    setPlaying(!playing)
-  }
-  const handlePosChange = e => {
-    setPos(e.originalArgs[0])
+  const handlePlay = () => {
+    setPlay(!play)
+    play ? ws.play() : ws.pause()
   }
 
+  useEffect(() => {
+    const wavesurfer = window.WaveSurfer.create({
+      container: `#t-${track.id}`,
+      waveColor: "violet",
+      progressColor: "purple",
+    })
+    wavesurfer.load(track.url)
+    wavesurfer.on("ready", function () {
+      wavesurfer.play()
+      setWS(wavesurfer)
+    })
+  }, [setWS, track])
   return (
-    <StyledPlayer>
-      <Wavesurfer audioFile={file} pos={pos} onPosChange={handlePosChange} playing={playing} />
-      <button onClick={handleTogglePlay}>Play/Pause</button>
-    </StyledPlayer>
+    <>
+      <button onClick={handlePlay}>Play/Pause</button>
+      <div id={`t-${track.id}`} />
+    </>
   )
 }
 
 export default Player
-
-const StyledPlayer = styled.div`
-  ${tw``}
-`

@@ -16,10 +16,10 @@ const Library: React.FC<Props> = ({ data }) => {
 
   return (
     <Layout>
+      <SEO title="Music Library" />
+      <PageHeading tw="hidden lg:block" title="Music Library" />
       <Container>
         <Col>
-          <SEO title="Music Library" />
-          <PageHeading tw="hidden lg:block" title="Music Library" />
           <TracksTable placeholder={<GenreCards />} data={tracksData} />
         </Col>
       </Container>

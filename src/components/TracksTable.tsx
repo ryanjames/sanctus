@@ -5,7 +5,7 @@ import { Link } from "gatsby"
 import tw from "twin.macro"
 import { matchSorter } from "match-sorter"
 import { ParentTrackShape, CategoryShape } from "../models/tracks"
-import Player from "./Player"
+import TrackDetails from "./TrackDetails"
 
 import highlightSearch from "../utils/highlightSearch"
 
@@ -83,7 +83,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
           ))}
         </div>
         <div tw="w-full">
-          <Player file={track.url} />
+          <TrackDetails track={track} />
         </div>
       </>
     )
