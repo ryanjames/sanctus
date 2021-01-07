@@ -30,7 +30,7 @@
     "gatsby-plugin-sharp": "^2.8.0",
     "gatsby-plugin-typescript": "^2.9.0",
     "gatsby-source-airtable": "^2.1.1",
-    "gatsby-source-dropbox": "https://github.com/ryanjames/gatsby-source-dropbox",
+    "gatsby-source-dropbox": "https://github.com/ryanjames/gatsby-source-dropbox.git",
     "gatsby-source-filesystem": "^2.5.0",
     "gatsby-transformer-sharp": "^2.6.0",
     "match-sorter": "^6.0.2",
