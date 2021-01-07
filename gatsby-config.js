@@ -20,7 +20,7 @@ module.exports = {
         extensions: [".mp3"],
         path: "/DK Library 256 mp3s/Website",
         recursive: false,
-        limit: 1500,
+        limit: 1000,
         createFolderNodes: false,
       },
     },
