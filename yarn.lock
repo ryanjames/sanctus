@@ -7117,7 +7117,7 @@ gatsby-source-airtable@^2.1.1:
 
 "gatsby-source-dropbox@https://github.com/ryanjames/gatsby-source-dropbox.git":
   version "0.2.3"
-  resolved "https://github.com/ryanjames/gatsby-source-dropbox.git#3693e3a8c895c519c4c3b2cba156320dc5f9f70a"
+  resolved "https://github.com/ryanjames/gatsby-source-dropbox.git#3dddb250575bbb0d626f2f9777feb95237c6bb46"
   dependencies:
     "@babel/preset-env" "^7.9.6"
     "@babel/runtime" "^7.9.6"
