@@ -7,7 +7,7 @@ export interface CategoryShape {
   slug: string
 }
 
-interface ChildTrackShape {
+export interface ChildTrackShape {
   id: string
   title: string
   length: string

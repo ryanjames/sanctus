@@ -28,7 +28,7 @@ const LibraryGenrePage: React.FC<Props> = ({ data }) => {
 
   return (
     <StyledLibraryGenrePage>
-      <Helmet titleTemplate="%s - Techna NDT">
+      <Helmet titleTemplate="%s - Dan Koch">
         <title>{genre}</title>
         <meta name="description" content="{category.description}" />
       </Helmet>

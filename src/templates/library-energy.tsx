@@ -19,7 +19,7 @@ const LibraryEnergyPage: React.FC<Props> = ({ data }) => {
 
   return (
     <StyledLibraryEnergyPage>
-      <Helmet titleTemplate="%s - Techna NDT">
+      <Helmet titleTemplate="%s - Dan Koch">
         <title>{energy}</title>
         <meta name="description" content="{category.description}" />
       </Helmet>

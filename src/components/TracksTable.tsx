@@ -60,9 +60,17 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
 
   type Track = { track: ParentTrackShape }
   const TrackRow: React.FC<Track> = ({ track }) => {
+    const versions = () => {
+      if (track.children && track.children.length) {
+        const count = track.children.length + 1
+        return <span>{count} versions</span>
+      }
+    }
     return (
       <>
-        <div tw="w-2/7">{track.title}</div>
+        <div tw="w-2/7">
+          {track.title} {versions()}
+        </div>
         <div tw="w-1/7">
           <Link to={`/library/energy/${track.energy.slug}`}>{track.energy.name}</Link>
         </div>

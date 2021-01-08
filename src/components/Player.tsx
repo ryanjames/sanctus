@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react"
+import { ParentTrackShape } from "../models/tracks"
 
 type Props = {
-  track: {
-    id: string
-    url: string
-  }
+  track: ParentTrackShape
 }
 
 const Player: React.FC<Props> = ({ track }) => {

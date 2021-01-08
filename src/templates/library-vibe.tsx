@@ -28,7 +28,7 @@ const LibraryVibePage: React.FC<Props> = ({ data }) => {
 
   return (
     <StyledLibraryVibePage>
-      <Helmet titleTemplate="%s - Techna NDT">
+      <Helmet titleTemplate="%s - Dan Koch">
         <title>{vibe}</title>
         <meta name="description" content="{category.description}" />
       </Helmet>
