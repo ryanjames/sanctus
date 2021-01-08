@@ -9,14 +9,14 @@ import Container, { Col } from "../components/Container"
 import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
 
-import { getTracks, QueryShape, GenreQueryShape } from "../models/tracks"
+import { getTracks, QueryShape, PlaylistQueryShape } from "../models/tracks"
 
 type Props = {
   data: {
     tracks: QueryShape
-    genre: {
+    playlist: {
       edges: {
-        node: GenreQueryShape
+        node: PlaylistQueryShape
       }[]
     }
   }
@@ -24,12 +24,12 @@ type Props = {
 
 const LibraryGenrePage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
-  const genre = data.genre.edges[0].node.data.Genre_Name
+  const playlist = data.playlist.edges[0].node.data.Playlist_Name
 
   return (
     <StyledLibraryGenrePage>
       <Helmet titleTemplate="%s - Dan Koch">
-        <title>{genre}</title>
+        <title>{playlist}</title>
         <meta name="description" content="{category.description}" />
       </Helmet>
       <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
@@ -37,7 +37,7 @@ const LibraryGenrePage: React.FC<Props> = ({ data }) => {
         <div tw="flex flex-nowrap w-full">
           <Col tw="flex-1 pt-10 overflow-auto">
             <div tw="lg:pl-4">
-              <TracksTable data={tracksData} title={`Genre: ${genre}`} />
+              <TracksTable data={tracksData} title={playlist} />
             </div>
           </Col>
         </div>
@@ -53,8 +53,8 @@ const StyledLibraryGenrePage = styled(Layout)`
 export default LibraryGenrePage
 
 export const pageQuery = graphql`
-  query GenreTracksQuery($id: String!) {
-    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Genres: { elemMatch: { id: { eq: $id } } } } }) {
+  query PlaylistTracksQuery($id: String!) {
+    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Playlists: { elemMatch: { id: { eq: $id } } } } }) {
       edges {
         node {
           data {
@@ -80,7 +80,6 @@ export const pageQuery = graphql`
               }
               id
             }
-            URL
             Length
             Priority
           }
@@ -88,12 +87,12 @@ export const pageQuery = graphql`
         }
       }
     }
-    genre: allAirtable(filter: { table: { eq: "Genres" }, id: { eq: $id } }) {
+    playlist: allAirtable(filter: { table: { eq: "Playlists" }, id: { eq: $id } }) {
       edges {
         node {
           id
           data {
-            Genre_Name
+            Playlist_Name
           }
         }
       }

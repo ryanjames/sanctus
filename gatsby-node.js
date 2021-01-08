@@ -7,6 +7,16 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
+      playlists: allAirtable(filter: { table: { eq: "Playlists" } }) {
+        edges {
+          node {
+            id
+            data {
+              Playlist_Name
+            }
+          }
+        }
+      }
       genres: allAirtable(filter: { table: { eq: "Genres" } }) {
         edges {
           node {
@@ -43,6 +53,20 @@ exports.createPages = ({ actions, graphql }) => {
       result.errors.forEach(e => console.error(e.toString()))
       return Promise.reject(result.errors)
     }
+
+    const playlists = result.data.playlists.edges
+    playlists.forEach(playlist => {
+      const id = playlist.node.id
+      const slug = slugify(playlist.node.data.Playlist_Name, { lower: true })
+      createPage({
+        path: "/library/" + slug,
+        component: path.resolve(`src/templates/library-playlist.tsx`),
+        // additional data can be passed via context
+        context: {
+          id,
+        },
+      })
+    })
 
     const genres = result.data.genres.edges
     genres.forEach(genre => {

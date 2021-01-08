@@ -1,5 +1,4 @@
 import slugify from "slugify"
-import dropboxFiles from "../staticQueries/dropboxFiles"
 
 export interface CategoryShape {
   name: string
@@ -12,7 +11,7 @@ export interface ChildTrackShape {
   title: string
   length: string
   parent: string
-  url?: string
+  url: string
 }
 
 export interface ParentTrackShape {
@@ -21,19 +20,23 @@ export interface ParentTrackShape {
   length: string
   priority: string
   search: string
-  new: boolean
   favorite: boolean
   genres: CategoryShape[]
   vibes: CategoryShape[]
   energy: CategoryShape
   children?: ChildTrackShape[]
-  url?: string
+  url: string
   filter?: Function
 }
 
 export interface GenreQueryShape {
   id: string
   data: { Genre_Name: string }
+  map: Function
+}
+export interface PlaylistQueryShape {
+  id: string
+  data: { Playlist_Name: string }
   map: Function
 }
 export interface EnergyQueryShape {
@@ -58,8 +61,8 @@ export interface QueryNodeShape {
           Track_Title: string
         }
       }[]
+      URL: string
       Length: string
-      New: boolean
       Favorite: boolean
       Genres: GenreQueryShape
       Vibes: VibeQueryShape
@@ -72,11 +75,6 @@ export interface QueryNodeShape {
 
 export interface QueryShape {
   edges: QueryNodeShape
-}
-
-const addDropboxFile = (trackName: string) => {
-  const response = dropboxFiles().find(x => x.name === trackName + ".mp3")
-  return response ? response.url : undefined
 }
 
 export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
@@ -93,7 +91,6 @@ export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
           name: track.node.data.Energy[0].data.Energy_Name,
           slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true }),
         },
-        new: track.node.data.New,
         favorite: track.node.data.Favorite,
         genres: track.node.data.Genres.map((genre: GenreQueryShape) => ({
           id: genre.id,
@@ -107,7 +104,7 @@ export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
         })),
         search: "",
         children: [],
-        url: addDropboxFile(track.node.data.Track_Title),
+        url: track.node.data.URL,
       }
 
       // Assemble search string from title, genres and vibes
@@ -139,7 +136,7 @@ export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
               title: track.node.data.Track_Title,
               length: track.node.data.Length,
               parent: track.node.data.Parent[0].id,
-              url: addDropboxFile(track.node.data.Track_Title),
+              url: track.node.data.URL,
             }
             filtered.push(childTrack)
           }
