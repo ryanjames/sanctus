@@ -5,13 +5,20 @@ type Props = {
   track: ParentTrackShape
 }
 
+type Player = {
+  play: Function
+  pause: Function
+}
+
 const Player: React.FC<Props> = ({ track }) => {
   const [play, setPlay] = useState(false)
-  const [ws, setWS] = useState()
+  const [player, setPlayer] = useState<Player | null>(null)
 
   const handlePlay = () => {
-    setPlay(!play)
-    play ? ws.play() : ws.pause()
+    if (player) {
+      setPlay(!play)
+      play ? player.play() : player.pause()
+    }
   }
 
   useEffect(() => {
@@ -23,9 +30,9 @@ const Player: React.FC<Props> = ({ track }) => {
     wavesurfer.load(track.url)
     wavesurfer.on("ready", function () {
       wavesurfer.play()
-      setWS(wavesurfer)
+      setPlayer(wavesurfer)
     })
-  }, [setWS, track])
+  }, [setPlayer, track])
   return (
     <>
       <button onClick={handlePlay}>Play/Pause</button>

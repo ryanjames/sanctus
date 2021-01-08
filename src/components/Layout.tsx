@@ -18,7 +18,7 @@ const Layout: React.FC = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle="Dan Koch" />
+      <Header siteTitle={data.site.siteMetadata.title} />
       <main>{children}</main>
       <Helmet>
         <script src="https://unpkg.com/wavesurfer.js"></script>
