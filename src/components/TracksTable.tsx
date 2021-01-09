@@ -5,6 +5,8 @@ import { Link } from "gatsby"
 import tw from "twin.macro"
 import { matchSorter } from "match-sorter"
 import { ParentTrackShape, CategoryShape } from "../models/tracks"
+import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTrackContext"
+
 import TrackDetails from "./TrackDetails"
 
 import highlightSearch from "../utils/highlightSearch"
@@ -33,6 +35,8 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
     const keys = searchFields
     return !inputValue && memoizedData ? memoizedData : highlightSearch(query, filteredData, keys)
   }
+
+  const { activeTrack } = React.useContext(ActiveTrackContext) as ActiveTrackContextType
 
   const [filteredData, setFilteredData] = useState(filterResults(search.s))
   const [searchValue, setSearchValue] = useState(search.s || "")
@@ -111,6 +115,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
         <div>
           {!searchValue && heading && <>{heading}</>}
           <div className="tracks-table" tw="mt-8 flex flex-wrap w-full">
+            <div tw="w-full">ACTIVE TRACK: {activeTrack.id}</div>
             <div tw="w-2/7">Title</div>
             <div tw="w-1/7">Energy</div>
             <div tw="w-1/7">Genres</div>

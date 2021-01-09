@@ -1,49 +1,52 @@
 import React, { useState } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-import Player from "./Player"
+import TrackPlayer from "./TrackPlayer"
 import { ParentTrackShape } from "../models/tracks"
-import Select from "react-select"
+import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTrackContext"
 
 interface Props {
   track: ParentTrackShape
 }
 
 const TrackDetails: React.FC<Props> = ({ track }) => {
-  const [expand, setExpand] = useState(false)
+  const { activeTrack, updateActiveTrack } = React.useContext(ActiveTrackContext) as ActiveTrackContextType
 
   const handleExpand = () => {
-    setExpand(!expand)
+    updateActiveTrack({
+      id: track.id,
+      version: activeTrack.version ? activeTrack.version : track.id,
+    })
   }
 
-  const trackSelect = () => {
-    if (track.children && track.children.length) {
-      const parentTrack = [
-        {
-          value: track.id,
-          label: track.title + " " + track.length,
-        },
-      ]
-      const childTracks = track.children.map(child => ({
-        value: child.id,
-        label: `${child.title}<span>"${child.length}</span>`,
-      }))
-      const options = parentTrack.concat(childTracks)
-      return <Select options={options} />
-    }
+  const handleVersion = event => {
+    updateActiveTrack({
+      id: track.id,
+      version: event.target.value,
+    })
   }
 
   return (
-    <StyledTrackDetails>
+    <>
       <button onClick={handleExpand}>Expand</button>
-
-      {expand && (
-        <>
-          {trackSelect()}
-          <Player track={track} />
-        </>
-      )}
-    </StyledTrackDetails>
+      <StyledTrackDetails>
+        {activeTrack.id == track.id && (
+          <>
+            {track.children && track.children.length > 0 && (
+              <select onChange={handleVersion}>
+                <option>{track.title}</option>
+                {track.children.map(child => (
+                  <option value={child.id} key={child.id}>
+                    {child.title}
+                  </option>
+                ))}
+              </select>
+            )}
+            <TrackPlayer track={track} status="play" />
+          </>
+        )}
+      </StyledTrackDetails>
+    </>
   )
 }
 
@@ -51,4 +54,10 @@ export default TrackDetails
 
 const StyledTrackDetails = styled.div`
   ${tw``}
+  .track-details {
+    display: none;
+    &.-expand {
+      display: block;
+    }
+  }
 `

@@ -8,6 +8,7 @@ import Layout from "../components/Layout"
 import Container, { Col } from "../components/Container"
 import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
+import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 
 import { getTracks, QueryShape, GenreQueryShape } from "../models/tracks"
 
@@ -37,7 +38,9 @@ const LibraryGenrePage: React.FC<Props> = ({ data }) => {
         <div tw="flex flex-nowrap w-full">
           <Col tw="flex-1 pt-10 overflow-auto">
             <div tw="lg:pl-4">
-              <TracksTable data={tracksData} title={`Genre: ${genre}`} />
+              <ActiveTrackProvider>
+                <TracksTable data={tracksData} title={`Genre: ${genre}`} />
+              </ActiveTrackProvider>
             </div>
           </Col>
         </div>
