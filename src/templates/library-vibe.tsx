@@ -18,10 +18,11 @@ type Props = {
 const LibraryVibePage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const vibe = data.vibe.edges[0].node.data.Vibe_Name
+  const id = data.vibe.edges[0].node.id
   const description = `${vibe} music from the library of Dan Koch`
 
   return (
-    <LibraryPageLayout title={vibe} description={description}>
+    <LibraryPageLayout title={vibe} id={id} description={description}>
       <TracksTable data={tracksData} title={vibe} />
     </LibraryPageLayout>
   )

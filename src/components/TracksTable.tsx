@@ -111,12 +111,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
 
   return (
     <StyledTracksTable>
-      <div tw="xs:flex justify-between items-center">
-        <h2 tw="hidden xs:inline mb-0 leading-none">
-          <strong>{title || "All Tracks"}</strong>
-        </h2>
-        {SearchInput}
-      </div>
+      <div>{SearchInput}</div>
       {!searchValue && placeholder ? (
         <>{placeholder}</>
       ) : (

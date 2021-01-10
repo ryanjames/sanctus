@@ -18,10 +18,11 @@ type Props = {
 const LibraryGenrePage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const genre = data.genre.edges[0].node.data.Genre_Name
+  const id = data.genre.edges[0].node.id
   const description = `${genre} music from the library of Dan Koch`
 
   return (
-    <LibraryPageLayout title={genre} description={description}>
+    <LibraryPageLayout title={genre} id={id} description={description}>
       <TracksTable data={tracksData} title={genre} />
     </LibraryPageLayout>
   )

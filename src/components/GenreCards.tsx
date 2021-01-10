@@ -5,16 +5,16 @@ import PageLink from "./PageLink"
 
 import genres from "../staticQueries/genres"
 
-const GenreCards: React.FC = () => {
-  interface Genre {
-    id: string
-    title: string
-    slug: string
-    image: {
-      thumbnail: string
-    }
+interface Genre {
+  id: string
+  title: string
+  slug: string
+  image: {
+    thumbnail: string
   }
+}
 
+const GenreCards: React.FC = () => {
   return (
     <StyledGenreCards tw="list-none flex flex-wrap -mx-2 md:-mx-3 pt-8" className="genre-cards">
       {genres().map((genre: Genre) => (

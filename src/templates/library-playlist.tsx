@@ -18,10 +18,11 @@ type Props = {
 const LibraryGenrePage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const playlist = data.playlist.edges[0].node.data.Playlist_Name
+  const id = data.playlist.edges[0].node.id
   const description = `${playlist} music from the library of Dan Koch`
 
   return (
-    <LibraryPageLayout title={playlist} description={description}>
+    <LibraryPageLayout title={playlist} id={id} description={description}>
       <TracksTable data={tracksData} title={playlist} />
     </LibraryPageLayout>
   )
@@ -59,6 +60,7 @@ export const pageQuery = graphql`
             }
             Length
             Priority
+            URL
           }
           id
         }

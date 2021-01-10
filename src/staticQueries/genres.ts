@@ -6,7 +6,7 @@ interface Image {
   thumbnail: string
 }
 
-interface GenreShape {
+export interface GenreShape {
   id: string
   title: string
   image: string | Image
