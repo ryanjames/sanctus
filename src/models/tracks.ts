@@ -6,26 +6,18 @@ export interface CategoryShape {
   slug: string
 }
 
-export interface ChildTrackShape {
+export interface TrackShape {
   id: string
   title: string
   length: string
-  parent: string
   url: string
-}
-
-export interface ParentTrackShape {
-  id: string
-  title: string
-  length: string
-  priority: string
-  search: string
-  favorite: boolean
-  genres: CategoryShape[]
-  vibes: CategoryShape[]
-  energy: CategoryShape
-  children?: ChildTrackShape[]
-  url: string
+  priority: number
+  search?: string
+  favorite?: boolean
+  genres?: CategoryShape[]
+  vibes?: CategoryShape[]
+  energy?: CategoryShape
+  children?: TrackShape[]
   filter?: Function
 }
 
@@ -67,7 +59,7 @@ export interface QueryNodeShape {
       Genres: GenreQueryShape
       Vibes: VibeQueryShape
       Energy: EnergyQueryShape[]
-      Priority: string
+      Priority: number
     }
   }
   reduce: Function
@@ -77,9 +69,9 @@ export interface QueryShape {
   edges: QueryNodeShape
 }
 
-export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
+export const getTracks = (query: QueryShape): Array<TrackShape> => {
   const tracksData = query.edges
-  const tracks = tracksData.reduce((filtered: Array<ParentTrackShape>, track: QueryNodeShape) => {
+  const tracks = tracksData.reduce((filtered: Array<TrackShape>, track: QueryNodeShape) => {
     if (track.node.data.Parent === null) {
       const parentTrack = {
         id: track.node.id,
@@ -128,15 +120,15 @@ export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
       parentTrack.search = "".concat(parentTrack.title, " | ", genres, " | ", vibes)
 
       // Add child tracks
-      const childTracks = tracksData.reduce((filtered: Array<ChildTrackShape>, track: QueryNodeShape) => {
+      const childTracks = tracksData.reduce((filtered: Array<TrackShape>, track: QueryNodeShape) => {
         if (track.node.data.Parent !== null) {
           if (track.node.data.Parent[0].id === parentTrack.id) {
             const childTrack = {
               id: track.node.id,
               title: track.node.data.Track_Title,
               length: track.node.data.Length,
-              parent: track.node.data.Parent[0].id,
               url: track.node.data.URL,
+              priority: 0,
             }
             filtered.push(childTrack)
           }
@@ -152,7 +144,7 @@ export const getTracks = (query: QueryShape): Array<ParentTrackShape> => {
     return filtered
   }, [])
 
-  tracks.sort((a: ParentTrackShape, b: ParentTrackShape) => (a.priority > b.priority ? 1 : -1)).reverse()
+  tracks.sort((a: TrackShape, b: TrackShape) => (a.priority > b.priority ? 1 : -1)).reverse()
 
   return tracks
 }

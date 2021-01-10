@@ -1,28 +1,30 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import TrackPlayer from "./TrackPlayer"
-import { ParentTrackShape } from "../models/tracks"
+import { TrackShape } from "../models/tracks"
 import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTrackContext"
 
 interface Props {
-  track: ParentTrackShape
+  track: TrackShape
 }
 
 const TrackDetails: React.FC<Props> = ({ track }) => {
-  const { activeTrack, updateActiveTrack } = React.useContext(ActiveTrackContext) as ActiveTrackContextType
+  const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
+  const [version, setVersion] = useState<String>("")
 
   const handleExpand = () => {
     updateActiveTrack({
       id: track.id,
-      version: activeTrack.version ? activeTrack.version : track.id,
+      version: track,
     })
   }
 
-  const handleVersion = event => {
+  const handleChangeVersion = event => {
+    const child = track.children?.find(child => child.id === event?.target.value)
     updateActiveTrack({
       id: track.id,
-      version: event.target.value,
+      version: child ? child : track,
     })
   }
 
@@ -33,8 +35,8 @@ const TrackDetails: React.FC<Props> = ({ track }) => {
         {activeTrack.id == track.id && (
           <>
             {track.children && track.children.length > 0 && (
-              <select onChange={handleVersion}>
-                <option>{track.title}</option>
+              <select onChange={handleChangeVersion} value={activeTrack?.version?.id}>
+                <option value={track.id}>{track.title}</option>
                 {track.children.map(child => (
                   <option value={child.id} key={child.id}>
                     {child.title}
@@ -42,7 +44,7 @@ const TrackDetails: React.FC<Props> = ({ track }) => {
                 ))}
               </select>
             )}
-            <TrackPlayer track={track} status="play" />
+            <TrackPlayer track={activeTrack.version} />
           </>
         )}
       </StyledTrackDetails>

@@ -4,7 +4,7 @@ import styled from "@emotion/styled"
 import { Link } from "gatsby"
 import tw from "twin.macro"
 import { matchSorter } from "match-sorter"
-import { ParentTrackShape, CategoryShape } from "../models/tracks"
+import { TrackShape, CategoryShape } from "../models/tracks"
 import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTrackContext"
 
 import TrackDetails from "./TrackDetails"
@@ -23,11 +23,16 @@ interface Props {
 }
 
 const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placeholder, heading }) => {
+  const { activeTrack, updateActiveTrack } = React.useContext(ActiveTrackContext) as ActiveTrackContextType
+
   const memoizedData = useMemo(() => data, [data])
 
   const searchFields = ["search"]
 
   const filterResults = (inputValue: string) => {
+    if (window.player) {
+      window.player.destroy()
+    }
     const query = inputValue
     const filteredData = matchSorter(memoizedData, inputValue, {
       keys: searchFields,
@@ -36,13 +41,16 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
     return !inputValue && memoizedData ? memoizedData : highlightSearch(query, filteredData, keys)
   }
 
-  const { activeTrack } = React.useContext(ActiveTrackContext) as ActiveTrackContextType
-
   const [filteredData, setFilteredData] = useState(filterResults(search.s))
   const [searchValue, setSearchValue] = useState(search.s || "")
 
   useEffect(() => {
-    const timeOutId = setTimeout(() => navigate(`?s=${searchValue}`), 500)
+    const timeOutId = setTimeout(() => {
+      navigate(`?s=${searchValue}`)
+      updateActiveTrack({
+        id: "",
+      })
+    }, 200)
     return () => clearTimeout(timeOutId)
   }, [searchValue])
 
@@ -62,7 +70,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
     />
   )
 
-  type Track = { track: ParentTrackShape }
+  type Track = { track: TrackShape }
   const TrackRow: React.FC<Track> = ({ track }) => {
     const versions = () => {
       if (track.children && track.children.length) {
@@ -76,21 +84,21 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
           {track.title} {versions()}
         </div>
         <div tw="w-1/7">
-          <Link to={`/library/energy/${track.energy.slug}`}>{track.energy.name}</Link>
+          <Link to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</Link>
         </div>
         <div tw="w-1/7">
-          {track.genres.map((genre: CategoryShape, index) => (
+          {track.genres?.map((genre: CategoryShape, index) => (
             <span key={genre.id}>
               <Link to={`/library/genre/${genre.slug}`}>{genre.name}</Link>
-              {index < track.genres.length - 1 ? ", " : ""}
+              {index < track.genres?.length - 1 ? ", " : ""}
             </span>
           ))}
         </div>
         <div tw="w-2/7">
-          {track.vibes.map((vibe: CategoryShape, index) => (
+          {track.vibes?.map((vibe: CategoryShape, index) => (
             <span key={vibe.id}>
               <Link to={`/library/vibe/${vibe.slug}`}>{vibe.name}</Link>
-              {index < track.vibes.length - 1 ? ", " : ""}
+              {index < track.vibes?.length - 1 ? ", " : ""}
             </span>
           ))}
         </div>
