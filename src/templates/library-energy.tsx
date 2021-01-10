@@ -1,14 +1,7 @@
 import React from "react"
-import { Helmet } from "react-helmet"
 import { graphql } from "gatsby"
-import styled from "@emotion/styled"
-import tw from "twin.macro"
-
-import Layout from "../components/Layout"
-import Container, { Col } from "../components/Container"
-import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
-
+import LibraryPageLayout from "../components/LibraryPageLayout"
 import { getTracks, QueryShape } from "../models/tracks"
 
 type Props = { data: { tracks: QueryShape } }
@@ -16,30 +9,14 @@ type Props = { data: { tracks: QueryShape } }
 const LibraryEnergyPage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const energy = tracksData[0].energy.name
+  const description = `${energy} energy music from the library of Dan Koch`
 
   return (
-    <StyledLibraryEnergyPage>
-      <Helmet titleTemplate="%s - Dan Koch">
-        <title>{energy}</title>
-        <meta name="description" content="{category.description}" />
-      </Helmet>
-      <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
-      <Container>
-        <div tw="flex flex-nowrap w-full">
-          <Col tw="flex-1 pt-10 overflow-auto">
-            <div tw="lg:pl-4">
-              <TracksTable data={tracksData} title={`Energy: ${energy}`} />
-            </div>
-          </Col>
-        </div>
-      </Container>
-    </StyledLibraryEnergyPage>
+    <LibraryPageLayout title={`${energy} Energy`} description={description}>
+      <TracksTable data={tracksData} title={`${energy} Energy`} />
+    </LibraryPageLayout>
   )
 }
-
-const StyledLibraryEnergyPage = styled(Layout)`
-  ${tw``}
-`
 
 export default LibraryEnergyPage
 
@@ -71,6 +48,7 @@ export const pageQuery = graphql`
               }
               id
             }
+            URL
             Length
             Priority
           }

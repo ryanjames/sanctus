@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useContext } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import TrackPlayer from "./TrackPlayer"
@@ -11,7 +11,6 @@ interface Props {
 
 const TrackDetails: React.FC<Props> = ({ track }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
-  const [version, setVersion] = useState<String>("")
 
   const handleExpand = () => {
     updateActiveTrack({
@@ -20,8 +19,9 @@ const TrackDetails: React.FC<Props> = ({ track }) => {
     })
   }
 
-  const handleChangeVersion = event => {
-    const child = track.children?.find(child => child.id === event?.target.value)
+  const handleChangeVersion = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const string = event.target.value
+    const child = track.children?.find(child => child.id === string)
     updateActiveTrack({
       id: track.id,
       version: child ? child : track,
@@ -44,7 +44,7 @@ const TrackDetails: React.FC<Props> = ({ track }) => {
                 ))}
               </select>
             )}
-            <TrackPlayer track={activeTrack.version} />
+            <TrackPlayer track={{ id: activeTrack.version.id, url: activeTrack.version.url }} />
           </>
         )}
       </StyledTrackDetails>

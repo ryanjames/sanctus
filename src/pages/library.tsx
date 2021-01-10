@@ -1,29 +1,20 @@
 import React from "react"
 import { graphql } from "gatsby"
-import Layout from "../../components/Layout"
-import SEO from "../../components/SEO"
-import Container, { Col } from "../../components/Container"
-import PageHeading from "../../components/PageHeading"
-import TracksTable from "../../components/TracksTable"
-import GenreCards from "../../components/GenreCards"
-
-import { getTracks, QueryShape } from "../../models/tracks"
+import TracksTable from "../components/TracksTable"
+import LibraryPageLayout from "../components/LibraryPageLayout"
+import { getTracks, QueryShape } from "../models/tracks"
+import GenreCards from "../components/GenreCards"
 
 type Props = { data: { tracks: QueryShape } }
 
 const Library: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
+  const description = `Music from the library of Dan Koch`
 
   return (
-    <Layout>
-      <SEO title="Music Library" />
-      <PageHeading tw="hidden lg:block" title="Music Library" />
-      <Container>
-        <Col>
-          <TracksTable placeholder={<GenreCards />} data={tracksData} />
-        </Col>
-      </Container>
-    </Layout>
+    <LibraryPageLayout title="All" description={description}>
+      <TracksTable placeholder={<GenreCards />} data={tracksData} />
+    </LibraryPageLayout>
   )
 }
 
@@ -57,6 +48,7 @@ export const pageQuery = graphql`
               }
               id
             }
+            URL
             Length
             Priority
           }

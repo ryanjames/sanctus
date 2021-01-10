@@ -12,11 +12,11 @@ export interface TrackShape {
   length: string
   url: string
   priority: number
+  genres: CategoryShape[]
+  vibes: CategoryShape[]
+  energy: CategoryShape
   search?: string
   favorite?: boolean
-  genres?: CategoryShape[]
-  vibes?: CategoryShape[]
-  energy?: CategoryShape
   children?: TrackShape[]
   filter?: Function
 }
@@ -78,12 +78,12 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
         title: track.node.data.Track_Title,
         length: track.node.data.Length,
         priority: track.node.data.Priority,
+        favorite: track.node.data.Favorite,
         energy: {
           id: track.node.data.Energy[0].id,
           name: track.node.data.Energy[0].data.Energy_Name,
           slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true }),
         },
-        favorite: track.node.data.Favorite,
         genres: track.node.data.Genres.map((genre: GenreQueryShape) => ({
           id: genre.id,
           name: genre.data.Genre_Name,
@@ -128,6 +128,13 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
               title: track.node.data.Track_Title,
               length: track.node.data.Length,
               url: track.node.data.URL,
+              energy: {
+                id: track.node.data.Energy[0].id,
+                name: track.node.data.Energy[0].data.Energy_Name,
+                slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true }),
+              },
+              genres: [],
+              vibes: [],
               priority: 0,
             }
             filtered.push(childTrack)

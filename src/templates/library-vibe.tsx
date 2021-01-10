@@ -1,14 +1,7 @@
 import React from "react"
-import { Helmet } from "react-helmet"
 import { graphql } from "gatsby"
-import styled from "@emotion/styled"
-import tw from "twin.macro"
-
-import Layout from "../components/Layout"
-import Container, { Col } from "../components/Container"
-import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
-
+import LibraryPageLayout from "../components/LibraryPageLayout"
 import { getTracks, QueryShape, VibeQueryShape } from "../models/tracks"
 
 type Props = {
@@ -25,30 +18,14 @@ type Props = {
 const LibraryVibePage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const vibe = data.vibe.edges[0].node.data.Vibe_Name
+  const description = `${vibe} music from the library of Dan Koch`
 
   return (
-    <StyledLibraryVibePage>
-      <Helmet titleTemplate="%s - Dan Koch">
-        <title>{vibe}</title>
-        <meta name="description" content="{category.description}" />
-      </Helmet>
-      <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
-      <Container>
-        <div tw="flex flex-nowrap w-full">
-          <Col tw="flex-1 pt-10 overflow-auto">
-            <div tw="lg:pl-4">
-              <TracksTable data={tracksData} title={`Vibe: ${vibe}`} />
-            </div>
-          </Col>
-        </div>
-      </Container>
-    </StyledLibraryVibePage>
+    <LibraryPageLayout title={vibe} description={description}>
+      <TracksTable data={tracksData} title={vibe} />
+    </LibraryPageLayout>
   )
 }
-
-const StyledLibraryVibePage = styled(Layout)`
-  ${tw``}
-`
 
 export default LibraryVibePage
 
@@ -82,6 +59,7 @@ export const pageQuery = graphql`
             }
             Length
             Priority
+            URL
           }
           id
         }

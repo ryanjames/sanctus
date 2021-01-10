@@ -5,34 +5,30 @@ import { Link } from "gatsby"
 import tw from "twin.macro"
 import { matchSorter } from "match-sorter"
 import { TrackShape, CategoryShape } from "../models/tracks"
-import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTrackContext"
+import { ActiveTrackContext, ActiveTrackContextType, versionDefault } from "../contexts/ActiveTrackContext"
 
 import TrackDetails from "./TrackDetails"
 
 import highlightSearch from "../utils/highlightSearch"
 
-interface Props {
+export interface Props {
   data: []
-  navigate: Function
+  title: string
   search: {
     s: string
   }
-  title: string
-  placeholder: React.FC | HTMLElement
-  heading: React.FC | HTMLElement
+  placeholder?: React.FC | HTMLElement
+  navigate: Function
 }
 
-const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placeholder, heading }) => {
-  const { activeTrack, updateActiveTrack } = React.useContext(ActiveTrackContext) as ActiveTrackContextType
+const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placeholder }) => {
+  const { updateActiveTrack } = React.useContext(ActiveTrackContext) as ActiveTrackContextType
 
   const memoizedData = useMemo(() => data, [data])
 
   const searchFields = ["search"]
 
   const filterResults = (inputValue: string) => {
-    if (window.player) {
-      window.player.destroy()
-    }
     const query = inputValue
     const filteredData = matchSorter(memoizedData, inputValue, {
       keys: searchFields,
@@ -49,7 +45,11 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
       navigate(`?s=${searchValue}`)
       updateActiveTrack({
         id: "",
+        version: versionDefault,
       })
+      if (window.player) {
+        window.player.destroy()
+      }
     }, 200)
     return () => clearTimeout(timeOutId)
   }, [searchValue])
@@ -66,7 +66,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
       type="text"
       value={searchValue}
       onChange={handleSearch}
-      placeholder={`Search ${title || "All Tracks"}`}
+      placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks`}
     />
   )
 
@@ -90,7 +90,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
           {track.genres?.map((genre: CategoryShape, index) => (
             <span key={genre.id}>
               <Link to={`/library/genre/${genre.slug}`}>{genre.name}</Link>
-              {index < track.genres?.length - 1 ? ", " : ""}
+              {index < track.genres.length - 1 ? ", " : ""}
             </span>
           ))}
         </div>
@@ -98,7 +98,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
           {track.vibes?.map((vibe: CategoryShape, index) => (
             <span key={vibe.id}>
               <Link to={`/library/vibe/${vibe.slug}`}>{vibe.name}</Link>
-              {index < track.vibes?.length - 1 ? ", " : ""}
+              {index < track.vibes.length - 1 ? ", " : ""}
             </span>
           ))}
         </div>
@@ -120,18 +120,14 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
       {!searchValue && placeholder ? (
         <>{placeholder}</>
       ) : (
-        <div>
-          {!searchValue && heading && <>{heading}</>}
-          <div className="tracks-table" tw="mt-8 flex flex-wrap w-full">
-            <div tw="w-full">ACTIVE TRACK: {activeTrack.id}</div>
-            <div tw="w-2/7">Title</div>
-            <div tw="w-1/7">Energy</div>
-            <div tw="w-1/7">Genres</div>
-            <div tw="w-3/7">Vibes</div>
-            {filteredData.map(track => (
-              <TrackRow key={track.id} track={track} />
-            ))}
-          </div>
+        <div className="tracks-table" tw="mt-8 flex flex-wrap w-full">
+          <div tw="w-2/7">Title</div>
+          <div tw="w-1/7">Energy</div>
+          <div tw="w-1/7">Genres</div>
+          <div tw="w-3/7">Vibes</div>
+          {filteredData.map(track => (
+            <TrackRow key={track.id} track={track} />
+          ))}
         </div>
       )}
     </StyledTracksTable>

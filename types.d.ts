@@ -4,5 +4,12 @@ declare module "rehype-stringify"
 declare module "react-wavesurfer"
 
 interface Window {
-  player: {}
+  player: {
+    destroy: Function
+    init: Function
+    load: Function
+    on: Function
+    play: Function
+    pause: Function
+  }
 }

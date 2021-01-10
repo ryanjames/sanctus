@@ -1,14 +1,7 @@
 import React from "react"
-import { Helmet } from "react-helmet"
 import { graphql } from "gatsby"
-import styled from "@emotion/styled"
-import tw from "twin.macro"
-
-import Layout from "../components/Layout"
-import Container, { Col } from "../components/Container"
-import PageHeading from "../components/PageHeading"
 import TracksTable from "../components/TracksTable"
-
+import LibraryPageLayout from "../components/LibraryPageLayout"
 import { getTracks, QueryShape, PlaylistQueryShape } from "../models/tracks"
 
 type Props = {
@@ -25,30 +18,14 @@ type Props = {
 const LibraryGenrePage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const playlist = data.playlist.edges[0].node.data.Playlist_Name
+  const description = `${playlist} music from the library of Dan Koch`
 
   return (
-    <StyledLibraryGenrePage>
-      <Helmet titleTemplate="%s - Dan Koch">
-        <title>{playlist}</title>
-        <meta name="description" content="{category.description}" />
-      </Helmet>
-      <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
-      <Container>
-        <div tw="flex flex-nowrap w-full">
-          <Col tw="flex-1 pt-10 overflow-auto">
-            <div tw="lg:pl-4">
-              <TracksTable data={tracksData} title={playlist} />
-            </div>
-          </Col>
-        </div>
-      </Container>
-    </StyledLibraryGenrePage>
+    <LibraryPageLayout title={playlist} description={description}>
+      <TracksTable data={tracksData} title={playlist} />
+    </LibraryPageLayout>
   )
 }
-
-const StyledLibraryGenrePage = styled(Layout)`
-  ${tw``}
-`
 
 export default LibraryGenrePage
 
