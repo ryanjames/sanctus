@@ -41,32 +41,32 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
   const [searchValue, setSearchValue] = useState(search.s || "")
 
   useEffect(() => {
-    const timeOutId = setTimeout(() => {
-      navigate(`?s=${searchValue}`)
-      updateActiveTrack({
-        id: "",
-        version: versionDefault,
-      })
-      if (window.player) {
-        window.player.destroy()
-      }
-    }, 200)
-    return () => clearTimeout(timeOutId)
+    navigate(`?s=${searchValue}`)
+    updateActiveTrack({
+      id: "",
+      version: versionDefault,
+    })
+    if (window.player) {
+      window.player.destroy()
+    }
   }, [searchValue])
 
+  let searchTimeOut: ReturnType<typeof setTimeout>
   const handleSearch = (e: SyntheticEvent<HTMLInputElement>) => {
+    clearTimeout(searchTimeOut)
     const inputValue: string = (e.target as HTMLInputElement).value
-    setSearchValue(inputValue)
-    setFilteredData(filterResults(inputValue))
+    searchTimeOut = setTimeout(() => {
+      setSearchValue(inputValue)
+      setFilteredData(filterResults(inputValue))
+    }, 150)
   }
 
   const SearchInput = (
     <input
       tw="w-full xs:w-2/3 sm:w-1/2 py-3 pl-3"
       type="text"
-      value={searchValue}
       onChange={handleSearch}
-      placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks`}
+      placeholder={`Search! ${title ? title.toLowerCase() + " " : ""}tracks`}
     />
   )
 
