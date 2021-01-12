@@ -9,7 +9,7 @@ import vibes, { VibeShape } from "../staticQueries/vibes"
 import energies, { EnergyShape } from "../staticQueries/energies"
 
 interface Props {
-  id: string
+  id?: string
 }
 
 const LibraryCategories: React.FC<Props> = ({ id }) => {

@@ -66,7 +66,7 @@ exports.createPages = ({ actions, graphql }) => {
     const playlists = result.data.playlists.edges
     playlists.forEach(playlist => {
       const id = playlist.node.id
-      const slug = slugify(playlist.node.data.Playlist_Name, { lower: true })
+      const slug = slugify(playlist.node.data.Playlist_Name, { lower: true, strict: true })
       createPage({
         path: "/library/" + slug,
         component: path.resolve(`src/templates/library-playlist.tsx`),
@@ -80,7 +80,7 @@ exports.createPages = ({ actions, graphql }) => {
     const genres = result.data.genres.edges
     genres.forEach(genre => {
       const id = genre.node.id
-      const slug = slugify(genre.node.data.Genre_Name, { lower: true })
+      const slug = slugify(genre.node.data.Genre_Name, { lower: true, strict: true })
       createPage({
         path: "/library/genre/" + slug,
         component: path.resolve(`src/templates/library-genre.tsx`),
@@ -94,7 +94,7 @@ exports.createPages = ({ actions, graphql }) => {
     const vibes = result.data.vibes.edges
     vibes.forEach(vibe => {
       const id = vibe.node.id
-      const slug = slugify(vibe.node.data.Vibe_Name, { lower: true })
+      const slug = slugify(vibe.node.data.Vibe_Name, { lower: true, strict: true })
       createPage({
         path: "/library/vibe/" + slug,
         component: path.resolve(`src/templates/library-vibe.tsx`),
@@ -108,7 +108,7 @@ exports.createPages = ({ actions, graphql }) => {
     const energies = result.data.energies.edges
     energies.forEach(energy => {
       const id = energy.node.id
-      const slug = slugify(energy.node.data.Energy_Name, { lower: true })
+      const slug = slugify(energy.node.data.Energy_Name, { lower: true, strict: true })
       createPage({
         path: "/library/energy/" + slug,
         component: path.resolve(`src/templates/library-energy.tsx`),
@@ -121,7 +121,7 @@ exports.createPages = ({ actions, graphql }) => {
     const features = result.data.features.edges
     features.forEach(feature => {
       const id = feature.node.id
-      const slug = slugify(feature.node.data.Feature_Name, { lower: true })
+      const slug = slugify(feature.node.data.Feature_Name, { lower: true, strict: true })
       createPage({
         path: "/feature/" + slug,
         component: path.resolve(`src/templates/feature.tsx`),

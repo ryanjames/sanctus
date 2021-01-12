@@ -1,11 +1,10 @@
 import React from "react"
 import { graphql } from "gatsby"
 import PageHeading from "../components/PageHeading"
-import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import Container, { Col } from "../components/Container"
 import SEO from "../components/SEO"
-import LibraryCategories from "../components/LibraryCategories"
 import Layout from "../components/Layout"
+import Video from "../components/Video"
 import { Helmet } from "react-helmet"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
@@ -14,7 +13,6 @@ import { getFeature, QueryShape } from "../models/feature"
 type Props = { data: { feature: QueryShape } }
 
 const FeaturePage: React.FC<Props> = ({ data }) => {
-  const title = "Title"
   const description = "Description"
   const feature = getFeature(data.feature)
   console.log(feature)
@@ -22,13 +20,16 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
   return (
     <StyledLibraryPageLayout>
       <Helmet titleTemplate="%s - Dan Koch">
-        <title>{title}</title>
+        <title>{feature.title}</title>
         <meta name="description" content={description} />
       </Helmet>
-      <SEO title={`${title} Music`} description={description} />
-      <PageHeading tw="hidden lg:block" title={title} />
+      <SEO title={`${feature.title}`} description={description} />
+      <PageHeading tw="hidden lg:block" title={feature.title} />
       <Container>
-        <div tw="flex flex-nowrap w-full">Feature</div>
+        <Col>
+          <Video src={feature.video} poster={feature.image} />
+          Feature: {feature.title} <br />
+        </Col>
       </Container>
     </StyledLibraryPageLayout>
   )
@@ -50,7 +51,7 @@ export const pageQuery = graphql`
             Feature_Image {
               localFiles {
                 childImageSharp {
-                  fluid(maxWidth: 1200) {
+                  fluid(maxWidth: 2000) {
                     ...GatsbyImageSharpFluid
                   }
                 }

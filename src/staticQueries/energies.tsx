@@ -41,7 +41,7 @@ const energies = (): EnergyShape => {
   const Energies = EnergiesData.map((vibe: QueryShape) => ({
     id: vibe.node.id,
     title: vibe.node.data.Energy_Name,
-    slug: slugify(vibe.node.data.Energy_Name, { lower: true }),
+    slug: slugify(vibe.node.data.Energy_Name, { lower: true, strict: true }),
   }))
 
   return Energies

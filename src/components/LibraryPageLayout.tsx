@@ -11,7 +11,7 @@ import tw from "twin.macro"
 
 interface Props {
   title: string
-  id: string
+  id?: string
   description: string
 }
 

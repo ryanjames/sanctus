@@ -1,5 +1,6 @@
 import { graphql, useStaticQuery } from "gatsby"
 import slugify from "slugify"
+import { FluidObject } from "gatsby-image"
 
 interface Image {
   full: string
@@ -24,10 +25,11 @@ const genres = (): GenreShape => {
               data {
                 Genre_Name
                 Genre_Image {
-                  url
-                  thumbnails {
-                    large {
-                      url
+                  localFiles {
+                    childImageSharp {
+                      fluid(maxWidth: 600) {
+                        ...GatsbyImageSharpFluid
+                      }
                     }
                   }
                 }
@@ -49,13 +51,12 @@ const genres = (): GenreShape => {
       data: {
         Genre_Name: string
         Genre_Image: {
-          url: string
-          thumbnails: {
-            large: {
-              url: string
+          localFiles: {
+            childImageSharp: {
+              fluid: FluidObject
             }
-          }
-        }[]
+          }[]
+        }
       }
     }
   }
@@ -63,13 +64,8 @@ const genres = (): GenreShape => {
   const Genres = GenresData.map((genre: QueryShape) => ({
     id: genre.node.id,
     title: genre.node.data.Genre_Name,
-    slug: slugify(genre.node.data.Genre_Name, { lower: true }),
-    image: genre.node.data.Genre_Image
-      ? {
-          full: genre.node.data.Genre_Image[0].url,
-          thumbnail: genre.node.data.Genre_Image[0].thumbnails.large.url,
-        }
-      : null,
+    slug: slugify(genre.node.data.Genre_Name, { lower: true, strict: true }),
+    image: genre.node.data.Genre_Image.localFiles[0].childImageSharp.fluid,
   }))
 
   return Genres

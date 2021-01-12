@@ -1,4 +1,5 @@
 import slugify from "slugify"
+import { FluidObject } from "gatsby-image"
 
 interface CategoryShape {
   name: string
@@ -14,7 +15,7 @@ export interface FeatureShape {
   id: string
   title: string
   color: string
-  image: object
+  image: FluidObject
   logo: string
   video: string
   description: string
@@ -56,7 +57,7 @@ export interface QueryNodeShape {
       Feature_Image: {
         localFiles: {
           childImageSharp: {
-            fluid: {}
+            fluid: FluidObject
           }
         }[]
       }
@@ -93,7 +94,7 @@ export const getFeature = (query: QueryShape): FeatureShape => {
   const genres = tracksData.reduce((genres: CategoryShape[], track: QueryTrackShape) => {
     const trackGenres = track.data.Genres.map((genre: GenreQueryShape) => ({
       name: genre.data.Genre_Name,
-      slug: slugify(genre.data.Genre_Name, { lower: true }),
+      slug: slugify(genre.data.Genre_Name, { lower: true, strict: true }),
     }))
     genres = genres.concat(trackGenres).filter((v, i, a) => a.findIndex(t => t.name === v.name) === i)
 
@@ -103,7 +104,7 @@ export const getFeature = (query: QueryShape): FeatureShape => {
   const vibes = tracksData.reduce((vibes: CategoryShape[], track: QueryTrackShape) => {
     const trackVibes = track.data.Vibes.map((vibe: VibeQueryShape) => ({
       name: vibe.data.Vibe_Name,
-      slug: slugify(vibe.data.Vibe_Name, { lower: true }),
+      slug: slugify(vibe.data.Vibe_Name, { lower: true, strict: true }),
     }))
     vibes = vibes.concat(trackVibes).filter((v, i, a) => a.findIndex(t => t.name === v.name) === i)
 

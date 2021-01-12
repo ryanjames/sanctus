@@ -14,6 +14,14 @@ module.exports = {
       },
     },
     {
+      resolve: "gatsby-plugin-react-svg",
+      options: {
+        rule: {
+          include: /graphics/, // See below to configure properly
+        },
+      },
+    },
+    {
       resolve: `gatsby-plugin-emotion`,
       options: {
         // Accepts all options defined by `babel-plugin-emotion` plugin.
@@ -50,6 +58,7 @@ module.exports = {
           {
             baseId: `appc9QlhzusUzuTvp`,
             tableName: `Genres`,
+            mapping: { Genre_Image: `fileNode` },
           },
           {
             baseId: `appc9QlhzusUzuTvp`,

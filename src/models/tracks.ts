@@ -82,17 +82,17 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
         energy: {
           id: track.node.data.Energy[0].id,
           name: track.node.data.Energy[0].data.Energy_Name,
-          slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true }),
+          slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true, strict: true }),
         },
         genres: track.node.data.Genres.map((genre: GenreQueryShape) => ({
           id: genre.id,
           name: genre.data.Genre_Name,
-          slug: slugify(genre.data.Genre_Name, { lower: true }),
+          slug: slugify(genre.data.Genre_Name, { lower: true, strict: true }),
         })),
         vibes: track.node.data.Vibes.map((vibe: VibeQueryShape) => ({
           id: vibe.id,
           name: vibe.data.Vibe_Name,
-          slug: slugify(vibe.data.Vibe_Name, { lower: true }),
+          slug: slugify(vibe.data.Vibe_Name, { lower: true, strict: true }),
         })),
         search: "",
         children: [],
@@ -131,7 +131,7 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
               energy: {
                 id: track.node.data.Energy[0].id,
                 name: track.node.data.Energy[0].data.Energy_Name,
-                slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true }),
+                slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true, strict: true }),
               },
               genres: [],
               vibes: [],

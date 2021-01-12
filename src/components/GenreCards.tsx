@@ -2,6 +2,7 @@ import React from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import PageLink from "./PageLink"
+import Img, { FluidObject } from "gatsby-image"
 
 import genres from "../staticQueries/genres"
 
@@ -9,9 +10,7 @@ interface Genre {
   id: string
   title: string
   slug: string
-  image: {
-    thumbnail: string
-  }
+  image: FluidObject
 }
 
 const GenreCards: React.FC = () => {
@@ -24,10 +23,7 @@ const GenreCards: React.FC = () => {
             to={`/library/genre/${genre.slug}`}
           >
             <div tw="w-full pt-full relative mb-12">
-              <img
-                src={genre.image != null ? genre.image.thumbnail : "/images/part-placeholder.jpg"}
-                tw="object-contain absolute w-full h-full top-0 left-0"
-              />
+              <Img fluid={genre.image} />
             </div>
             <span tw="absolute w-full bottom-0 left-0 px-3 pb-4 xs:pb-5 sm:pb-8 text-center">{genre.title}</span>
           </PageLink>

@@ -41,7 +41,7 @@ const vibes = (): VibeShape => {
   const Vibes = VibesData.map((vibe: QueryShape) => ({
     id: vibe.node.id,
     title: vibe.node.data.Vibe_Name,
-    slug: slugify(vibe.node.data.Vibe_Name, { lower: true }),
+    slug: slugify(vibe.node.data.Vibe_Name, { lower: true, strict: true }),
   }))
 
   return Vibes
