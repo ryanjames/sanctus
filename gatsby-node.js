@@ -46,6 +46,16 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
+      features: allAirtable(filter: { table: { eq: "Features" } }) {
+        edges {
+          node {
+            id
+            data {
+              Feature_Name
+            }
+          }
+        }
+      }
     }
   `).then(result => {
     if (result.errors) {
@@ -102,6 +112,19 @@ exports.createPages = ({ actions, graphql }) => {
       createPage({
         path: "/library/energy/" + slug,
         component: path.resolve(`src/templates/library-energy.tsx`),
+        // additional data can be passed via context
+        context: {
+          id,
+        },
+      })
+    })
+    const features = result.data.features.edges
+    features.forEach(feature => {
+      const id = feature.node.id
+      const slug = slugify(feature.node.data.Feature_Name, { lower: true })
+      createPage({
+        path: "/feature/" + slug,
+        component: path.resolve(`src/templates/feature.tsx`),
         // additional data can be passed via context
         context: {
           id,

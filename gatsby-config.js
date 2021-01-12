@@ -58,7 +58,7 @@ module.exports = {
           {
             baseId: `appc9QlhzusUzuTvp`,
             tableName: `Features`,
-            tableLinks: [`Tracks`],
+            tableLinks: [`Feature_Vibes`, `Feature_Genres`, `Feature_Tracks`],
           },
         ],
       },
