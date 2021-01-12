@@ -11,17 +11,17 @@ interface TrackShape {
 }
 
 export interface FeatureShape {
-  id?: string
-  title?: string
-  color?: string
-  image?: string
-  logo?: string
-  video?: string
-  description?: string
-  genres?: CategoryShape[]
-  vibes?: CategoryShape[]
-  energies?: string[]
-  tracks?: TrackShape[]
+  id: string
+  title: string
+  color: string
+  image: object
+  logo: string
+  video: string
+  description: string
+  genres: CategoryShape[]
+  vibes: CategoryShape[]
+  energies: string[]
+  tracks: TrackShape[]
 }
 
 export interface QueryTrackShape {
@@ -54,11 +54,17 @@ export interface QueryNodeShape {
     data: {
       Feature_Name: string
       Feature_Image: {
-        url: string
-      }[]
+        localFiles: {
+          childImageSharp: {
+            fluid: {}
+          }
+        }[]
+      }
       Feature_SVG: {
-        url: string
-      }[]
+        localFiles: {
+          publicURL: string
+        }[]
+      }
       Feature_Tracks: QueryTrackShape
       Feature_Color: string
       Feature_Description: string
@@ -113,8 +119,8 @@ export const getFeature = (query: QueryShape): FeatureShape => {
     id: base.id,
     title: data.Feature_Name,
     color: data.Feature_Color,
-    image: data.Feature_Image[0].url,
-    logo: data.Feature_SVG[0].url,
+    image: data.Feature_Image.localFiles[0].childImageSharp.fluid,
+    logo: data.Feature_SVG.localFiles[0].publicURL,
     video: data.Feature_Video,
     description: data.Feature_Description,
     genres: genres,

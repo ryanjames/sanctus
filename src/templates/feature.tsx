@@ -48,10 +48,18 @@ export const pageQuery = graphql`
           data {
             Feature_Name
             Feature_Image {
-              url
+              localFiles {
+                childImageSharp {
+                  fluid(maxWidth: 1200) {
+                    ...GatsbyImageSharpFluid
+                  }
+                }
+              }
             }
             Feature_SVG {
-              url
+              localFiles {
+                publicURL
+              }
             }
             Feature_Tracks {
               data {
