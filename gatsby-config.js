@@ -23,6 +23,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-typography`,
+      options: {
+        pathToConfigModule: `src/config/typographyBase`,
+        omitGoogleFont: true,
+      },
+    },
+    {
       resolve: `gatsby-source-airtable`,
       options: {
         apiKey: `keyuqb1sfM9ZUvsS0`,
