@@ -36,7 +36,6 @@ const FeatureCards: React.FC<Props> = ({ features }) => {
       layout = ["1/2", "1/2", "1/2", "1/2", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3"]
       break
   }
-  console.log(layout)
   return (
     <StyledFeatureCards>
       {features.map((feature: FeatureShape) => (

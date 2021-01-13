@@ -12,7 +12,7 @@ const Library: React.FC<Props> = ({ data }) => {
   const description = `Music from the library of Dan Koch`
 
   return (
-    <LibraryPageLayout title="All" description={description}>
+    <LibraryPageLayout title="Music Library" description={description}>
       <TracksTable placeholder={<GenreCards />} data={tracksData} />
     </LibraryPageLayout>
   )

@@ -3,20 +3,22 @@ import PageHeading from "./PageHeading"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import Container, { Col } from "./Container"
 import LibraryCategories from "./LibraryCategories"
-import Layout from "./Layout"
+import Layout, { LayoutProps } from "./Layout"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
+import { Helmet } from "react-helmet"
 
-interface Props {
-  title: string
+interface Props extends LayoutProps {
   id?: string
-  description: string
 }
 
 const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }) => {
   return (
-    <StyledLayout>
+    <StyledLayout title={title} description={description}>
       <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
+      <Helmet>
+        <script src="https://unpkg.com/wavesurfer.js"></script>
+      </Helmet>
       <Container>
         <div tw="flex flex-nowrap w-full">
           <div tw="w-1/4">

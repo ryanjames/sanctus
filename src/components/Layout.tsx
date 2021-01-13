@@ -1,33 +1,32 @@
 /** @jsx jsx */ import { jsx } from "@emotion/react"
 import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
-import { Helmet } from "react-helmet"
+import SEO from "../components/SEO"
+import siteContent from "../staticQueries/siteContent"
 
 import Header from "./Header"
 
-interface Props {
+export interface LayoutProps {
   className?: string
+  title?: string
+  meta?: []
+  page?: string
+  owner?: string
+  description?: string
+  ogImage?: string
 }
 
-const Layout: React.FC<Props> = ({ children, className }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
+const Layout: React.FC<LayoutProps> = ({ title, description, page, children, meta, owner, ogImage, className }) => {
+  const defaults = siteContent().defaults
+  const year = new Date().getFullYear()
+  console.log(title)
   return (
     <div className={className}>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <SEO defaults={defaults} title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
+      <Header page={page} />
       <main>{children}</main>
-      <Helmet>
-        <script src="https://unpkg.com/wavesurfer.js"></script>
-      </Helmet>
-      <footer>Copyright Dan Koch</footer>
+      <footer>
+        &copy; {year} {defaults.owner}
+      </footer>
     </div>
   )
 }

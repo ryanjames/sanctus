@@ -3,16 +3,15 @@ import React from "react"
 import Container, { Col } from "./Container"
 
 type Props = {
-  siteTitle: string
+  page?: string
 }
 
-const Header: React.FC<Props> = ({ siteTitle }) => (
+const Header: React.FC<Props> = ({ page }) => (
   <header>
     <Container>
       <Col>
-        <h1 style={{ margin: 0 }}>
-          <PageLink to="/">{siteTitle}</PageLink>
-        </h1>
+        <h1 style={{ margin: 0 }}>Dan Koch Logo</h1>
+        Current Page: {page}
       </Col>
     </Container>
   </header>

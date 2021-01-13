@@ -11,6 +11,7 @@ import HTML from "../utils/HTML"
 import { getFeature, QueryFeatureShape } from "../models/feature"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import TrackDetails from "../components/TrackDetails"
+import { Helmet } from "react-helmet"
 
 type Props = {
   data: {
@@ -25,6 +26,9 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
 
   return (
     <StyledLayout>
+      <Helmet>
+        <script src="https://unpkg.com/wavesurfer.js"></script>
+      </Helmet>
       <Container>
         <Col>
           <Video src={feature.video} poster={feature.image} color={feature.color} />

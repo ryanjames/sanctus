@@ -1,50 +1,28 @@
-/**
- * SEO component that queries for data with
- *  Gatsby's useStaticQuery React hook
- *
- * See: https://www.gatsbyjs.com/docs/use-static-query/
- */
-
 import React from "react"
 import { Helmet } from "react-helmet"
-import { useStaticQuery, graphql } from "gatsby"
+import { DefaultsShape } from "../staticQueries/siteContent"
 
 interface Props {
-  description?: string
-  lang?: string
-  meta?: []
   title?: string
+  description?: string
+  owner?: string
+  defaults: DefaultsShape
+  ogImage?: string
+  meta?: []
 }
 
-const SEO: React.FC<Props> = ({ description, lang, meta = [], title }) => {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            author
-          }
-        }
-      }
-    `
-  )
-
-  const metaDescription = description || site.siteMetadata.description
-  const defaultTitle = site.siteMetadata?.title
-
+const SEO: React.FC<Props> = ({ defaults, ogImage, owner, title, meta, description }) => {
   return (
     <Helmet
       htmlAttributes={{
-        lang,
+        lang: "en",
       }}
-      title={title}
-      titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : ""}
+      title={title ? title : defaults.title}
+      titleTemplate={title ? `%s | ${defaults.title}` : defaults.title}
       meta={[
         {
           name: `description`,
-          content: metaDescription,
+          content: description ? description : defaults.description,
         },
         {
           property: `og:title`,
@@ -52,7 +30,11 @@ const SEO: React.FC<Props> = ({ description, lang, meta = [], title }) => {
         },
         {
           property: `og:description`,
-          content: metaDescription,
+          content: description ? description : defaults.description,
+        },
+        {
+          property: `og:image`,
+          content: ogImage ? ogImage : defaults.ogImage,
         },
         {
           property: `og:type`,
@@ -64,7 +46,7 @@ const SEO: React.FC<Props> = ({ description, lang, meta = [], title }) => {
         },
         {
           name: `twitter:creator`,
-          content: site.siteMetadata?.author || ``,
+          content: owner ? owner : defaults.owner,
         },
         {
           name: `twitter:title`,
@@ -72,9 +54,9 @@ const SEO: React.FC<Props> = ({ description, lang, meta = [], title }) => {
         },
         {
           name: `twitter:description`,
-          content: metaDescription,
+          content: description ? description : defaults.description,
         },
-      ].concat(meta)}
+      ].concat(meta ? meta : [])}
     />
   )
 }

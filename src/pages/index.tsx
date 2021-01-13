@@ -9,7 +9,6 @@ import features from "../staticQueries/features"
 import siteContent from "../staticQueries/siteContent"
 
 const IndexPage: React.FC = () => {
-  console.log(siteContent())
   return (
     <StyledLayout>
       <Container>
