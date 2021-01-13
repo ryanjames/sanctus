@@ -16,9 +16,9 @@ const PageLink: React.FC<Props> = ({ to, className, children }) => {
           return <a className={className}>{children}</a>
         } else {
           return (
-            <Link to={to} className={className}>
+            <PageLink to={to} className={className}>
               {children}
-            </Link>
+            </PageLink>
           )
         }
       }}

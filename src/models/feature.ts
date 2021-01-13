@@ -1,14 +1,10 @@
 import slugify from "slugify"
 import { FluidObject } from "gatsby-image"
+import { TrackShape } from "../models/tracks"
 
 interface CategoryShape {
   name: string
   slug: string
-}
-
-interface TrackShape {
-  name: string
-  id: string
 }
 
 export interface FeatureShape {
@@ -29,6 +25,7 @@ export interface QueryTrackShape {
   data: {
     Track_Title: string
     URL: string
+    Length: string
     Vibes: VibeQueryShape[]
     Genres: GenreQueryShape[]
     Energy: {
@@ -113,7 +110,13 @@ export const getFeature = (query: QueryShape): FeatureShape => {
 
   const tracks = tracksData.map((track: QueryTrackShape) => ({
     id: track.id,
-    name: track.data.Track_Title,
+    title: track.data.Track_Title,
+    url: track.data.URL,
+    length: track.data.Length,
+    priority: 0,
+    genres: null,
+    vibes: null,
+    energy: null,
   }))
 
   const feature = {

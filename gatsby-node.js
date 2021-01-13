@@ -70,7 +70,6 @@ exports.createPages = ({ actions, graphql }) => {
       createPage({
         path: "/library/" + slug,
         component: path.resolve(`src/templates/library-playlist.tsx`),
-        // additional data can be passed via context
         context: {
           id,
         },
@@ -84,7 +83,6 @@ exports.createPages = ({ actions, graphql }) => {
       createPage({
         path: "/library/genre/" + slug,
         component: path.resolve(`src/templates/library-genre.tsx`),
-        // additional data can be passed via context
         context: {
           id,
         },
@@ -98,7 +96,6 @@ exports.createPages = ({ actions, graphql }) => {
       createPage({
         path: "/library/vibe/" + slug,
         component: path.resolve(`src/templates/library-vibe.tsx`),
-        // additional data can be passed via context
         context: {
           id,
         },
@@ -112,12 +109,12 @@ exports.createPages = ({ actions, graphql }) => {
       createPage({
         path: "/library/energy/" + slug,
         component: path.resolve(`src/templates/library-energy.tsx`),
-        // additional data can be passed via context
         context: {
           id,
         },
       })
     })
+
     const features = result.data.features.edges
     features.forEach(feature => {
       const id = feature.node.id
@@ -125,7 +122,6 @@ exports.createPages = ({ actions, graphql }) => {
       createPage({
         path: "/feature/" + slug,
         component: path.resolve(`src/templates/feature.tsx`),
-        // additional data can be passed via context
         context: {
           id,
         },

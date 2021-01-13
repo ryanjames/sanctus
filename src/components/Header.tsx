@@ -1,4 +1,4 @@
-import { Link } from "gatsby"
+import PageLink from "./PageLink"
 import React from "react"
 import Container, { Col } from "./Container"
 
@@ -11,7 +11,7 @@ const Header: React.FC<Props> = ({ siteTitle }) => (
     <Container>
       <Col>
         <h1 style={{ margin: 0 }}>
-          <Link to="/">{siteTitle}</Link>
+          <PageLink to="/">{siteTitle}</PageLink>
         </h1>
       </Col>
     </Container>

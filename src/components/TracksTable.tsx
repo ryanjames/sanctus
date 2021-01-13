@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect, useState, SyntheticEvent } from "react"
 import withLocation from "../utils/withLocation"
+import PageLink from "./PageLink"
 import styled from "@emotion/styled"
 import { Link } from "gatsby"
 import tw from "twin.macro"
@@ -84,12 +85,12 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
           {track.title} {versions()}
         </div>
         <div tw="w-1/7">
-          <Link to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</Link>
+          <PageLink to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</PageLink>
         </div>
         <div tw="w-1/7">
           {track.genres?.map((genre: CategoryShape, index) => (
             <span key={genre.id}>
-              <Link to={`/library/genre/${genre.slug}`}>{genre.name}</Link>
+              <PageLink to={`/library/genre/${genre.slug}`}>{genre.name}</PageLink>
               {index < track.genres.length - 1 ? ", " : ""}
             </span>
           ))}
@@ -97,7 +98,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
         <div tw="w-2/7">
           {track.vibes?.map((vibe: CategoryShape, index) => (
             <span key={vibe.id}>
-              <Link to={`/library/vibe/${vibe.slug}`}>{vibe.name}</Link>
+              <PageLink to={`/library/vibe/${vibe.slug}`}>{vibe.name}</PageLink>
               {index < track.vibes.length - 1 ? ", " : ""}
             </span>
           ))}

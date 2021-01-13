@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 import unified from "unified"
 import markdown from "remark-parse"
 import remark2rehype from "remark-rehype"
@@ -20,26 +19,17 @@ const removeRootP = () => tree => {
   )
 }
 
-const HTML = ({ content, rootP, className }) => (
+const HTML = (content, rootP, className) => (
   <span className={className} dangerouslySetInnerHTML={{ __html: toHTML(content, rootP) }} />
 )
 
-export const toHTML = (value, rootP) => {
+const toHTML = (value, rootP) => {
   return unified()
     .use(markdown, { commonmark: true })
     .use(remark2rehype)
-    .use(rootP ? null : removeRootP)
+    .use(!rootP ? null : removeRootP)
     .use(html)
     .processSync(value)
-}
-
-HTML.propTypes = {
-  content: PropTypes.node.isRequired,
-  className: PropTypes.string,
-  rootP: PropTypes.bool,
-}
-HTML.defaultProps = {
-  rootP: true,
 }
 
 export default HTML
