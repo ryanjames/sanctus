@@ -78,7 +78,7 @@ const StyledFeature = styled(Layout)`
 export default FeaturePage
 
 export const pageQuery = graphql`
-  query FeatursQuery($id: String!) {
+  query FeatureQuery($id: String!) {
     feature: allAirtable(filter: { table: { eq: "Features" }, id: { eq: $id } }) {
       edges {
         node {
