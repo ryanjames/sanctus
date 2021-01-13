@@ -1,10 +1,8 @@
 import React from "react"
 import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
-import SEO from "../components/SEO"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
-import { Helmet } from "react-helmet"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { ReactSVG } from "react-svg"
@@ -23,16 +21,10 @@ type Props = {
 }
 
 const FeaturePage: React.FC<Props> = ({ data }) => {
-  const description = "Description"
   const feature = getFeature(data.feature.edges[0])
 
   return (
-    <StyledFeature>
-      <Helmet titleTemplate="%s - Dan Koch">
-        <title>{feature.title}</title>
-        <meta name="description" content={description} />
-      </Helmet>
-      <SEO title={`${feature.title}`} description={description} />
+    <StyledLayout>
       <Container>
         <Col>
           <Video src={feature.video} poster={feature.image} color={feature.color} />
@@ -71,11 +63,11 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
           </ActiveTrackProvider>
         </Col>
       </Container>
-    </StyledFeature>
+    </StyledLayout>
   )
 }
 
-const StyledFeature = styled(Layout)`
+const StyledLayout = styled(Layout)`
   ${tw``}
   .client svg path {
     fill: #000;

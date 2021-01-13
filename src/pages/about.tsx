@@ -5,11 +5,11 @@ import tw from "twin.macro"
 import Layout from "../components/Layout"
 import Container, { Col } from "../components/Container"
 
-const NotFoundPage: React.FC = () => {
+const IndexPage: React.FC = () => {
   return (
     <StyledLayout>
       <Container>
-        <Col>404 Not Found</Col>
+        <Col>About</Col>
       </Container>
     </StyledLayout>
   )
@@ -18,4 +18,4 @@ const NotFoundPage: React.FC = () => {
 const StyledLayout = styled(Layout)`
   ${tw``}
 `
-export default NotFoundPage
+export default IndexPage

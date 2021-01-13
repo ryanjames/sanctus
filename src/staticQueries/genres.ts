@@ -1,6 +1,5 @@
 import { graphql, useStaticQuery } from "gatsby"
 import slugify from "slugify"
-import { FluidObject } from "gatsby-image"
 
 interface Image {
   full: string
@@ -54,30 +53,8 @@ const genres = (): GenreShape => {
     query: { edges: GenresData },
   } = query
 
-  interface QueryShape {
-    node: {
-      id: string
-      data: {
-        Genre_Name: string
-        Genre_Image: {
-          localFiles: {
-            childImageSharp: {
-              fluid: FluidObject
-            }
-          }[]
-        }
-        Tracks: {
-          id: string
-          data: {
-            Parent: {}
-          }
-        }[]
-      }
-    }
-  }
-
-  const Genres = GenresData.map((genre: QueryShape) => {
-    const tracks = genre.node.data.Tracks.filter(track => track.data.Parent === null)
+  const Genres = GenresData.map((genre: any) => {
+    const tracks = genre.node.data.Tracks.filter((track: any) => track.data.Parent === null)
     return {
       id: genre.node.id,
       title: genre.node.data.Genre_Name,

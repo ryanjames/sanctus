@@ -1,5 +1,5 @@
 import { graphql, useStaticQuery } from "gatsby"
-import { getFeature, QueryFeatureShape, FeatureShape } from "../models/feature"
+import { getFeature, FeatureShape } from "../models/feature"
 
 const features = (): Array<FeatureShape> => {
   const query = useStaticQuery(
@@ -62,7 +62,7 @@ const features = (): Array<FeatureShape> => {
     query: { edges: FeaturesData },
   } = query
 
-  const Features = FeaturesData.map((feature: QueryFeatureShape) => {
+  const Features = FeaturesData.map((feature: any) => {
     return getFeature(feature)
   })
 

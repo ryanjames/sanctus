@@ -2,10 +2,8 @@ import React from "react"
 import PageHeading from "./PageHeading"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import Container, { Col } from "./Container"
-import SEO from "./SEO"
 import LibraryCategories from "./LibraryCategories"
 import Layout from "./Layout"
-import { Helmet } from "react-helmet"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 
@@ -17,12 +15,7 @@ interface Props {
 
 const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }) => {
   return (
-    <StyledLibraryPageLayout>
-      <Helmet titleTemplate="%s - Dan Koch">
-        <title>{title}</title>
-        <meta name="description" content={description} />
-      </Helmet>
-      <SEO title={`${title} Music`} description={description} />
+    <StyledLayout>
       <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
       <Container>
         <div tw="flex flex-nowrap w-full">
@@ -36,11 +29,11 @@ const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }
           </Col>
         </div>
       </Container>
-    </StyledLibraryPageLayout>
+    </StyledLayout>
   )
 }
 
-const StyledLibraryPageLayout = styled(Layout)`
+const StyledLayout = styled(Layout)`
   ${tw``}
 `
 export default LibraryPageLayout

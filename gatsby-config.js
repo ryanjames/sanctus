@@ -71,6 +71,11 @@ module.exports = {
             tableLinks: [`Feature_Vibes`, `Feature_Genres`, `Feature_Tracks`],
             mapping: { Feature_Image: `fileNode`, Feature_SVG: `fileNode` },
           },
+          {
+            baseId: `appc9QlhzusUzuTvp`,
+            tableName: `Content`,
+            mapping: { OG_Image: `fileNode`, About_Image: `fileNode` },
+          },
         ],
       },
     },

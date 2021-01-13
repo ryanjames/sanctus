@@ -29,16 +29,7 @@ const playlists = (): PlaylistShape => {
     query: { edges: PlaylistsData },
   } = query
 
-  interface QueryShape {
-    node: {
-      id: string
-      data: {
-        Playlist_Name: string
-      }
-    }
-  }
-
-  const Playlists = PlaylistsData.map((playlist: QueryShape) => ({
+  const Playlists = PlaylistsData.map((playlist: any) => ({
     id: playlist.node.id,
     title: playlist.node.data.Playlist_Name,
     slug: slugify(playlist.node.data.Playlist_Name, { lower: true, strict: true }),
