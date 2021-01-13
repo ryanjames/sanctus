@@ -11,7 +11,7 @@ interface Props {
   feature: FeatureShape
 }
 
-const PageHeading: React.FC<Props> = ({ feature }) => {
+const FeatureTile: React.FC<Props> = ({ feature }) => {
   return (
     <StyledFeatureTile>
       <PageLink to={`/feature/${feature.slug}`}>
@@ -47,4 +47,4 @@ const StyledFeatureTile = styled.div`
   ${tw``}
 `
 
-export default PageHeading
+export default FeatureTile
