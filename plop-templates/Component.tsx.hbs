@@ -1,0 +1,22 @@
+import React from "react"
+import styled from "@emotion/styled"
+import tw from "twin.macro"
+// import PageLink from "./PageLink"
+//import Container, { Col } from "./Container"
+
+type Props = {
+  className?: string
+}
+
+const {{pascalCase name}}: React.FC<Props> = ({ className }) => {
+  return (
+    <Styled{{pascalCase name}} className={`container ${className}`}>
+      <>{{pascalCase name}}e</>
+    </Styled{{pascalCase name}}>
+  )
+}
+
+const Styled{{pascalCase name}} = styled.div`
+  ${tw``}
+`
+export default {{pascalCase name}}
