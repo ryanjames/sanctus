@@ -14,7 +14,7 @@ interface Props extends LayoutProps {
 
 const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }) => {
   return (
-    <StyledLayout title={title} description={description}>
+    <StyledLayout title={title} description={description} page="library">
       <PageHeading tw="hidden lg:block" title="Music Library" to="/library" />
       <Helmet>
         <script src="https://unpkg.com/wavesurfer.js"></script>

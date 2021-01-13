@@ -11,6 +11,9 @@ interface Props {
 const FeatureCards: React.FC<Props> = ({ features }) => {
   let layout = {}
   switch (features.length) {
+    case 2:
+      layout = ["1/2", "1/2"]
+      break
     case 3:
       layout = ["1/3", "1/3", "1/3"]
       break
@@ -34,6 +37,12 @@ const FeatureCards: React.FC<Props> = ({ features }) => {
       break
     case 10:
       layout = ["1/2", "1/2", "1/2", "1/2", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3"]
+      break
+    case 11:
+      layout = ["1/2", "1/2", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3"]
+      break
+    default:
+      layout = ["1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3", "1/3"]
       break
   }
   return (

@@ -18,16 +18,20 @@ const StyledSplash = styled.div`
   align-items: center;
 `
 
-export const Section: React.FC = ({ children }) => {
-  return <StyledSection className="section">{children}</StyledSection>
+interface SharedProps {
+  className?: string
+}
+
+export const Section: React.FC<SharedProps> = ({ className = "", children }) => {
+  return <StyledSection className={`section ${className}`}>{children}</StyledSection>
 }
 
 const StyledSection = styled.section`
   ${tw`py-8 sm:py-12 md:py-16 xl:py-20 xxl:py-32`}
 `
 
-export const Col: React.FC = ({ children }) => {
-  return <StyledCol className="col">{children}</StyledCol>
+export const Col: React.FC<SharedProps> = ({ className = "", children }) => {
+  return <StyledCol className={`col ${className}`}>{children}</StyledCol>
 }
 const StyledCol = styled.div`
   ${gutter}
@@ -52,9 +56,14 @@ const mediaQueries = (props: { full: boolean }) =>
     ${queriesString} 
  `
 
-export const Container: React.FC<{ full?: boolean }> = ({ children, full = false }) => {
+interface ContainerProps extends SharedProps {
+  full?: boolean
+  className?: string
+}
+
+export const Container: React.FC<ContainerProps> = ({ children, className = "", full = false }) => {
   return (
-    <StyledContainer className="container" full={full}>
+    <StyledContainer className={`container ${className}`} full={full}>
       <div>{children}</div>
     </StyledContainer>
   )

@@ -9,7 +9,7 @@ const colors = {
 }
 
 const typography = new Typography({
-  baseFontSize: "16px",
+  baseFontSize: "14px",
   baseLineHeight: 1.666,
   boldWeight: 700,
   headerWeight: 700,

@@ -11,9 +11,7 @@ import siteContent from "../staticQueries/siteContent"
 const IndexPage: React.FC = () => {
   return (
     <StyledLayout>
-      <Container>
-        <Col>Dan Koch</Col>
-      </Container>
+      <Hero />
       <FeatureCards features={features()} />
     </StyledLayout>
   )

@@ -13,18 +13,28 @@ type Props = {
 const Header: React.FC<Props> = ({ page }) => (
   <StyledHeader>
     <Container full={true}>
-      <Col tw="flex justify-between py-4">
-        <PageLink tw="flex flex-col items-center" to="/">
-          <Logo width={94} height="auto" tw="mb-1" />
-          <Composer width={62} />
-        </PageLink>
+      <Col>
+        <nav className="navigation" tw="flex justify-between items-center py-4">
+          <PageLink className={page == "about-and-contact" ? "selected" : ""} to="/about-and-contact">
+            About &amp; Contact
+          </PageLink>
+          <PageLink tw="flex flex-col items-center" to="/">
+            <Logo width={94} height="auto" tw="mb-1" />
+            <Composer width={62} />
+          </PageLink>
+          <PageLink className={page == "library" ? "selected" : ""} to="/library">
+            Music Library
+          </PageLink>
+        </nav>
       </Col>
     </Container>
-    Current Page: {page}
   </StyledHeader>
 )
 
 const StyledHeader = styled.header`
   ${tw``}
+  .navigation > .selected {
+    font-weight: bold;
+  }
 `
 export default Header

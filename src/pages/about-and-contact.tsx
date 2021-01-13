@@ -7,7 +7,7 @@ import Container, { Col } from "../components/Container"
 
 const IndexPage: React.FC = () => {
   return (
-    <StyledLayout>
+    <StyledLayout page="about-and-contact">
       <Container>
         <Col>About</Col>
       </Container>
