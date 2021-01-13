@@ -6,7 +6,7 @@ import Img, { FluidObject } from "gatsby-image"
 
 import genres from "../staticQueries/genres"
 
-interface Genre {
+interface IGenre {
   id: string
   title: string
   slug: string
@@ -16,7 +16,7 @@ interface Genre {
 const GenreCards: React.FC = () => {
   return (
     <StyledGenreCards tw="list-none flex flex-wrap -mx-2 md:-mx-3 pt-8" className="genre-cards">
-      {genres().map((genre: Genre) => (
+      {genres().map((genre: IGenre) => (
         <li tw="w-1/2 sm:w-1/3 pb-0 sm:pb-2 md:pb-3 px-1 sm:px-3" key={genre.id}>
           <PageLink
             tw="block xs:p-4 lg:p-8 text-sm h-full relative flex justify-center items-center"

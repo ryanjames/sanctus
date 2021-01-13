@@ -1,15 +1,5 @@
 import { graphql, useStaticQuery } from "gatsby"
-import slugify from "slugify"
-import { FluidObject } from "gatsby-image"
-
-export interface FeatureShape {
-  id: string
-  title: string
-  color: string
-  image: FluidObject
-  logo: string
-  slug: string
-}
+import { getFeature, QueryFeatureShape, FeatureShape } from "../models/feature"
 
 const features = (): FeatureShape => {
   const query = useStaticQuery(
@@ -35,7 +25,32 @@ const features = (): FeatureShape => {
                     publicURL
                   }
                 }
+                Feature_Tracks {
+                  data {
+                    Track_Title
+                    URL
+                    Vibes {
+                      data {
+                        Vibe_Name
+                      }
+                    }
+                    Genres {
+                      data {
+                        Genre_Name
+                      }
+                    }
+                    Energy {
+                      data {
+                        Energy_Name
+                      }
+                    }
+                  }
+                  id
+                }
                 Feature_Color
+                Feature_Description
+                Feature_Blurb
+                Feature_Video
               }
             }
           }
@@ -47,36 +62,10 @@ const features = (): FeatureShape => {
     query: { edges: FeaturesData },
   } = query
 
-  interface QueryShape {
-    node: {
-      id: string
-      data: {
-        Feature_Name: string
-        Feature_Image: {
-          localFiles: {
-            childImageSharp: {
-              fluid: FluidObject
-            }
-          }[]
-        }
-        Feature_SVG: {
-          localFiles: {
-            publicURL: string
-          }[]
-        }
-        Feature_Color: string
-      }
-    }
-  }
-
-  const Features = FeaturesData.map((feature: QueryShape) => ({
-    id: feature.node.id,
-    title: feature.node.data.Feature_Name,
-    slug: slugify(feature.node.data.Feature_Name, { lower: true, strict: true }),
-    image: feature.node.data.Feature_Image.localFiles[0].childImageSharp.fluid,
-    color: feature.node.data.Feature_Color,
-    logo: feature.node.data.Feature_SVG.localFiles[0].publicURL,
-  }))
+  const Features = FeaturesData.map((feature: QueryFeatureShape) => {
+    console.log(getFeature(feature))
+    return getFeature(feature)
+  })
 
   return Features
 }

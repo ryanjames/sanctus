@@ -6,11 +6,11 @@ import tw from "twin.macro"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import Container, { Col } from "../components/Container"
-
+import FeatureTile from "../components/FeatureTile"
 import features from "../staticQueries/features"
+import { FeatureShape } from "../models/feature"
 
 const IndexPage: React.FC = () => {
-  console.log(features)
   return (
     <StyledIndexPage>
       <Helmet titleTemplate="%s - Dan Koch">
@@ -19,7 +19,11 @@ const IndexPage: React.FC = () => {
       </Helmet>
       <SEO title="Dan Koch" description="Website description" />
       <Container>
-        <Col tw="flex-1 pt-10 overflow-auto">FEATURES GRID</Col>
+        <Col tw="flex-1 pt-10 overflow-auto">
+          {features().map((feature: FeatureShape) => (
+            <FeatureTile key={feature.id} feature={feature} />
+          ))}
+        </Col>
       </Container>
     </StyledIndexPage>
   )

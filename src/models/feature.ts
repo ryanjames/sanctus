@@ -14,11 +14,14 @@ export interface FeatureShape {
   image: FluidObject
   logo: string
   video: string
-  description: string
+  description?: string
+  blurb: string
   genres: CategoryShape[]
   vibes: CategoryShape[]
+  slug: string
   energies: string[]
   tracks: TrackShape[]
+  map: Function
 }
 
 export interface QueryTrackShape {
@@ -46,7 +49,7 @@ export interface VibeQueryShape {
   data: { Vibe_Name: string }
 }
 
-export interface QueryNodeShape {
+export interface QueryFeatureShape {
   node: {
     id: string
     data: {
@@ -65,6 +68,7 @@ export interface QueryNodeShape {
       }
       Feature_Tracks: QueryTrackShape
       Feature_Color: string
+      Feature_Blurb: string
       Feature_Description: string
       Feature_Video: string
     }
@@ -72,13 +76,9 @@ export interface QueryNodeShape {
   reduce: Function
 }
 
-export interface QueryShape {
-  edges: QueryNodeShape[]
-}
-
-export const getFeature = (query: QueryShape): FeatureShape => {
-  const base = query.edges[0].node
-  const data = query.edges[0].node.data
+export const getFeature = (query: QueryFeatureShape): FeatureShape => {
+  const base = query.node
+  const data = base.data
   const tracksData = data.Feature_Tracks
 
   const energies = tracksData.reduce((energies: string[], track: QueryTrackShape) => {
@@ -127,10 +127,13 @@ export const getFeature = (query: QueryShape): FeatureShape => {
     logo: data.Feature_SVG.localFiles[0].publicURL,
     video: data.Feature_Video,
     description: data.Feature_Description,
+    blurb: data.Feature_Blurb,
+    slug: slugify(data.Feature_Name, { lower: true, strict: true }),
     genres: genres,
     vibes: vibes,
     tracks: tracks,
     energies: energies,
+    map: () => {}
   }
 
   return feature

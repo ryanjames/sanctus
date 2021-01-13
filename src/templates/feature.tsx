@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React from "react"
 import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
 import SEO from "../components/SEO"
@@ -10,15 +10,21 @@ import tw from "twin.macro"
 import { ReactSVG } from "react-svg"
 import PageLink from "../components/PageLink"
 import HTML from "../utils/HTML"
-import { getFeature, QueryShape } from "../models/feature"
+import { getFeature, QueryFeatureShape } from "../models/feature"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import TrackDetails from "../components/TrackDetails"
 
-type Props = { data: { feature: QueryShape } }
+type Props = {
+  data: {
+    feature: {
+      edges: QueryFeatureShape[]
+    }
+  }
+}
 
 const FeaturePage: React.FC<Props> = ({ data }) => {
   const description = "Description"
-  const feature = getFeature(data.feature)
+  const feature = getFeature(data.feature.edges[0])
 
   return (
     <StyledFeature>
