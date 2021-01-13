@@ -11,9 +11,9 @@ interface Props {
   feature: FeatureShape
 }
 
-const FeatureTile: React.FC<Props> = ({ feature }) => {
+const FeatureCard: React.FC<Props> = ({ feature }) => {
   return (
-    <StyledFeatureTile>
+    <StyledFeatureCard>
       <PageLink to={`/feature/${feature.slug}`}>
         <Play />
         <ReactSVG src={feature.logo} />
@@ -39,12 +39,12 @@ const FeatureTile: React.FC<Props> = ({ feature }) => {
           ))}
         </dl>
       </div>
-    </StyledFeatureTile>
+    </StyledFeatureCard>
   )
 }
 
-const StyledFeatureTile = styled.div`
+const StyledFeatureCard = styled.div`
   ${tw``}
 `
 
-export default FeatureTile
+export default FeatureCard

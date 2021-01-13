@@ -10,6 +10,7 @@ interface IGenre {
   id: string
   title: string
   slug: string
+  count: number
   image: FluidObject
 }
 
@@ -26,6 +27,7 @@ const GenreCards: React.FC = () => {
               <Img fluid={genre.image} />
             </div>
             <span tw="absolute w-full bottom-0 left-0 px-3 pb-4 xs:pb-5 sm:pb-8 text-center">{genre.title}</span>
+            {genre.count}
           </PageLink>
         </li>
       ))}

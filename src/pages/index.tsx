@@ -6,9 +6,8 @@ import tw from "twin.macro"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import Container, { Col } from "../components/Container"
-import FeatureTile from "../components/FeatureTile"
+import FeatureCards from "../components/FeatureCards"
 import features from "../staticQueries/features"
-import { FeatureShape } from "../models/feature"
 
 const IndexPage: React.FC = () => {
   return (
@@ -20,9 +19,7 @@ const IndexPage: React.FC = () => {
       <SEO title="Dan Koch" description="Website description" />
       <Container>
         <Col tw="flex-1 pt-10 overflow-auto">
-          {features().map((feature: FeatureShape) => (
-            <FeatureTile key={feature.id} feature={feature} />
-          ))}
+          <FeatureCards features={features()} />
         </Col>
       </Container>
     </StyledIndexPage>

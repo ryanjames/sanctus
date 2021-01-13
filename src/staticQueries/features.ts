@@ -1,11 +1,11 @@
 import { graphql, useStaticQuery } from "gatsby"
 import { getFeature, QueryFeatureShape, FeatureShape } from "../models/feature"
 
-const features = (): FeatureShape => {
+const features = (): Array<FeatureShape> => {
   const query = useStaticQuery(
     graphql`
       query FeaturesQuery {
-        query: allAirtable(filter: { table: { eq: "Features" } }) {
+        query: allAirtable(sort: { fields: data___Feature_Order }, filter: { table: { eq: "Features" } }) {
           edges {
             node {
               id
@@ -63,7 +63,6 @@ const features = (): FeatureShape => {
   } = query
 
   const Features = FeaturesData.map((feature: QueryFeatureShape) => {
-    console.log(getFeature(feature))
     return getFeature(feature)
   })
 

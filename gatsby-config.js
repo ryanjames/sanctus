@@ -58,6 +58,7 @@ module.exports = {
           {
             baseId: `appc9QlhzusUzuTvp`,
             tableName: `Genres`,
+            tableLinks: [`Tracks`],
             mapping: { Genre_Image: `fileNode` },
           },
           {

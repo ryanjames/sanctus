@@ -133,7 +133,7 @@ export const getFeature = (query: QueryFeatureShape): FeatureShape => {
     vibes: vibes,
     tracks: tracks,
     energies: energies,
-    map: () => {}
+    map: Function,
   }
 
   return feature
