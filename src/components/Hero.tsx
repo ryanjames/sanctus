@@ -16,13 +16,13 @@ const Hero: React.FC<Props> = ({ className, content }) => {
     <StyledHero className={`container ${className}`}>
       <Container>
         <Col>
-          <div tw="flex flex-col">
+          <div tw="flex flex-col py-48 max-w-4xl m-auto">
             <Logo className="logo" tw="mb-4" />
-            <Composer className="composer" />
+            <Composer className="composer" tw="mb-16" />
+            <h2>
+              <MD content={content} removeRootP={true} />
+            </h2>
           </div>
-          <h2>
-            <MD content={content} removeRootP={true} />
-          </h2>
         </Col>
       </Container>
     </StyledHero>

@@ -12,7 +12,7 @@ import siteContent from "../staticQueries/siteContent"
 const IndexPage: React.FC = () => {
   const content = siteContent()
   return (
-    <StyledLayout>
+    <StyledLayout page="home">
       <Hero content={content.homeIntro} />
       <FeatureCards features={features()} />
     </StyledLayout>

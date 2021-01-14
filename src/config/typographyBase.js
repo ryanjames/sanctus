@@ -1,12 +1,5 @@
 import Typography from "typography"
-const colors = {
-  "off-black": "#111111",
-  "gray-dark": "#222222",
-  "gray-light": "#f1f1f1",
-  "gray-med": "#888888",
-  "gray-line": "#dddddd",
-  "techna-blue": "#283890",
-}
+import colors from "./colors"
 
 const typography = new Typography({
   baseFontSize: "14px",
@@ -39,6 +32,10 @@ const typography = new Typography({
       textDecoration: "none",
       color: colors["off-black"],
     },
+    "h2 a": {
+      fontWeight: 600,
+      color: colors["dk-green"],
+    },
     "p a": {
       textDecoration: "underline",
       color: colors["gray-dark"],
@@ -50,12 +47,14 @@ const typography = new Typography({
       marginBottom: `0.25rem`,
       display: "block",
     },
+    /*
     "a:not([class]), a:not([class]):visited": {
       color: colors["off-black"],
     },
     'a[class=""], a:[class=""]:visited': {
       color: colors["off-black"],
     },
+    */
   }),
 })
 

@@ -14,17 +14,24 @@ const Header: React.FC<Props> = ({ page }) => (
   <StyledHeader>
     <Container full={true}>
       <Col>
-        <nav className="navigation" tw="flex justify-between items-center py-4">
-          <PageLink className={page == "about-and-contact" ? "selected" : ""} to="/about-and-contact">
-            About &amp; Contact
-          </PageLink>
-          <PageLink tw="flex flex-col items-center" to="/">
+        <nav className="navigation" tw="flex items-center py-8">
+          <span tw="w-1/3">
+            <PageLink className={page == "about-and-contact" ? "selected" : ""} tw="mr-6" to="/about-and-contact">
+              About &amp; Contact
+            </PageLink>
+            <PageLink className={page == "features" ? "selected" : ""} to="/features">
+              Featured Work
+            </PageLink>
+          </span>
+          <PageLink tw="w-1/3 flex flex-col items-center" to="/">
             <Logo className="logo" tw="mb-1" />
             <Composer className="composer" />
           </PageLink>
-          <PageLink className={page == "library" ? "selected" : ""} to="/library">
-            Music Library
-          </PageLink>
+          <span tw="w-1/3 text-right">
+            <PageLink className={page == "library" ? "selected" : ""} to="/library">
+              Music Library
+            </PageLink>
+          </span>
         </nav>
       </Col>
     </Container>
@@ -33,8 +40,8 @@ const Header: React.FC<Props> = ({ page }) => (
 
 const StyledHeader = styled.header`
   ${tw``}
-  .navigation > .selected {
-    font-weight: bold;
+  .navigation .selected {
+    font-weight: 600;
   }
   .logo {
     width: 95px;

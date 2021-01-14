@@ -12,6 +12,8 @@ import { getFeature, QueryFeatureShape } from "../models/feature"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import TrackDetails from "../components/TrackDetails"
 import { Helmet } from "react-helmet"
+import FeatureCards from "../components/FeatureCards"
+import features from "../staticQueries/features"
 
 type Props = {
   data: {
@@ -23,6 +25,10 @@ type Props = {
 
 const FeaturePage: React.FC<Props> = ({ data }) => {
   const feature = getFeature(data.feature.edges[0])
+
+  const featureCards = features().filter(obj => {
+    return obj.id !== feature.id
+  })
 
   return (
     <StyledLayout>
@@ -56,7 +62,9 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
               </dl>
             </div>
           </div>
-          <div className="description"><MD content={feature.description} /></div>
+          <div className="description">
+            <MD content={feature.description} />
+          </div>
           <ActiveTrackProvider>
             {feature.tracks.map(track => (
               <div key={track.id} className="track">
@@ -67,6 +75,7 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
           </ActiveTrackProvider>
         </Col>
       </Container>
+      <FeatureCards features={featureCards} />
     </StyledLayout>
   )
 }

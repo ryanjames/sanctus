@@ -4,5 +4,5 @@ module.exports = {
   "gray-light": "#f1f1f1",
   "gray-med": "#888888",
   "gray-line": "#dddddd",
-  "techna-blue": "#283890",
+  "dk-green": "#516C38",
 }
