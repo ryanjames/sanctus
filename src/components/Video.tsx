@@ -13,7 +13,6 @@ interface Props {
   src: string
   color: string
   poster: FluidObject
-  autoplay: boolean
 }
 
 const Video: React.FC<Props> = ({ src, poster, color }) => {
@@ -140,10 +139,12 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
           />
         </div>
       </div>
-      <div className={`controls ${inProgress ? "show" : ""}`} tw="relative mt-5 -ml-1">
-        <Play className={`play-control ${isPlaying ? "" : "show"}`} onClick={handleResume} />
-        <Pause className={`pause-control ${isPlaying ? "show" : ""}`} onClick={handlePause} />
-        <Restart className="restart-control" tw="ml-8 cursor-pointer" onClick={handleRestart} />
+      <div tw="flex justify-center pt-6">
+        <div className={`controls ${inProgress ? "show" : ""}`}>
+          <Play className={`play-control ${isPlaying ? "" : "show"}`} onClick={handleResume} />
+          <Pause className={`pause-control ${isPlaying ? "show" : ""}`} onClick={handlePause} />
+          <Restart className="restart-control" tw="ml-8 cursor-pointer" onClick={handleRestart} />
+        </div>
       </div>
     </StyledVideo>
   )

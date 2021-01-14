@@ -38,34 +38,34 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
       <Helmet>
         <script src="https://unpkg.com/wavesurfer.js"></script>
       </Helmet>
-      <Container className="feature-content">
+      <Container className="feature-content" tw="pt-8 pb-32">
         <Col>
           <Video src={feature.video} poster={feature.image} color={feature.color} />
-          <div className="meta">
-            <div className="client-badge">
-              <ReactSVG src={feature.logo} />
-              {feature.title}
+          <div className="meta" tw="-mt-16 pt-3">
+            <div className="client-badge" tw="flex items-center ">
+              <ReactSVG src={feature.logo} tw="opacity-30" />
+              <h1 tw="text-2xl ml-4 mb-2">{feature.title}</h1>
             </div>
-            <div className="categories">
-              <dl>
-                <dt>Genres</dt>
+            <div className="categories" tw="-mt-16">
+              <dl tw="flex w-full justify-end text-sm mb-0">
+                <dt tw="block">Genres</dt>
                 {feature.genres.map(genre => (
-                  <dd key={genre.slug}>
+                  <dd key={genre.slug} tw="ml-5 mb-3">
                     <PageLink to={`/library/genre/${genre.slug}`}>{genre.name}</PageLink>
                   </dd>
                 ))}
               </dl>
-              <dl>
+              <dl tw="flex w-full justify-end text-sm mb-0">
                 <dt>Vibes</dt>
                 {feature.vibes.map(vibe => (
-                  <dd key={vibe.slug}>
+                  <dd key={vibe.slug} tw="ml-5">
                     <PageLink to={`/library/vibe/${vibe.slug}`}>{vibe.name}</PageLink>
                   </dd>
                 ))}
               </dl>
             </div>
           </div>
-          <div className="description">
+          <div className="description" tw="max-w-3xl">
             <MD content={feature.description} />
           </div>
           <ActiveTrackProvider>
@@ -87,6 +87,16 @@ const StyledLayout = styled(Layout)`
   ${tw``}
   .client-badge svg path {
     fill: #111;
+  }
+  .feature-content {
+    .categories a {
+      border-bottom: 1px solid #aaa;
+    }
+    .description {
+      p {
+        ${tw`text-xl`}
+      }
+    }
   }
 `
 export default FeaturePage

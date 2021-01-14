@@ -123,7 +123,6 @@ const StyledFeatureCard = styled.div<{ color1: string; color2: string }>`
     svg {
       width: 40px;
       height: auto;
-
     }
     opacity: 0;
     transform: translateX(100%);
