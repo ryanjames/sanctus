@@ -24,9 +24,14 @@ const typography = new Typography({
       marginBottom: `${rhythm(1.75)}`,
     },
     "h2, h3, h4": {
-      fontWeight: 400,
       lineHeight: `${rhythm(1.5)}`,
       marginBottom: `${rhythm(0.666)}`,
+    },
+    "h2, h4": {
+      fontWeight: 400,
+    },
+    h3: {
+      fontWeight: 600,
     },
     a: {
       textDecoration: "none",
@@ -41,7 +46,7 @@ const typography = new Typography({
       color: colors["gray-dark"],
     },
     small: {
-      fontWeight: 700,
+      fontWeight: 600,
       textTransform: "uppercase",
       letterSpacing: "0.2rem",
       marginBottom: `0.25rem`,

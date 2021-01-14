@@ -1,10 +1,11 @@
 /** @jsx jsx */ import { jsx } from "@emotion/react"
 import React from "react"
 import SEO from "../components/SEO"
+import styled from "@emotion/styled"
+import tw from "twin.macro"
 import siteContent from "../staticQueries/siteContent"
 import GlobalCss from "../config/GlobalCss"
 import { Helmet } from "react-helmet"
-import colors from "../config/colors"
 import Header from "./Header"
 
 export interface LayoutProps {
@@ -21,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
   const defaults = siteContent().defaults
   const year = new Date().getFullYear()
   return (
-    <div className={className}>
+    <StyledLayout className={className}>
       <GlobalCss />
       <Helmet>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -34,11 +35,15 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
       <SEO defaults={defaults} title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
       {page !== "home" && <Header page={page} />}
       <main>{children}</main>
-      <footer>
+      <footer tw="text-center w-full block py-24">
         &copy; {year} {defaults.owner}
       </footer>
-    </div>
+    </StyledLayout>
   )
 }
+
+const StyledLayout = styled.div`
+  ${tw``}
+`
 
 export default Layout

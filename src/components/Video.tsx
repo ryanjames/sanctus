@@ -9,9 +9,10 @@ interface Props {
   src: string
   color: string
   poster: FluidObject
+  autoplay: boolean
 }
 
-const Video: React.FC<Props> = ({ src, poster, color }) => {
+const Video: React.FC<Props> = ({ src, poster, color, autoplay = false }) => {
   const [play, setPlay] = useState<boolean>(false)
   const [inProgress, setInProgress] = useState<boolean>(false)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
@@ -38,29 +39,37 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
   }
 
   const handleOnReady = () => {
-    // CSS or something to have it reveal
+    if (autoplay == true) {
+      setPlay(true)
+      setIsPlaying(true)
+      setInProgress(true)
+    }
   }
 
   const player = useRef<ReactPlayer>(null)
 
   return (
     <StyledVideo>
-      <div tw="bg-black" onClick={togglePlay}>
-        {!inProgress && <Play />}
+      <div className="video-container" tw="relative overflow-hidden">
+        <div tw="absolute inset-0">
+          <div tw="bg-black" onClick={togglePlay}>
+            {!inProgress && <Play />}
+          </div>
+          <div style={{ backgroundColor: color }} />
+          <Img fluid={poster} />
+          <ReactPlayer
+            playing={play}
+            ref={player}
+            url={src}
+            width="100%"
+            height="100%"
+            controls={false}
+            onPause={handleOnPause}
+            onPlay={handleOnPlay}
+            onReady={handleOnReady}
+          />
+        </div>
       </div>
-      <div style={{ backgroundColor: color }} />
-      <Img fluid={poster} />
-      <ReactPlayer
-        playing={play}
-        ref={player}
-        url={src}
-        width="100%"
-        height="100%"
-        controls={false}
-        onPause={handleOnPause}
-        onPlay={handleOnPlay}
-        onReady={handleOnReady}
-      />
       {inProgress && (
         <>
           <span onClick={togglePlay}>{isPlaying ? <>Pause</> : <>Play</>}</span>
@@ -73,5 +82,8 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
 
 const StyledVideo = styled.div`
   ${tw``}
+  .video-container {
+    padding-top: 56.25%;
+  }
 `
 export default Video

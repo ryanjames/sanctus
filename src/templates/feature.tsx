@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
+import withLocation from "../utils/withLocation"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
 import styled from "@emotion/styled"
@@ -21,9 +22,12 @@ type Props = {
       edges: QueryFeatureShape[]
     }
   }
+  search?: {
+    play: string
+  }
 }
 
-const FeaturePage: React.FC<Props> = ({ data }) => {
+const FeaturePage: React.FC<Props> = ({ data, search }) => {
   const feature = getFeature(data.feature.edges[0])
 
   const featureCards = features().filter(obj => {
@@ -35,11 +39,16 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
       <Helmet>
         <script src="https://unpkg.com/wavesurfer.js"></script>
       </Helmet>
-      <Container>
+      <Container className="feature-content">
         <Col>
-          <Video src={feature.video} poster={feature.image} color={feature.color} />
+          <Video
+            src={feature.video}
+            poster={feature.image}
+            color={feature.color}
+            autoplay={search?.play ? true : false}
+          />
           <div className="meta">
-            <div className="client">
+            <div className="client-badge">
               <ReactSVG src={feature.logo} />
               {feature.title}
             </div>
@@ -82,11 +91,11 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
 
 const StyledLayout = styled(Layout)`
   ${tw``}
-  .client svg path {
-    fill: #000;
+  .client-badge svg path {
+    fill: #111;
   }
 `
-export default FeaturePage
+export default withLocation(FeaturePage)
 
 export const pageQuery = graphql`
   query FeatureQuery($id: String!) {

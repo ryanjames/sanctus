@@ -66,7 +66,7 @@ const StyledFeatureCards = styled.div`
   }
   .w-1-3 {
     ${tw`relative w-1/3`}
-    padding-bottom: 33.3333%;
+    padding-bottom: 33%;
   }
 `
 export default FeatureCards
