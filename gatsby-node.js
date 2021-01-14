@@ -120,7 +120,7 @@ exports.createPages = ({ actions, graphql }) => {
       const id = feature.node.id
       const slug = slugify(feature.node.data.Feature_Name, { lower: true, strict: true })
       createPage({
-        path: "/feature/" + slug,
+        path: "/features/" + slug,
         component: path.resolve(`src/templates/feature.tsx`),
         context: {
           id,

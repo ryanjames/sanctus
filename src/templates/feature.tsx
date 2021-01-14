@@ -1,7 +1,6 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
-import withLocation from "../utils/withLocation"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
 import styled from "@emotion/styled"
@@ -27,7 +26,7 @@ type Props = {
   }
 }
 
-const FeaturePage: React.FC<Props> = ({ data, search }) => {
+const FeaturePage: React.FC<Props> = ({ data }) => {
   const feature = getFeature(data.feature.edges[0])
 
   const featureCards = features().filter(obj => {
@@ -41,12 +40,7 @@ const FeaturePage: React.FC<Props> = ({ data, search }) => {
       </Helmet>
       <Container className="feature-content">
         <Col>
-          <Video
-            src={feature.video}
-            poster={feature.image}
-            color={feature.color}
-            autoplay={search?.play ? true : false}
-          />
+          <Video src={feature.video} poster={feature.image} color={feature.color} />
           <div className="meta">
             <div className="client-badge">
               <ReactSVG src={feature.logo} />
@@ -95,7 +89,7 @@ const StyledLayout = styled(Layout)`
     fill: #111;
   }
 `
-export default withLocation(FeaturePage)
+export default FeaturePage
 
 export const pageQuery = graphql`
   query FeatureQuery($id: String!) {

@@ -29,11 +29,11 @@ const FeatureCard: React.FC<Props> = ({ feature }) => {
         <div tw="absolute inset-0" className="image-overlay"></div>
         <Img fluid={feature.image} />
       </div>
-      <PageLink className="play" tw="block" to={`/feature/${feature.slug}?play=true`}>
+      <PageLink className="play" tw="block" to={`/features/${feature.slug}?play=true`}>
         <Play />
       </PageLink>
       <div className="categories" tw="w-full pr-9 pb-2">
-        <PageLink to={`/feature/${feature.slug}`} tw="flex items-center justify-end">
+        <PageLink to={`/features/${feature.slug}`} tw="flex items-center justify-end">
           <ReactSVG tw="mr-4" src={feature.logo} />
           <div tw="font-bold pb-1 text-xl">{feature.title}</div>
         </PageLink>

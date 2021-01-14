@@ -1,4 +1,5 @@
 declare module "hex2rgba"
+declare module "stringquery"
 
 interface Window {
   player: {
