@@ -20,7 +20,7 @@ const Header: React.FC<Props> = ({ page }) => (
           </PageLink>
           <PageLink tw="flex flex-col items-center" to="/">
             <Logo className="logo" tw="mb-1" />
-            <Composer width={62} />
+            <Composer className="composer" />
           </PageLink>
           <PageLink className={page == "library" ? "selected" : ""} to="/library">
             Music Library
@@ -38,6 +38,10 @@ const StyledHeader = styled.header`
   }
   .logo {
     width: 95px;
+    height: auto;
+  }
+  .composer {
+    width: 62px;
     height: auto;
   }
 `
