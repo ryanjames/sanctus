@@ -6,6 +6,8 @@ import hex2rgba from "hex2rgba"
 import querySearch from "stringquery"
 import Img, { FluidObject } from "gatsby-image"
 import Play from "../graphics/play.svg"
+import Pause from "../graphics/pause.svg"
+import Restart from "../graphics/restart.svg"
 
 interface Props {
   src: string
@@ -32,6 +34,7 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
 
   const handlePause = () => {
     let intVolume = 1
+    setIsPlaying(false)
     const volumeInterval = setInterval(() => {
       if (intVolume > 0) {
         intVolume -= 0.2
@@ -50,6 +53,7 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
     let intVolume = 0
     setPlay(true)
     setVolume(0)
+    setIsPlaying(false)
     const volumeInterval = setInterval(() => {
       if (intVolume < 1) {
         intVolume += 0.2
@@ -82,7 +86,6 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
     }
   }
 
-
   const handleOnPlay = () => {
     setIsPlaying(true)
     setInProgress(true)
@@ -110,7 +113,13 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
     <StyledVideo color1={color1} color2={color2}>
       <div className={`video-container ${inProgress ? "playing" : ""}`} tw="relative overflow-hidden">
         <div tw="absolute inset-0">
-          <Play className={`${autoplay ? "autoplay" : ""} play`} onClick={handlePlay} />
+          <div
+            tw="absolute inset-0 flex justify-center items-center"
+            className={`${autoplay ? "autoplay" : ""} play`}
+            onClick={handlePlay}
+          >
+            <Play />
+          </div>
           <div style={{ backgroundColor: color }} />
           <div className="image-container">
             <div tw="absolute inset-0" className="image-overlay"></div>
@@ -131,12 +140,11 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
           />
         </div>
       </div>
-      {inProgress && (
-        <>
-          {isPlaying ? <span onClick={handlePause}>Pause</span> : <span onClick={handleResume}>Play</span>}
-          <span onClick={handleRestart}>Restart</span>
-        </>
-      )}
+      <div className={`controls ${inProgress ? "show" : ""}`} tw="relative mt-5 -ml-1">
+        <Play className={`play-control ${isPlaying ? "" : "show"}`} onClick={handleResume} />
+        <Pause className={`pause-control ${isPlaying ? "show" : ""}`} onClick={handlePause} />
+        <Restart className="restart-control" tw="ml-8 cursor-pointer" onClick={handleRestart} />
+      </div>
     </StyledVideo>
   )
 }
@@ -156,18 +164,59 @@ const StyledVideo = styled.div<{ color1: string; color2: string }>`
     z-index: 1;
     background: linear-gradient(0deg, ${props => props.color1} 0%, ${props => props.color2} 100%);
   }
+  .controls {
+    transition: all 0.4s ease-in-out;
+    transform: translateX(-30px);
+    opacity: 0;
+    z-index: -1;
+    &.show {
+      opacity: 1;
+      z-index: 1;
+      transform: translateX(0);
+    }
+    .play-control,
+    .pause-control {
+      transition: all 0.4s ease-in-out;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      &:hover {
+        cursor: pointer;
+        path {
+          fill: ${props => props.color1};
+        }
+      }
+      &.show {
+        opacity: 1;
+        z-index: 1;
+      }
+    }
+    .restart-control:hover {
+      path {
+        fill: ${props => props.color1};
+      }
+    }
+  }
   .play {
-    transition: all 0.6s ease-in-out;
     transition-delay: 0.2s;
-    position: absolute;
-    top: 50%;
-    left: 50%;
     z-index: 3;
-    transform: translateX(-50%) translateY(-50%) scale(1);
     opacity: 1;
+    svg {
+      transition: all 0.3s ease-in-out;
+      transform: scale(1);
+      width: 50px;
+      height: 50px;
+      path {
+        fill: white;
+      }
+    }
     &:hover {
-      transform: translateX(-50%) translateY(-50%) scale(1.2);
       cursor: pointer;
+      svg {
+        transform: scale(1.4);
+      }
     }
   }
   .playing {

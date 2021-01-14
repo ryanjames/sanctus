@@ -100,6 +100,13 @@ const StyledFeatureCard = styled.div<{ color1: string; color2: string }>`
     transition: all 0.4s ease-in-out;
     transform: translateX(-50%) translateY(-50%) scale(0.4);
     opacity: 0;
+    svg {
+      width: 50px;
+      height: 50px;
+      path {
+        fill: white;
+      }
+    }
   }
   &:hover .play {
     transform: translateX(-50%) translateY(-50%) scale(1);
@@ -116,6 +123,7 @@ const StyledFeatureCard = styled.div<{ color1: string; color2: string }>`
     svg {
       width: 40px;
       height: auto;
+
     }
     opacity: 0;
     transform: translateX(100%);
