@@ -1,17 +1,19 @@
 import React from "react"
 // import PageLink from "../components/PageLink"
+//import siteContent from "../staticQueries/siteContent"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
-import Container, { Col } from "../components/Container"
 import FeatureCards from "../components/FeatureCards"
+import Hero from "../components/Hero"
 import features from "../staticQueries/features"
 import siteContent from "../staticQueries/siteContent"
 
 const IndexPage: React.FC = () => {
+  const content = siteContent()
   return (
     <StyledLayout>
-      <Hero />
+      <Hero content={content.homeIntro} />
       <FeatureCards features={features()} />
     </StyledLayout>
   )

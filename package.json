@@ -36,6 +36,7 @@
     "gatsby-source-airtable": "^2.1.1",
     "gatsby-source-filesystem": "^2.5.0",
     "gatsby-transformer-sharp": "^2.6.0",
+    "markdown-to-jsx": "^7.1.1",
     "match-sorter": "^6.0.2",
     "plop": "^2.7.4",
     "pluralize": "^8.0.0",

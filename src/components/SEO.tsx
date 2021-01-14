@@ -1,6 +1,6 @@
 import React from "react"
 import { Helmet } from "react-helmet"
-import { DefaultsShape } from "../staticQueries/siteContent"
+import siteContent, { DefaultsShape } from "../staticQueries/siteContent"
 
 interface Props {
   title?: string

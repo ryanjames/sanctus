@@ -19,7 +19,7 @@ const Header: React.FC<Props> = ({ page }) => (
             About &amp; Contact
           </PageLink>
           <PageLink tw="flex flex-col items-center" to="/">
-            <Logo width={94} height="auto" tw="mb-1" />
+            <Logo className="logo" tw="mb-1" />
             <Composer width={62} />
           </PageLink>
           <PageLink className={page == "library" ? "selected" : ""} to="/library">
@@ -35,6 +35,10 @@ const StyledHeader = styled.header`
   ${tw``}
   .navigation > .selected {
     font-weight: bold;
+  }
+  .logo {
+    width: 95px;
+    height: auto;
   }
 `
 export default Header

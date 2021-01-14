@@ -7,7 +7,7 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { ReactSVG } from "react-svg"
 import PageLink from "../components/PageLink"
-import HTML from "../utils/HTML"
+import MD from "../utils/MD"
 import { getFeature, QueryFeatureShape } from "../models/feature"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import TrackDetails from "../components/TrackDetails"
@@ -56,7 +56,7 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
               </dl>
             </div>
           </div>
-          <div className="description">{HTML(feature.description)}</div>
+          <div className="description"><MD content={feature.description} /></div>
           <ActiveTrackProvider>
             {feature.tracks.map(track => (
               <div key={track.id} className="track">
