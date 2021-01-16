@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { mQw, sizes } from "../utils/mediaQueries"
 
-const gutter = tw`px-4  md:px-6  xl:px-8`
+const gutter = tw`px-4 md:px-6  xl:px-8`
 const outer = tw`-mx-4 md:-mx-6 xl:-mx-8`
 
 export const Splash: React.FC = ({ children }) => {
@@ -69,7 +69,8 @@ export const Container: React.FC<ContainerProps> = ({ children, className = "", 
   )
 }
 const StyledContainer = styled.div`
-  ${tw`m-auto px-4 md:px-8 xl:px-12`}
+  ${tw`m-auto`}
+  ${gutter}
   > div {
     ${tw`flex flex-wrap`}
     ${outer}

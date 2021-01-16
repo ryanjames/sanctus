@@ -65,13 +65,12 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
               </dl>
             </div>
           </div>
-          <div className="description" tw="max-w-3xl">
+          <div className="description" tw="max-w-3xl pb-12">
             <MD content={feature.description} />
           </div>
           <ActiveTrackProvider>
             {feature.tracks.map(track => (
-              <div key={track.id} className="track">
-                {track.title}
+              <div key={track.id} tw="pt-6" className="track">
                 <TrackDetails track={track} />
               </div>
             ))}

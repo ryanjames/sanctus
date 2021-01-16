@@ -24,44 +24,53 @@ const LibraryCategories: React.FC<Props> = ({ id }) => {
           </dd>
         ))}
       </dl>
-      <dl>
-        <dt>Genres</dt>
-        {genres().map((genre: GenreShape) => (
-          <dd key={genre.id}>
-            <PageLink className={id == genre.id ? "-selected" : ""} to={`/library/genre/${genre.slug}`}>
-              {genre.title}
-            </PageLink>
-          </dd>
-        ))}
-      </dl>
-      <dl>
-        <dt>Energies</dt>
-        {energies().map((energy: EnergyShape) => (
-          <dd key={energy.id}>
-            <PageLink className={id == energy.id ? "-selected" : ""} to={`/library/energy/${energy.slug}`}>
-              {energy.title}
-            </PageLink>
-          </dd>
-        ))}
-      </dl>
-      <dl>
-        <dt>Vibes</dt>
-        {vibes().map((vibe: VibeShape) => (
-          <dd key={vibe.id}>
-            <PageLink className={id == vibe.id ? "-selected" : ""} to={`/library/vibe/${vibe.slug}`}>
-              {vibe.title}
-            </PageLink>
-          </dd>
-        ))}
-      </dl>
+      <div>
+        <strong>Genres</strong>
+        <ul>
+          {genres().map((genre: GenreShape) => (
+            <li key={genre.id}>
+              <PageLink className={id == genre.id ? "-selected" : ""} to={`/library/genre/${genre.slug}`}>
+                {genre.title}
+              </PageLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <strong>Energies</strong>
+        <ul>
+          {energies().map((energy: EnergyShape) => (
+            <li key={energy.id}>
+              <PageLink className={id == energy.id ? "-selected" : ""} to={`/library/energy/${energy.slug}`}>
+                {energy.title}
+              </PageLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <strong>Vibes</strong>
+        <ul>
+          {vibes().map((vibe: VibeShape) => (
+            <li key={vibe.id}>
+              <PageLink className={id == vibe.id ? "-selected" : ""} to={`/library/vibe/${vibe.slug}`}>
+                {vibe.title}
+              </PageLink>
+            </li>
+          ))}
+        </ul>
+      </div>
     </StyledLibraryCategories>
   )
 }
 
 const StyledLibraryCategories = styled.div`
-  ${tw`pt-8 md:pt-16 border-0 border-b border-solid border-gray-400`}
+  ${tw``}
   & .-selected {
     font-weight: bold;
+  }
+  ul {
+    column-count: 2;
   }
 `
 

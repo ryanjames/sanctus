@@ -1,5 +1,5 @@
 /** @jsx jsx */ import { jsx } from "@emotion/react"
-import React from "react"
+import React, { useEffect } from "react"
 import SEO from "../components/SEO"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
@@ -21,6 +21,7 @@ export interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ title, description, page, children, meta, owner, ogImage, className }) => {
   const defaults = siteContent().defaults
   const year = new Date().getFullYear()
+
   return (
     <StyledLayout className={className}>
       <GlobalCss />

@@ -1,10 +1,21 @@
 import React from "react"
 import { Link } from "gatsby"
+import styled from "@emotion/styled"
+import tw from "twin.macro"
 
 interface Props {
   to?: string
   href?: string
   className?: string
+}
+
+const clearPlayer = () => {
+  if (window.WaveSurfer) {
+    if (window.player) {
+      window.player.destroy()
+      document.body.className = ""
+    }
+  }
 }
 
 const PageLink: React.FC<Props> = ({ to, href, className, children }) => {
@@ -14,10 +25,14 @@ const PageLink: React.FC<Props> = ({ to, href, className, children }) => {
   }
 
   return (
-    <Link to={url} className={className}>
+    <StyledPageLink to={url} className={className} onClick={clearPlayer}>
       {children}
-    </Link>
+    </StyledPageLink>
   )
 }
+
+const StyledPageLink = styled(Link)`
+  ${tw``}
+`
 
 export default PageLink

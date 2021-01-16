@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState, SyntheticEvent } from "react"
+import React, { useMemo, useContext, useEffect, useState, SyntheticEvent } from "react"
 import withLocation from "../utils/withLocation"
 import PageLink from "./PageLink"
 import styled from "@emotion/styled"
@@ -22,7 +22,7 @@ export interface Props {
 }
 
 const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placeholder }) => {
-  const { updateActiveTrack } = React.useContext(ActiveTrackContext) as ActiveTrackContextType
+  const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
 
   const memoizedData = useMemo(() => data, [data])
 
@@ -66,46 +66,43 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
       tw="w-full xs:w-2/3 sm:w-1/2 py-3 pl-3"
       type="text"
       onChange={handleSearch}
-      placeholder={`Search! ${title ? title.toLowerCase() + " " : ""}tracks`}
+      placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks`}
     />
   )
 
   type Track = { track: TrackShape }
   const TrackRow: React.FC<Track> = ({ track }) => {
-    const versions = () => {
-      if (track.children && track.children.length) {
-        const count = track.children.length + 1
-        return <span>{count} versions</span>
-      }
-    }
     return (
-      <>
-        <div tw="w-2/7">
-          {track.title} {versions()}
-        </div>
-        <div tw="w-1/7">
-          <PageLink to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</PageLink>
-        </div>
-        <div tw="w-1/7">
-          {track.genres?.map((genre: CategoryShape, index) => (
-            <span key={genre.id}>
-              <PageLink to={`/library/genre/${genre.slug}`}>{genre.name}</PageLink>
-              {index < track.genres.length - 1 ? ", " : ""}
-            </span>
-          ))}
-        </div>
-        <div tw="w-2/7">
-          {track.vibes?.map((vibe: CategoryShape, index) => (
-            <span key={vibe.id}>
-              <PageLink to={`/library/vibe/${vibe.slug}`}>{vibe.name}</PageLink>
-              {index < track.vibes.length - 1 ? ", " : ""}
-            </span>
-          ))}
+      <div tw="border-gray-200 border-0 border-b border-solid text-sm">
+        <div
+          tw="flex flex-wrap w-full h-16 items-center"
+          className={`track-row ${activeTrack.id == track.id ? "hide" : ""}`}
+        >
+          <div tw="w-3/8 text-lg font-bold" />
+          <div tw="w-1/8" className="category-link">
+            <PageLink to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</PageLink>
+          </div>
+          <div tw="w-2/8">
+            {track.genres?.map((genre: CategoryShape, index) => (
+              <span key={genre.id} className="category-link">
+                <PageLink to={`/library/genre/${genre.slug}`}>{genre.name}</PageLink>
+                {index < track.genres.length - 1 ? ", " : ""}
+              </span>
+            ))}
+          </div>
+          <div tw="w-2/8">
+            {track.vibes?.map((vibe: CategoryShape, index) => (
+              <span key={vibe.id} className="category-link">
+                <PageLink to={`/library/vibe/${vibe.slug}`}>{vibe.name}</PageLink>
+                {index < track.vibes.length - 1 ? ", " : ""}
+              </span>
+            ))}
+          </div>
         </div>
         <div tw="w-full">
           <TrackDetails track={track} />
         </div>
-      </>
+      </div>
     )
   }
 
@@ -115,14 +112,18 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
       {!searchValue && placeholder ? (
         <>{placeholder}</>
       ) : (
-        <div className="tracks-table" tw="mt-8 flex flex-wrap w-full">
-          <div tw="w-2/7">Title</div>
-          <div tw="w-1/7">Energy</div>
-          <div tw="w-1/7">Genres</div>
-          <div tw="w-3/7">Vibes</div>
-          {filteredData.map(track => (
-            <TrackRow key={track.id} track={track} />
-          ))}
+        <div className="tracks-table" tw="mt-8">
+          <div tw="text-xs font-bold uppercase tracking-widest pb-4 border-gray-200 border-0 border-b border-solid flex w-full">
+            <div tw="w-3/8">Title</div>
+            <div tw="w-1/8">Energy</div>
+            <div tw="w-2/8">Genres</div>
+            <div tw="w-2/8">Vibes</div>
+          </div>
+          <div className="table-rows" tw="overflow-y-scroll">
+            {filteredData.map(track => (
+              <TrackRow key={track.id} track={track} />
+            ))}
+          </div>
         </div>
       )}
     </StyledTracksTable>
@@ -131,6 +132,23 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
 
 const StyledTracksTable = styled.div`
   ${tw``}
+  .track-row.hide {
+    display: none;
+  }
+  .table-rows {
+    height: calc(100vh - 230px);
+  }
+  .category-link {
+    ${tw`text-gray-400`}
+    a {
+      border-bottom: 1px solid;
+      ${tw`border-gray-400 text-gray-400`}
+      &:hover {
+        color: #111;
+        ${tw`border-gray-700 text-gray-700`}
+      }
+    }
+  }
 `
 
 export default withLocation(TracksTable)
