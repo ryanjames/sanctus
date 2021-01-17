@@ -4,6 +4,7 @@ import Container, { Col } from "./Container"
 import LibraryCategories from "./LibraryCategories"
 import Layout, { LayoutProps } from "./Layout"
 import PageLink from "../components/PageLink"
+import { mQw, sizes, gutters } from "../utils/mediaQueries"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { Helmet } from "react-helmet"
@@ -14,33 +15,50 @@ interface Props extends LayoutProps {
 
 const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }) => {
   return (
-    <StyledLayout title={title} description={description} page="library">
+    <StyledLayout maxWidths={sizes} title={title} description={description} page="library">
       <Helmet>
         <script src="https://unpkg.com/wavesurfer.js"></script>
       </Helmet>
-      <Container>
-        <div tw="flex flex-nowrap w-full pt-8">
-          <Col tw="w-1/5" className="library-categories">
-            <h3>
-              <PageLink to="/library">Music Library</PageLink>
-            </h3>
-            <LibraryCategories id={id} />
-          </Col>
-          <Col tw="flex-1 overflow-auto">
-            <div>
-              <ActiveTrackProvider>{children}</ActiveTrackProvider>
-            </div>
-          </Col>
-        </div>
+      <Container tw="pt-12">
+        <Col tw="w-1/4" className="library-categories">
+          <h3>
+            <PageLink to="/library">Music Library</PageLink>
+          </h3>
+          <LibraryCategories id={id} />
+        </Col>
+        <Col tw="flex-1 overflow-visible">
+          <div className="table-size">
+            <ActiveTrackProvider>{children}</ActiveTrackProvider>
+          </div>
+        </Col>
       </Container>
     </StyledLayout>
   )
 }
 
-const StyledLayout = styled(Layout)`
+let mediaQueries = ""
+let i = 0
+mQw.forEach((value: string, key: string) => {
+  const outerSpace = `(100vw - ${sizes.get(key)}) / 2`
+  const gutterKey = Object.keys(gutters)[i]
+  const gutterValue = parseInt((gutters as any)[gutterKey].replace("px", "")) + "px"
+  mediaQueries = mediaQueries.concat(
+    `
+    @media (${value}) { 
+      width: calc((${sizes.get(key)} * 0.75) + ${outerSpace} - ${gutterValue});
+    }`
+  )
+  i += 1
+})
+
+const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
   ${tw``}
   .library-categories {
     padding-right: 0 !important;
+  }
+  .table-size {
+    position: absolute;
+    ${mediaQueries}
   }
 `
 export default LibraryPageLayout

@@ -12,30 +12,45 @@ interface IGenre {
   slug: string
   count: number
   image: FluidObject
+  className: string
 }
 
-const GenreCards: React.FC = () => {
+const GenreCards: React.FC<{ className: string }> = ({ className }) => {
   return (
-    <StyledGenreCards tw="list-none flex flex-wrap -mx-2 md:-mx-3 pt-8" className="genre-cards">
+    <StyledGenreCards tw="flex flex-wrap -mx-4" className={className}>
       {genres().map((genre: IGenre) => (
-        <li tw="w-1/2 sm:w-1/3 pb-0 sm:pb-2 md:pb-3 px-1 sm:px-3" key={genre.id}>
-          <PageLink
-            tw="block xs:p-4 lg:p-8 text-sm h-full relative flex justify-center items-center"
-            to={`/library/genre/${genre.slug}`}
-          >
-            <div tw="w-full pt-full relative mb-12">
+        <PageLink key={genre.id} tw="w-1/3 p-4 pb-8 relative block" to={`/library/genre/${genre.slug}`}>
+          <div className="image" tw="w-full relative mb-2">
+            <div className="image-container">
               <Img fluid={genre.image} />
             </div>
-            <span tw="absolute w-full bottom-0 left-0 px-3 pb-4 xs:pb-5 sm:pb-8 text-center">{genre.title}</span>
-            {genre.count}
-          </PageLink>
-        </li>
+          </div>
+          <div tw="flex justify-between items-center">
+            <strong>{genre.title}</strong>
+            <span>{genre.count} tracks</span>
+          </div>
+        </PageLink>
       ))}
     </StyledGenreCards>
   )
 }
 
-const StyledGenreCards = styled.ul`
+const StyledGenreCards = styled.div`
   ${tw``}
+  .image {
+    padding-top: 70%;
+    overflow: hidden;
+  }
+  .image-container {
+    transition: transform 0.4s ease-in-out;
+    transform: translateY(-50%) scale(1);
+    top: 50%;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    &:hover {
+      transform: translateY(-50%) scale(1.2);
+    }
+  }
 `
 export default GenreCards

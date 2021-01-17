@@ -12,7 +12,7 @@ type Props = {
 
 const Header: React.FC<Props> = ({ page }) => (
   <StyledHeader>
-    <Container full={true}>
+    <Container>
       <Col>
         <nav className="navigation" tw="flex items-center py-8">
           <span tw="w-1/3">
@@ -40,6 +40,12 @@ const Header: React.FC<Props> = ({ page }) => (
 
 const StyledHeader = styled.header`
   ${tw``}
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background: #fff;
+  z-index: 100;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   .navigation .selected {
     font-weight: 600;
   }

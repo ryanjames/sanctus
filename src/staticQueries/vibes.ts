@@ -12,7 +12,7 @@ const vibes = (): VibeShape => {
   const query = useStaticQuery(
     graphql`
       query VibesQuery {
-        query: allAirtable(filter: { table: { eq: "Vibes" } }) {
+        query: allAirtable(filter: { table: { eq: "Vibes" } }, sort: { fields: data___Vibe_Name }) {
           edges {
             node {
               data {

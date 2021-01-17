@@ -1,10 +1,7 @@
 import React from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-import { mQw, sizes } from "../utils/mediaQueries"
-
-const gutter = tw`px-4 md:px-6  xl:px-8`
-const outer = tw`-mx-4 md:-mx-6 xl:-mx-8`
+import { mQw, sizes, gutters } from "../utils/mediaQueries"
 
 export const Splash: React.FC = ({ children }) => {
   return <StyledSplash>{children}</StyledSplash>
@@ -33,9 +30,39 @@ const StyledSection = styled.section`
 export const Col: React.FC<SharedProps> = ({ className = "", children }) => {
   return <StyledCol className={`col ${className}`}>{children}</StyledCol>
 }
+
+let gutterQueries = ""
+let i = 0
+sizes.forEach((value: string) => {
+  const gutterKey = Object.keys(gutters)[i]
+  gutterQueries = gutterQueries.concat(
+    `
+    @media (min-width: ${value}) { 
+      padding-left: ${(gutters as any)[gutterKey]};
+      padding-right: ${(gutters as any)[gutterKey]};
+    }
+    `
+  )
+  i += 1
+})
+let outerQueries = ""
+let j = 0
+sizes.forEach((value: string) => {
+  const gutterKey = Object.keys(gutters)[j]
+  outerQueries = outerQueries.concat(
+    `
+    @media (min-width: ${value}) { 
+      margin-left: -${(gutters as any)[gutterKey]};
+      margin-right: -${(gutters as any)[gutterKey]};
+    }
+    `
+  )
+  j += 1
+})
+
 const StyledCol = styled.div`
-  ${gutter}
   width: 100%;
+  ${gutterQueries}
 `
 
 let queriesString = ""
@@ -44,6 +71,7 @@ mQw.forEach((value: string, key: string) => {
     `
     @media (${value}) { 
       max-width: ${sizes.get(key)};
+      ${gutterQueries}
     }`
   )
 })
@@ -70,12 +98,11 @@ export const Container: React.FC<ContainerProps> = ({ children, className = "", 
 }
 const StyledContainer = styled.div`
   ${tw`m-auto`}
-  ${gutter}
-  > div {
-    ${tw`flex flex-wrap`}
-    ${outer}
-  }
   ${mediaQueries}
+  > div {
+    ${tw`flex flex-wrap`};
+    ${outerQueries};
+  }
 `
 
 export default Container

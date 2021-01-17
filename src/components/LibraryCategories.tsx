@@ -15,15 +15,15 @@ interface Props {
 const LibraryCategories: React.FC<Props> = ({ id }) => {
   return (
     <StyledLibraryCategories>
-      <dl>
+      <ul>
         {playlists().map((playlist: PlaylistShape) => (
-          <dd key={playlist.id}>
+          <li key={playlist.id}>
             <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/${playlist.slug}`}>
               {playlist.title}
             </PageLink>
-          </dd>
+          </li>
         ))}
-      </dl>
+      </ul>
       <div>
         <strong>Genres</strong>
         <ul>
@@ -66,11 +66,37 @@ const LibraryCategories: React.FC<Props> = ({ id }) => {
 
 const StyledLibraryCategories = styled.div`
   ${tw``}
-  & .-selected {
-    font-weight: bold;
+  height: calc(100vh - 240px);
+  margin-top: 40px;
+  margin-left: -14px;
+  overflow-y: scroll;
+  overflow-x: visible;
+  strong {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    display: block;
+    padding: 24px 0 8px 14px;
   }
   ul {
+    list-style-type: none;
+    margin: 0;
+    font-size: 0.85rem;
     column-count: 2;
+    li {
+      margin-bottom: 0;
+      padding-left: 14px;
+    }
+  }
+  & .-selected {
+    font-weight: bold;
+    ${tw`text-dk-green`}
+    position: relative;
+    &::before {
+      content: "✓";
+      position: absolute;
+      left: -14px;
+    }
   }
 `
 

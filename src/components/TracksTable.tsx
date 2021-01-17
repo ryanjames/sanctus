@@ -3,6 +3,7 @@ import withLocation from "../utils/withLocation"
 import PageLink from "./PageLink"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
+import { mQw, sizes, gutters } from "../utils/mediaQueries"
 import { matchSorter } from "match-sorter"
 import { TrackShape, CategoryShape } from "../models/tracks"
 import { ActiveTrackContext, ActiveTrackContextType, versionDefault } from "../contexts/ActiveTrackContext"
@@ -108,16 +109,20 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
 
   return (
     <StyledTracksTable>
-      <div>{SearchInput}</div>
+      <>{SearchInput}</>
       {!searchValue && placeholder ? (
-        <>{placeholder}</>
+        <div className="table-placeholder" tw="mt-12 overflow-y-scroll">
+          {placeholder}
+        </div>
       ) : (
-        <div className="tracks-table" tw="mt-8">
-          <div tw="text-xs font-bold uppercase tracking-widest pb-4 border-gray-200 border-0 border-b border-solid flex w-full">
-            <div tw="w-3/8">Title</div>
-            <div tw="w-1/8">Energy</div>
-            <div tw="w-2/8">Genres</div>
-            <div tw="w-2/8">Vibes</div>
+        <div className="tracks-table">
+          <div className="table-headings">
+            <div tw="text-xs font-bold pt-9 uppercase tracking-widest pb-4 border-gray-200 border-0 border-b border-solid flex">
+              <div tw="w-3/8">Title</div>
+              <div tw="w-1/8">Energy</div>
+              <div tw="w-2/8">Genres</div>
+              <div tw="w-2/8">Vibes</div>
+            </div>
           </div>
           <div className="table-rows" tw="overflow-y-scroll">
             {filteredData.map(track => (
@@ -130,13 +135,35 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
   )
 }
 
+let mediaQueries = ""
+let i = 0
+mQw.forEach((value: string, key: string) => {
+  const outerSpace = `(100vw - ${sizes.get(key)}) / 2`
+  const gutterKey = Object.keys(gutters)[i]
+  const gutterValue = parseInt((gutters as any)[gutterKey].replace("px", "")) + "px"
+  mediaQueries = mediaQueries.concat(
+    `
+    @media (${value}) { 
+      padding-right: calc(${outerSpace} + ${gutterValue})
+    }`
+  )
+  i += 1
+})
+
 const StyledTracksTable = styled.div`
-  ${tw``}
+  .table-placeholder {
+    ${mediaQueries}
+  }
+  .table-headings {
+    ${mediaQueries}
+  }
+  .table-placeholder,
+  .table-rows {
+    height: calc(100vh - 280px);
+    ${mediaQueries}
+  }
   .track-row.hide {
     display: none;
-  }
-  .table-rows {
-    height: calc(100vh - 230px);
   }
   .category-link {
     ${tw`text-gray-400`}

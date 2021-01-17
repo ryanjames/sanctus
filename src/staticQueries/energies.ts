@@ -12,7 +12,7 @@ const energies = (): EnergyShape => {
   const query = useStaticQuery(
     graphql`
       query EnergiesQuery {
-        query: allAirtable(filter: { table: { eq: "Energies" } }) {
+        query: allAirtable(filter: { table: { eq: "Energies" } }, sort: { fields: data___Energy_Name }) {
           edges {
             node {
               data {
@@ -34,6 +34,8 @@ const energies = (): EnergyShape => {
     title: vibe.node.data.Energy_Name,
     slug: slugify(vibe.node.data.Energy_Name, { lower: true, strict: true }),
   }))
+
+  Energies.push(Energies.shift())
 
   return Energies
 }

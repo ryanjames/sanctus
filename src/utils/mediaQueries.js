@@ -2,6 +2,8 @@ const tailwind = require("../../tailwind.config")
 
 const screens = tailwind.theme.screens
 
+const gutters = tailwind.theme.gutters
+
 const sizes = new Map()
 Object.entries(screens)
   .filter(([key]) => !["v", "base"].some(item => key.includes(item)))
@@ -23,4 +25,4 @@ Object.entries(screens)
     mQh.set(key, `min-height: ${value}`)
   })
 
-export { mQw, mQh, sizes }
+export { mQw, mQh, sizes, gutters }

@@ -1,5 +1,5 @@
 /** @jsx jsx */ import { jsx } from "@emotion/react"
-import React, { useEffect } from "react"
+import React from "react"
 import SEO from "../components/SEO"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
@@ -34,9 +34,14 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
         <meta name="theme-color" content="#ffffff" />
       </Helmet>
       <SEO defaults={defaults} title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
-      {page !== "home" && <Header page={page} />}
+      {page !== "home" && (
+        <>
+          <div className="header-spacer" />
+          <Header page={page} />
+        </>
+      )}
       <main>{children}</main>
-      <footer tw="text-center w-full block py-24">
+      <footer tw="text-center w-full block py-24" className={page ? `footer-${page}` : ""}>
         &copy; {year} {defaults.owner}
       </footer>
     </StyledLayout>
@@ -45,6 +50,15 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
 
 const StyledLayout = styled.div`
   ${tw``}
+  .header-spacer {
+    height: 80px;
+  }
+  .footer-library {
+    position: fixed;
+    bottom: 0;
+    padding-top: 0;
+    padding-bottom: 24px;
+  }
 `
 
 export default Layout
