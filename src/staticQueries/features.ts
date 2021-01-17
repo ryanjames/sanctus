@@ -25,7 +25,7 @@ const features = (): Array<FeatureShape> => {
                     publicURL
                   }
                 }
-                Feature_Tracks {
+                Feature_Track {
                   data {
                     Track_Title
                     URL
@@ -44,6 +44,13 @@ const features = (): Array<FeatureShape> => {
                         Energy_Name
                       }
                     }
+                  }
+                  id
+                }
+                Similar_Tracks {
+                  data {
+                    Track_Title
+                    URL
                   }
                   id
                 }

@@ -22,7 +22,7 @@ export default Library
 
 export const pageQuery = graphql`
   query TracksQuery {
-    tracks: allAirtable(filter: { table: { eq: "Tracks" } }) {
+    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Has_Parent: { eq: 0 } } }) {
       edges {
         node {
           data {
@@ -30,6 +30,7 @@ export const pageQuery = graphql`
             Parent {
               id
             }
+            Has_Parent
             Genres {
               data {
                 Genre_Name

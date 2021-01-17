@@ -1,6 +1,6 @@
 import slugify from "slugify"
 import { FluidObject } from "gatsby-image"
-import { TrackShape } from "../models/tracks"
+import { TrackShape, getChildTracks } from "../models/tracks"
 
 interface CategoryShape {
   name: string
@@ -20,76 +20,25 @@ export interface FeatureShape {
   vibes: CategoryShape[]
   slug: string
   energies: string[]
-  tracks: TrackShape[]
+  track: TrackShape[]
+  similar: TrackShape[]
   map: Function
 }
 
-export interface QueryTrackShape {
-  data: {
-    Track_Title: string
-    URL: string
-    Length: string
-    Vibes: VibeQueryShape[]
-    Genres: GenreQueryShape[]
-    Energy: {
-      data: {
-        Energy_Name: string
-      }
-    }[]
-  }
-  id: string
-  reduce: Function
-  map: Function
-}
-
-export interface GenreQueryShape {
-  data: { Genre_Name: string }
-}
-export interface VibeQueryShape {
-  data: { Vibe_Name: string }
-}
-
-export interface QueryFeatureShape {
-  node: {
-    id: string
-    data: {
-      Feature_Name: string
-      Feature_Image: {
-        localFiles: {
-          childImageSharp: {
-            fluid: FluidObject
-          }
-        }[]
-      }
-      Feature_SVG: {
-        localFiles: {
-          publicURL: string
-        }[]
-      }
-      Feature_Tracks: QueryTrackShape
-      Feature_Color: string
-      Feature_Blurb: string
-      Feature_Description: string
-      Feature_Video: string
-    }
-  }
-  reduce: Function
-}
-
-export const getFeature = (query: QueryFeatureShape): FeatureShape => {
+export const getFeature = (query: any): FeatureShape => {
   const base = query.node
   const data = base.data
-  const tracksData = data.Feature_Tracks
-
-  const energies = tracksData.reduce((energies: string[], track: QueryTrackShape) => {
+  const trackData = data.Feature_Track
+  const similarTracksData = data.Similar_Tracks
+  const energies = trackData.reduce((energies: string[], track: any) => {
     energies.push(track.data.Energy[0].data.Energy_Name)
     return energies.filter((energy, pos) => {
       return energies.indexOf(energy) == pos
     })
   }, [])
 
-  const genres = tracksData.reduce((genres: CategoryShape[], track: QueryTrackShape) => {
-    const trackGenres = track.data.Genres.map((genre: GenreQueryShape) => ({
+  const genres = trackData.reduce((genres: CategoryShape[], track: any) => {
+    const trackGenres = track.data.Genres.map((genre: any) => ({
       name: genre.data.Genre_Name,
       slug: slugify(genre.data.Genre_Name, { lower: true, strict: true }),
     }))
@@ -98,8 +47,8 @@ export const getFeature = (query: QueryFeatureShape): FeatureShape => {
     return genres
   }, [])
 
-  const vibes = tracksData.reduce((vibes: CategoryShape[], track: QueryTrackShape) => {
-    const trackVibes = track.data.Vibes.map((vibe: VibeQueryShape) => ({
+  const vibes = trackData.reduce((vibes: CategoryShape[], track: any) => {
+    const trackVibes = track.data.Vibes.map((vibe: any) => ({
       name: vibe.data.Vibe_Name,
       slug: slugify(vibe.data.Vibe_Name, { lower: true, strict: true }),
     }))
@@ -108,7 +57,7 @@ export const getFeature = (query: QueryFeatureShape): FeatureShape => {
     return vibes
   }, [])
 
-  const tracks = tracksData.map((track: QueryTrackShape) => ({
+  const track: TrackShape[] = trackData.map((track: any) => ({
     id: track.id,
     title: track.data.Track_Title,
     url: track.data.URL,
@@ -117,6 +66,19 @@ export const getFeature = (query: QueryFeatureShape): FeatureShape => {
     genres: null,
     vibes: null,
     energy: null,
+    children: getChildTracks(track.id),
+  }))
+
+  const similarTracks: TrackShape[] = similarTracksData.map((track: any) => ({
+    id: track.id,
+    title: track.data.Track_Title,
+    url: track.data.URL,
+    length: track.data.Length,
+    priority: 0,
+    genres: null,
+    vibes: null,
+    energy: null,
+    children: getChildTracks(track.id),
   }))
 
   const feature = {
@@ -131,7 +93,8 @@ export const getFeature = (query: QueryFeatureShape): FeatureShape => {
     slug: slugify(data.Feature_Name, { lower: true, strict: true }),
     genres: genres,
     vibes: vibes,
-    tracks: tracks,
+    track: track,
+    similar: similarTracks,
     energies: energies,
     map: Function,
   }

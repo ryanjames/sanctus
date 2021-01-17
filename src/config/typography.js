@@ -33,6 +33,7 @@ const typography = () => {
       h1: tw`text-4xl mb-10`,
       h2: tw`text-4xl leading-tight`,
       h3: tw`text-4xl leading-tight`,
+      h4: tw`text-xl mb-0 font-bold`,
     },
     xxl: {},
   }

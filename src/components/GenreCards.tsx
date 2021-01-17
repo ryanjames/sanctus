@@ -13,10 +13,9 @@ interface Category {
   slug: string
   count: number
   image: FluidObject
-  className: string
 }
 
-const GenreCards: React.FC<{ className: string }> = ({ className }) => {
+const GenreCards: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <StyledGenreCards tw="flex flex-wrap -mx-4" className={className}>
       {playlists().map((playlist: Category) => (

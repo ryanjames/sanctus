@@ -1,4 +1,5 @@
 import slugify from "slugify"
+import childTracks from "../staticQueries/childTracks"
 
 export interface CategoryShape {
   name: string
@@ -17,8 +18,10 @@ export interface TrackShape {
   energy: CategoryShape
   search?: string
   favorite?: boolean
+  parent?: string
   children?: TrackShape[]
   filter?: Function
+  reduce?: Function
 }
 
 export interface GenreQueryShape {
@@ -69,10 +72,22 @@ export interface QueryShape {
   edges: QueryNodeShape
 }
 
+export const getChildTracks = (parentId: string): Array<TrackShape> => {
+  const trackChildren = childTracks().reduce((filtered: Array<TrackShape>, childTrack: TrackShape) => {
+    if (childTrack.parent === parentId) {
+      filtered.push(childTrack)
+    }
+    return filtered
+  }, [])
+  trackChildren.sort((a: TrackShape, b: TrackShape) => (a.length > b.length ? 1 : -1)).reverse()
+  return trackChildren
+}
+
 export const getTracks = (query: QueryShape): Array<TrackShape> => {
   const tracksData = query.edges
   const tracks = tracksData.reduce((filtered: Array<TrackShape>, track: QueryNodeShape) => {
     if (track.node.data.Parent === null) {
+      const children: TrackShape[] = []
       const parentTrack = {
         id: track.node.id,
         title: track.node.data.Track_Title,
@@ -95,7 +110,7 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
           slug: slugify(vibe.data.Vibe_Name, { lower: true, strict: true }),
         })),
         search: "",
-        children: [],
+        children: children,
         url: track.node.data.URL,
       }
 
@@ -120,29 +135,10 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
       parentTrack.search = "".concat(parentTrack.title, " | ", genres, " | ", vibes)
 
       // Add child tracks
-      const childTracks = tracksData.reduce((filtered: Array<TrackShape>, track: QueryNodeShape) => {
-        if (track.node.data.Parent !== null) {
-          if (track.node.data.Parent[0].id === parentTrack.id) {
-            const childTrack = {
-              id: track.node.id,
-              title: track.node.data.Track_Title,
-              length: track.node.data.Length,
-              url: track.node.data.URL,
-              energy: {
-                id: track.node.data.Energy[0].id,
-                name: track.node.data.Energy[0].data.Energy_Name,
-                slug: slugify(track.node.data.Energy[0].data.Energy_Name, { lower: true, strict: true }),
-              },
-              genres: [],
-              vibes: [],
-              priority: 0,
-            }
-            filtered.push(childTrack)
-          }
-        }
-        return filtered
-      }, [])
-      parentTrack.children = childTracks
+      const trackChildren = getChildTracks(parentTrack.id)
+      console.log(trackChildren)
+
+      parentTrack.children = trackChildren
 
       filtered.push(parentTrack)
     }
@@ -151,7 +147,7 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
     return filtered
   }, [])
 
-  tracks.sort((a: TrackShape, b: TrackShape) => (a.priority > b.priority ? 1 : -1)).reverse()
+  tracks.sort((a: TrackShape, b: TrackShape) => (a.priority > b.priority ? 1 : -1))
 
   return tracks
 }

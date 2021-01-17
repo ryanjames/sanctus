@@ -32,7 +32,12 @@ export default LibraryGenrePage
 
 export const pageQuery = graphql`
   query PlaylistTracksQuery($id: String!) {
-    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Playlists: { elemMatch: { id: { eq: $id } } } } }) {
+    tracks: allAirtable(
+      filter: {
+        table: { eq: "Tracks" }
+        data: { Has_Parent: { eq: 0 }, Playlists: { elemMatch: { id: { eq: $id } } } }
+      }
+    ) {
       edges {
         node {
           data {
@@ -40,6 +45,7 @@ export const pageQuery = graphql`
             Parent {
               id
             }
+            Has_Parent
             Genres {
               data {
                 Genre_Name

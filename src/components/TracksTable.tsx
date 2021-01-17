@@ -67,7 +67,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
       tw="w-full xs:w-2/3 sm:w-1/2 py-3 pl-3"
       type="text"
       onChange={handleSearch}
-      placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks`}
+      placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks (vibes, energy, or title)`}
     />
   )
 

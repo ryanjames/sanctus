@@ -68,7 +68,7 @@ module.exports = {
           {
             baseId: `appc9QlhzusUzuTvp`,
             tableName: `Features`,
-            tableLinks: [`Feature_Vibes`, `Feature_Genres`, `Feature_Tracks`],
+            tableLinks: [`Feature_Vibes`, `Feature_Genres`, `Feature_Track`, `Similar_Tracks`],
             mapping: { Feature_Image: `fileNode`, Feature_SVG: `fileNode` },
           },
           {

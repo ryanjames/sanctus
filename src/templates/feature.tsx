@@ -8,7 +8,7 @@ import tw from "twin.macro"
 import { ReactSVG } from "react-svg"
 import PageLink from "../components/PageLink"
 import MD from "../utils/MD"
-import { getFeature, QueryFeatureShape } from "../models/feature"
+import { getFeature } from "../models/feature"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import TrackDetails from "../components/TrackDetails"
 import { Helmet } from "react-helmet"
@@ -18,7 +18,7 @@ import features from "../staticQueries/features"
 type Props = {
   data: {
     feature: {
-      edges: QueryFeatureShape[]
+      edges: string[]
     }
   }
   search?: {
@@ -69,7 +69,16 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
             <MD content={feature.description} />
           </div>
           <ActiveTrackProvider>
-            {feature.tracks.map(track => (
+            {feature.track && (
+              <>
+                <h4 tw="mb-8">Track in this feature</h4>
+                <div tw="pt-6 pb-10" className="track">
+                  <TrackDetails track={feature.track[0]} />
+                </div>
+              </>
+            )}
+            {feature.similar.length && <h4 tw="mb-8">Similar Tracks</h4>}
+            {feature.similar.map(track => (
               <div key={track.id} tw="pt-6" className="track">
                 <TrackDetails track={track} />
               </div>
@@ -122,9 +131,17 @@ export const pageQuery = graphql`
                 publicURL
               }
             }
-            Feature_Tracks {
+            Similar_Tracks {
               data {
                 Track_Title
+                URL
+              }
+              id
+            }
+            Feature_Track {
+              data {
+                Track_Title
+
                 URL
                 Vibes {
                   data {

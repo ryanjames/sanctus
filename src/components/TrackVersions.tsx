@@ -28,7 +28,7 @@ const TrackVersions: React.FC<Props> = ({ className, track, handleChangeVersion,
   const handleChange = (event: Version) => {
     handleChangeVersion(event?.value || "")
   }
-  const download = version.url.replace("raw=1", "dl=0").replace("dl.dropboxusercontent", "www.dropbox")
+  const download = version.url.replace("raw=1", "dl=1").replace("dl.dropboxusercontent", "www.dropbox")
   return (
     <StyledTrackVersions color={hex2rgba(colors["dk-green"], 0.2)} className={`container ${className}`}>
       {tracks.length > 1 && (
@@ -43,8 +43,8 @@ const TrackVersions: React.FC<Props> = ({ className, track, handleChangeVersion,
           options={tracks}
         />
       )}
-      <a href={`mailto:dankoke@gmail.com?subject=License for '${version.title}' track`}>License</a>
-      <a href={download}>Download </a>
+      <a href={`mailto:dancoke@gmail.com?subject=License for '${version.title}' track`}>License</a>
+      <a href={download}>Download</a>
     </StyledTrackVersions>
   )
 }
