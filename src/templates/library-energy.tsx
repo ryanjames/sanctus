@@ -24,7 +24,10 @@ export default LibraryEnergyPage
 export const pageQuery = graphql`
   query EnergyTracksQuery($id: String!) {
     tracks: allAirtable(
-      filter: { table: { eq: "Tracks" }, data: { Has_Parent: { eq: 0 }, Energy: { elemMatch: { id: { eq: $id } } } } }
+      filter: {
+        table: { eq: "Tracks" }
+        data: { Published: { eq: true }, Has_Parent: { eq: 0 }, Energy: { elemMatch: { id: { eq: $id } } } }
+      }
     ) {
       edges {
         node {

@@ -4,7 +4,6 @@ import TracksTable from "../components/TracksTable"
 import LibraryPageLayout from "../components/LibraryPageLayout"
 import { getTracks, QueryShape, GenreQueryShape } from "../models/tracks"
 
-
 type Props = {
   data: {
     tracks: QueryShape
@@ -34,7 +33,10 @@ export default LibraryGenrePage
 export const pageQuery = graphql`
   query GenreTracksQuery($id: String!) {
     tracks: allAirtable(
-      filter: { table: { eq: "Tracks" }, data: { Has_Parent: { eq: 0 }, Genres: { elemMatch: { id: { eq: $id } } } } }
+      filter: {
+        table: { eq: "Tracks" }
+        data: { Published: { eq: true }, Has_Parent: { eq: 0 }, Genres: { elemMatch: { id: { eq: $id } } } }
+      }
     ) {
       edges {
         node {

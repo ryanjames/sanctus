@@ -5,7 +5,10 @@ const features = (): Array<FeatureShape> => {
   const query = useStaticQuery(
     graphql`
       query FeaturesQuery {
-        query: allAirtable(sort: { fields: data___Feature_Order }, filter: { table: { eq: "Features" } }) {
+        query: allAirtable(
+          sort: { fields: data___Feature_Order }
+          filter: { data: { Feature_Published: { eq: true } }, table: { eq: "Features" } }
+        ) {
           edges {
             node {
               id

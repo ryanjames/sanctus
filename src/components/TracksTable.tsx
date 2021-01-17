@@ -159,7 +159,7 @@ const StyledTracksTable = styled.div`
   }
   .table-placeholder,
   .table-rows {
-    height: calc(100vh - 280px);
+    height: calc(100vh - 300px);
     ${mediaQueries}
   }
   .track-row.hide {

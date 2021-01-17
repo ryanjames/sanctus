@@ -136,7 +136,6 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
 
       // Add child tracks
       const trackChildren = getChildTracks(parentTrack.id)
-      console.log(trackChildren)
 
       parentTrack.children = trackChildren
 

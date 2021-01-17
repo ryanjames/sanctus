@@ -33,6 +33,9 @@ const TrackPlayer: React.FC<Props> = ({ track, className }) => {
       const color2 = hex2rgba(colors["dk-green"], 0.4)
       const progressColor = hex2rgba(colors["dk-green"], 0.5)
       const linGrad = window.document.createElement("canvas").getContext("2d")?.createLinearGradient(0, 0, 0, 120)
+      const timeContainer = document.getElementById(`time-${track.id}`)
+      let durTotal = 0
+
       linGrad?.addColorStop(0.5, color1)
       linGrad?.addColorStop(0.5, color2)
 
@@ -61,17 +64,30 @@ const TrackPlayer: React.FC<Props> = ({ track, className }) => {
       window.player.on("play", () => {
         document.body.classList.remove("player-paused")
         document.body.classList.add("player-loaded", "player-playing")
+        durTotal = window.player.getDuration()
       })
+      if (timeContainer) {
+        window.player.on("audioprocess", (time: any) => {
+          durTotal = durTotal == 0 ? window.player.getDuration() : durTotal
+          const durMinutes = Math.floor(durTotal / 60)
+          const durSeconds = ("00" + Math.floor(durTotal - durMinutes * 60)).slice(-2)
+          const duration = durMinutes + ":" + durSeconds
+          const minutes = Math.floor((time % 3600) / 60)
+          const seconds = ("00" + Math.floor(time % 60)).slice(-2)
+          timeContainer.textContent = minutes + ":" + seconds + " | " + duration
+        })
+      }
     }
   })
 
   return (
-    <StyledTrackPlayer className={className} tw="flex items-center" color={colors["dk-green"]}>
+    <StyledTrackPlayer className={className} tw="flex relative items-center" color={colors["dk-green"]}>
       <div className="controls" tw="w-8 h-6 relative">
         <Pause className="pause-control" onClick={handlePause} />
         <Play className="play-control" onClick={handlePlay} />
       </div>
       <div tw="flex-1" id={`t-${track.id}`} />
+      <div tw="absolute right-0 bottom-0" id={`time-${track.id}`} />
     </StyledTrackPlayer>
   )
 }
@@ -79,7 +95,7 @@ const TrackPlayer: React.FC<Props> = ({ track, className }) => {
 const StyledTrackPlayer = styled.div<{ color: string }>`
   ${tw``}
   height: 60px;
-  padding: 50px 0 40px;
+  padding: 50px 0;
   .play-control,
   .pause-control {
     opacity: 0;

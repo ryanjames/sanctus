@@ -35,7 +35,7 @@ export const pageQuery = graphql`
     tracks: allAirtable(
       filter: {
         table: { eq: "Tracks" }
-        data: { Has_Parent: { eq: 0 }, Playlists: { elemMatch: { id: { eq: $id } } } }
+        data: { Published: { eq: true }, Has_Parent: { eq: 0 }, Playlists: { elemMatch: { id: { eq: $id } } } }
       }
     ) {
       edges {

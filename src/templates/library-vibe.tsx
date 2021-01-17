@@ -33,7 +33,10 @@ export default LibraryVibePage
 export const pageQuery = graphql`
   query VibeTracksQuery($id: String!) {
     tracks: allAirtable(
-      filter: { table: { eq: "Tracks" }, data: { Has_Parent: { eq: 0 }, Vibes: { elemMatch: { id: { eq: $id } } } } }
+      filter: {
+        table: { eq: "Tracks" }
+        data: { Published: { eq: true }, Has_Parent: { eq: 0 }, Vibes: { elemMatch: { id: { eq: $id } } } }
+      }
     ) {
       edges {
         node {
