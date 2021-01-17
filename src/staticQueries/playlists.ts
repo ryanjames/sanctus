@@ -1,10 +1,17 @@
 import { graphql, useStaticQuery } from "gatsby"
 import slugify from "slugify"
 
+interface Image {
+  full: string
+  thumbnail: string
+}
+
 export interface PlaylistShape {
   id: string
   title: string
   slug: string
+  count: number
+  image: string | Image
   map: Function
 }
 
@@ -17,6 +24,23 @@ const playlists = (): PlaylistShape => {
             node {
               data {
                 Playlist_Name
+                Playlist_Image {
+                  localFiles {
+                    childImageSharp {
+                      fluid(maxWidth: 600) {
+                        ...GatsbyImageSharpFluid
+                      }
+                    }
+                  }
+                }
+                Playlist_Tracks {
+                  id
+                  data {
+                    Parent {
+                      id
+                    }
+                  }
+                }
               }
               id
             }
@@ -29,11 +53,16 @@ const playlists = (): PlaylistShape => {
     query: { edges: PlaylistsData },
   } = query
 
-  const Playlists = PlaylistsData.map((playlist: any) => ({
-    id: playlist.node.id,
-    title: playlist.node.data.Playlist_Name,
-    slug: slugify(playlist.node.data.Playlist_Name, { lower: true, strict: true }),
-  }))
+  const Playlists = PlaylistsData.map((playlist: any) => {
+    const tracks = playlist.node.data.Playlist_Tracks.filter((track: any) => track.data.Parent === null)
+    return {
+      id: playlist.node.id,
+      title: playlist.node.data.Playlist_Name,
+      slug: slugify(playlist.node.data.Playlist_Name, { lower: true, strict: true }),
+      image: playlist.node.data.Playlist_Image.localFiles[0].childImageSharp.fluid,
+      count: tracks.length,
+    }
+  })
 
   return Playlists
 }
