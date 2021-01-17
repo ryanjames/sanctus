@@ -19,7 +19,7 @@ const LibraryCategories: React.FC<Props> = ({ id }) => {
         {playlists().map((playlist: PlaylistShape) => (
           <li key={playlist.id}>
             <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/${playlist.slug}`}>
-              {playlist.title}
+              {playlist.title == "Favorite" ? "Favorites" : playlist.title}
             </PageLink>
           </li>
         ))}
