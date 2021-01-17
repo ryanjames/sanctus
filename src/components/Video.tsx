@@ -1,9 +1,8 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import ReactPlayer from "react-player"
 import hex2rgba from "hex2rgba"
-import querySearch from "stringquery"
 import Img, { FluidObject } from "gatsby-image"
 import Play from "../graphics/play.svg"
 import Pause from "../graphics/pause.svg"
@@ -22,14 +21,17 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
   const [play, setPlay] = useState<boolean>(false)
   const [inProgress, setInProgress] = useState<boolean>(false)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [autoplay, setAutoplay] = useState<boolean>(false)
   const [volume, setVolume] = useState(1)
-
-  const autoplay = querySearch(location.search).play
 
   const handlePlay = () => {
     setPlay(false)
     setPlay(true)
   }
+
+  useEffect(() => {
+    setAutoplay(true)
+  })
 
   const handlePause = () => {
     let intVolume = 1
