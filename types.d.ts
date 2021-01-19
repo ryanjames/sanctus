@@ -10,6 +10,7 @@ interface Window {
     play: Function
     pause: Function
     getDuration: Function
+    id?: string
   }
 }
 

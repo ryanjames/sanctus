@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
+import { navigate } from "gatsby"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 
@@ -9,30 +9,31 @@ interface Props {
   className?: string
 }
 
-const clearPlayer = () => {
-  if (window.WaveSurfer) {
-    if (window.player) {
-      window.player.destroy()
-      document.body.className = ""
-    }
-  }
-}
-
 const PageLink: React.FC<Props> = ({ to, href, className, children }) => {
   let url = to || ""
   if (href) {
     url = `/${href.replace(/http:\/\/\/|http:\/\/|\//, "")}`
   }
 
+  const go = () => {
+    if (window.WaveSurfer && window.player && url) {
+      document.body.className = ""
+      window.player.pause()
+      window.player.destroy()
+    }
+    navigate(url)
+  }
+
   return (
-    <StyledPageLink to={url} className={className} onClick={clearPlayer}>
+    <StyledPageLink className={className} onClick={go}>
       {children}
     </StyledPageLink>
   )
 }
 
-const StyledPageLink = styled(Link)`
+const StyledPageLink = styled.span`
   ${tw``}
+  cursor: pointer;
 `
 
 export default PageLink

@@ -16,66 +16,80 @@ type Props = {
 
 const TrackPlayer: React.FC<Props> = ({ track, className }) => {
   const handlePlay = () => {
+    document.body.classList.add("player-playing")
+    document.body.classList.remove("player-paused")
     window.player.play()
   }
 
   const handlePause = () => {
+    document.body.classList.remove("player-playing")
+    document.body.classList.add("player-paused")
     window.player.pause()
   }
 
-  useEffect(() => {
-    if (window.WaveSurfer) {
-      if (window.player) {
-        window.player.destroy()
-        document.body.className = ""
-      }
-      const color1 = hex2rgba(colors["dk-green"], 0.6)
-      const color2 = hex2rgba(colors["dk-green"], 0.4)
-      const progressColor = hex2rgba(colors["dk-green"], 0.5)
-      const linGrad = window.document.createElement("canvas").getContext("2d")?.createLinearGradient(0, 0, 0, 120)
-      const timeContainer = document.getElementById(`time-${track.id}`)
-      let durTotal = 0
+  const loadPlayer = () => {
+    const color1 = hex2rgba(colors["dk-green"], 0.6)
+    const color2 = hex2rgba(colors["dk-green"], 0.4)
+    const progressColor = hex2rgba(colors["dk-green"], 0.5)
+    const linGrad = window.document.createElement("canvas").getContext("2d")?.createLinearGradient(0, 0, 0, 120)
+    linGrad?.addColorStop(0.5, color1)
+    linGrad?.addColorStop(0.5, color2)
+    const timeContainer = document.getElementById(`time-${track.id}`)
+    let durTotal = 0
 
-      linGrad?.addColorStop(0.5, color1)
-      linGrad?.addColorStop(0.5, color2)
+    window.player = new window.WaveSurfer({
+      container: `#t-${track.id}`,
+      waveColor: linGrad,
+      progressColor: progressColor,
+      cursorWidth: 2,
+      cursorColor: colors["dk-green"],
+      height: 60,
+      responsive: true,
+      barWidth: 3,
+      barGap: 1,
+      barMinHeight: 4,
+      barRadius: 4,
+    })
+    window.player.init()
+    window.player.load(track.url)
 
-      window.player = new window.WaveSurfer({
-        container: `#t-${track.id}`,
-        waveColor: linGrad,
-        progressColor: progressColor,
-        cursorWidth: 2,
-        cursorColor: colors["dk-green"],
-        height: 60,
-        responsive: true,
-        barWidth: 3,
-        barGap: 1,
-        barMinHeight: 4,
-        barRadius: 4,
-      })
-      window.player.init()
-      window.player.load(track.url)
-      window.player.on("ready", () => {
+    window.player.on("ready", () => {
+      setTimeout(() => {
         window.player.play()
-      })
-      window.player.on("pause", () => {
-        document.body.classList.remove("player-playing")
-        document.body.classList.add("player-paused")
-      })
-      window.player.on("play", () => {
         document.body.classList.remove("player-paused")
         document.body.classList.add("player-loaded", "player-playing")
         durTotal = window.player.getDuration()
+        window.player.id = track.id
+      }, 30)
+    })
+    if (timeContainer) {
+      window.player.on("audioprocess", (time: any) => {
+        durTotal = durTotal == 0 ? window.player.getDuration() : durTotal
+        const durMinutes = Math.floor(durTotal / 60)
+        const durSeconds = ("00" + Math.floor(durTotal - durMinutes * 60)).slice(-2)
+        const duration = durMinutes + ":" + durSeconds
+        const minutes = Math.floor((time % 3600) / 60)
+        const seconds = ("00" + Math.floor(time % 60)).slice(-2)
+        timeContainer.textContent = minutes + ":" + seconds + " | " + duration
       })
-      if (timeContainer) {
-        window.player.on("audioprocess", (time: any) => {
-          durTotal = durTotal == 0 ? window.player.getDuration() : durTotal
-          const durMinutes = Math.floor(durTotal / 60)
-          const durSeconds = ("00" + Math.floor(durTotal - durMinutes * 60)).slice(-2)
-          const duration = durMinutes + ":" + durSeconds
-          const minutes = Math.floor((time % 3600) / 60)
-          const seconds = ("00" + Math.floor(time % 60)).slice(-2)
-          timeContainer.textContent = minutes + ":" + seconds + " | " + duration
-        })
+    }
+  }
+
+  useEffect(() => {
+    if (!window.player) {
+      const waveSurferLoaded = () => {
+        // Make sure Wavesurfer is loaded
+        if (window.WaveSurfer) {
+          loadPlayer()
+          clearInterval(checkWaveSurferLoaded)
+        }
+      }
+      const checkWaveSurferLoaded = setInterval(waveSurferLoaded, 1000)
+    } else {
+      if (window.player && window.player.id !== track.id) {
+        document.body.className = ""
+        window.player.destroy()
+        loadPlayer()
       }
     }
   })

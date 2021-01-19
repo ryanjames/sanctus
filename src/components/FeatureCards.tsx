@@ -61,12 +61,24 @@ const FeatureCards: React.FC<Props> = ({ features }) => {
 const StyledFeatureCards = styled.div`
   ${tw`flex flex-wrap`}
   .w-1-2 {
-    ${tw`relative w-1/2`}
-    padding-bottom: 33.3333%;
+    ${tw`relative w-full md:w-1/2`}
+    padding-bottom: 100%;
+    @media (min-width: 480px) {
+      padding-bottom: 60%;
+    }
+    @media (min-width: 960px) {
+      padding-bottom: 33.3333%;
+    }
   }
   .w-1-3 {
-    ${tw`relative w-1/3`}
-    padding-bottom: 33%;
+    ${tw`relative w-full md:w-1/3`}
+    padding-bottom: 100%;
+    @media (min-width: 480px) {
+      padding-bottom: 50%;
+    }
+    @media (min-width: 960px) {
+      padding-bottom: 33.3333%;
+    }
   }
 `
 export default FeatureCards

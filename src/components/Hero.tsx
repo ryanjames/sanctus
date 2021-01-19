@@ -16,7 +16,7 @@ const Hero: React.FC<Props> = ({ className, content }) => {
     <StyledHero className={`container ${className}`}>
       <Container>
         <Col>
-          <div tw="flex flex-col py-48 max-w-4xl m-auto">
+          <div tw="flex flex-col py-12 md:py-48 max-w-4xl m-auto">
             <Logo className="logo" tw="mb-4" />
             <Composer className="composer" tw="mb-16" />
             <h2>

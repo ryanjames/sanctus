@@ -22,7 +22,7 @@ const FeatureCard: React.FC<Props> = ({ feature }) => {
         <div tw="flex flex-col items-center max-w-md text-center">
           <ReactSVG src={feature.logo} />
           <h3>{feature.title}</h3>
-          <p tw="text-lg">{feature.blurb}</p>
+          <p tw="text-lg px-6">{feature.blurb}</p>
         </div>
       </div>
       <div className="image-container">
