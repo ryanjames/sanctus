@@ -28,7 +28,11 @@ const StyledSection = styled.section`
 `
 
 export const Col: React.FC<SharedProps> = ({ className = "", children }) => {
-  return <StyledCol className={`col ${className}`}>{children}</StyledCol>
+  return (
+    <StyledCol tw="w-full" className={`col ${className}`}>
+      {children}
+    </StyledCol>
+  )
 }
 
 let gutterQueries = `
@@ -83,7 +87,6 @@ mQw.forEach((value: string, key: string) => {
 })
 
 interface ContainerProps extends SharedProps {
-  full?: boolean
   className?: string
 }
 
