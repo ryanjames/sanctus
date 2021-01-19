@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import colors from "../config/colors"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
+import { isMobile } from "react-device-detect"
 import hex2rgba from "hex2rgba"
 import Play from "../graphics/play.svg"
 import Pause from "../graphics/pause.svg"
@@ -39,7 +40,7 @@ const TrackPlayer: React.FC<Props> = ({ track, className }) => {
 
     window.player = new window.WaveSurfer({
       container: `#t-${track.id}`,
-      waveColor: linGrad,
+      waveColor: isMobile ? color2 : linGrad,
       progressColor: progressColor,
       cursorWidth: 2,
       cursorColor: colors["dk-green"],
@@ -55,11 +56,15 @@ const TrackPlayer: React.FC<Props> = ({ track, className }) => {
 
     window.player.on("ready", () => {
       setTimeout(() => {
-        window.player.play()
-        document.body.classList.remove("player-paused")
-        document.body.classList.add("player-loaded", "player-playing")
         durTotal = window.player.getDuration()
         window.player.id = track.id
+        if (isMobile) {
+          document.body.classList.add("player-loaded", "player-paused")
+        } else {
+          window.player.play()
+          document.body.classList.remove("player-paused")
+          document.body.classList.add("player-loaded", "player-playing")
+        }
       }, 30)
     })
     if (timeContainer) {

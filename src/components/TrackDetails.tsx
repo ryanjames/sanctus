@@ -2,6 +2,7 @@ import React, { useContext } from "react"
 import styled from "@emotion/styled"
 import { keyframes } from "@emotion/react"
 import colors from "../config/colors"
+import { isMobile } from "react-device-detect"
 import tw from "twin.macro"
 import TrackPlayer from "./TrackPlayer"
 import TrackVersions from "./TrackVersions"
@@ -50,7 +51,8 @@ const TrackDetails: React.FC<Props> = ({ track }) => {
         </div>
       ) : (
         <div onClick={handleExpand} className="launcher" tw="text-base font-bold absolute flex items-center">
-          <Play tw="mr-2" /> {track.title} {versions()}
+          {!isMobile && <Play tw="mr-2" />}
+          {track.title} {versions()}
         </div>
       )}
     </StyledTrackDetails>
@@ -90,7 +92,6 @@ const StyledTrackDetails = styled.div<{ color: string; id: string }>`
     }
   }
   .launcher {
-    margin-left: -3px;
     top: -56px;
     bottom: 100%;
     svg {
