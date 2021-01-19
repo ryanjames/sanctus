@@ -6,6 +6,7 @@ import Play from "../graphics/play.svg"
 import { ReactSVG } from "react-svg"
 import hex2rgba from "hex2rgba"
 import Img from "gatsby-image"
+import { isMobile } from "react-device-detect"
 import { FeatureShape } from "../models/feature"
 
 interface Props {
@@ -17,7 +18,8 @@ const FeatureCard: React.FC<Props> = ({ feature }) => {
   const color2 = hex2rgba(feature.color, 0)
 
   return (
-    <StyledFeatureCard color1={color1} color2={color2}>
+    <StyledFeatureCard color1={color1} color2={color2} className={isMobile ? "-mobile" : "-desktop"}>
+      {isMobile && <PageLink tw="absolute inset-0 z-20" to={`/features/${feature.slug}`} />}
       <div className="client">
         <div tw="flex flex-col items-center max-w-md text-center">
           <ReactSVG src={feature.logo} />
@@ -78,7 +80,7 @@ const StyledFeatureCard = styled.div<{ color1: string; color2: string }>`
     top: 50%;
     transform: translateY(-50%) scale(1);
   }
-  &:hover .image-container {
+  &.-desktop:hover .image-container {
     transform: translateY(-50%) scale(1.3);
   }
   .client {
@@ -87,7 +89,7 @@ const StyledFeatureCard = styled.div<{ color1: string; color2: string }>`
     transition: all 0.4s ease-in-out;
     opacity: 1;
   }
-  &:hover .client {
+  &.-desktop:hover .client {
     opacity: 0;
     filter: blur(1rem);
     transform: scale(0.4);
@@ -108,7 +110,7 @@ const StyledFeatureCard = styled.div<{ color1: string; color2: string }>`
       }
     }
   }
-  &:hover .play {
+  &.-desktop:hover .play {
     transform: translateX(-50%) translateY(-50%) scale(1);
     opacity: 1;
   }
@@ -127,7 +129,7 @@ const StyledFeatureCard = styled.div<{ color1: string; color2: string }>`
     opacity: 0;
     transform: translateX(100%);
   }
-  &:hover .categories {
+  &.-desktop:hover .categories {
     opacity: 1;
     transform: translateX(0);
   }
