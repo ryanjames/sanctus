@@ -64,7 +64,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
 
   const SearchInput = (
     <input
-      tw="w-full xs:w-2/3 sm:w-1/2 py-3 pl-3"
+      tw="w-full md:w-1/2 py-3 pl-3"
       type="text"
       onChange={handleSearch}
       placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks (vibes, energy, or title)`}
@@ -79,11 +79,11 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
           tw="flex flex-wrap w-full h-16 items-center"
           className={`track-row ${activeTrack.id == track.id ? "hide" : ""}`}
         >
-          <div tw="w-3/8 text-lg font-bold" />
-          <div tw="w-1/8" className="category-link">
+          <div tw="w-full md:w-3/8 text-lg font-bold" />
+          <div tw="hidden md:block w-1/8" className="category-link">
             <PageLink to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</PageLink>
           </div>
-          <div tw="w-2/8">
+          <div tw="hidden md:block w-2/8">
             {track.genres?.map((genre: CategoryShape, index) => (
               <span key={genre.id} className="category-link">
                 <PageLink to={`/library/genre/${genre.slug}`}>{genre.name}</PageLink>
@@ -91,7 +91,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
               </span>
             ))}
           </div>
-          <div tw="w-2/8">
+          <div tw="hidden md:block w-2/8">
             {track.vibes?.map((vibe: CategoryShape, index) => (
               <span key={vibe.id} className="category-link">
                 <PageLink to={`/library/vibe/${vibe.slug}`}>{vibe.name}</PageLink>
@@ -118,10 +118,10 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
         <div className="tracks-table">
           <div className="table-headings">
             <div tw="text-xs font-bold pt-9 uppercase tracking-widest pb-4 border-gray-200 border-0 border-b border-solid flex">
-              <div tw="w-3/8">Title</div>
-              <div tw="w-1/8">Energy</div>
-              <div tw="w-2/8">Genres</div>
-              <div tw="w-2/8">Vibes</div>
+              <div tw="w-full md:w-3/8">Title</div>
+              <div tw="hidden md:block w-1/8">Energy</div>
+              <div tw="hidden md:block w-2/8">Genres</div>
+              <div tw="hidden md:block w-2/8">Vibes</div>
             </div>
           </div>
           <div className="table-rows" tw="overflow-y-scroll">
@@ -135,32 +135,32 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
   )
 }
 
-let mediaQueries = ""
+let rowWidthQueries = ""
 let i = 0
 mQw.forEach((value: string, key: string) => {
-  const outerSpace = `(100vw - ${sizes.get(key)}) / 2`
-  const gutterKey = Object.keys(gutters)[i]
-  const gutterValue = parseInt((gutters as any)[gutterKey].replace("px", "")) + "px"
-  mediaQueries = mediaQueries.concat(
-    `
-    @media (${value}) { 
-      padding-right: calc(${outerSpace} + ${gutterValue})
-    }`
-  )
+  if (i > 2) {
+    const outerSpace = `(100vw - ${sizes.get(key)}) / 2`
+    const gutterKey = Object.keys(gutters)[i]
+    const gutterValue = parseInt((gutters as any)[gutterKey].replace("px", "")) + "px"
+    rowWidthQueries = rowWidthQueries.concat(
+      `
+      @media (${value}) { 
+        padding-right: calc(${outerSpace} + ${gutterValue})
+      }`
+    )
+  }
   i += 1
 })
 
 const StyledTracksTable = styled.div`
+  .table-headings,
+  .table-rows,
   .table-placeholder {
-    ${mediaQueries}
-  }
-  .table-headings {
-    ${mediaQueries}
+    ${rowWidthQueries}
   }
   .table-placeholder,
   .table-rows {
-    height: calc(100vh - 300px);
-    ${mediaQueries}
+    height: calc(100vh - 280px);
   }
   .track-row.hide {
     display: none;

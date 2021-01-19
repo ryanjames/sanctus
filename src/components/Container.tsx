@@ -31,7 +31,10 @@ export const Col: React.FC<SharedProps> = ({ className = "", children }) => {
   return <StyledCol className={`col ${className}`}>{children}</StyledCol>
 }
 
-let gutterQueries = ""
+let gutterQueries = `
+  padding-left: ${gutters["base"]};
+  padding-right: ${gutters["base"]};
+`
 let i = 0
 sizes.forEach((value: string) => {
   const gutterKey = Object.keys(gutters)[i]
@@ -40,12 +43,16 @@ sizes.forEach((value: string) => {
     @media (min-width: ${value}) { 
       padding-left: ${(gutters as any)[gutterKey]};
       padding-right: ${(gutters as any)[gutterKey]};
-    }
+    };
     `
   )
   i += 1
 })
-let outerQueries = ""
+
+let outerQueries = `
+  margin-left: -${gutters["base"]};
+  margin-right: -${gutters["base"]};
+`
 let j = 0
 sizes.forEach((value: string) => {
   const gutterKey = Object.keys(gutters)[j]
@@ -54,54 +61,47 @@ sizes.forEach((value: string) => {
     @media (min-width: ${value}) { 
       margin-left: -${(gutters as any)[gutterKey]};
       margin-right: -${(gutters as any)[gutterKey]};
-    }
+    };
     `
   )
   j += 1
 })
 
 const StyledCol = styled.div`
-  width: 100%;
   ${gutterQueries}
 `
 
-let queriesString = ""
+let widthQueries = ""
 mQw.forEach((value: string, key: string) => {
-  queriesString = queriesString.concat(
+  widthQueries = widthQueries.concat(
     `
-    @media (${value}) { 
+    @media (${value}) {
       max-width: ${sizes.get(key)};
-      ${gutterQueries}
-    }`
+    };
+    `
   )
 })
-
-const mediaQueries = (props: { full: boolean }) =>
-  props.full
-    ? `width: 100%;`
-    : `
-    max-width: 360px;
-    ${queriesString} 
- `
 
 interface ContainerProps extends SharedProps {
   full?: boolean
   className?: string
 }
 
-export const Container: React.FC<ContainerProps> = ({ children, className = "", full = false }) => {
+export const Container: React.FC<ContainerProps> = ({ children, className = "" }) => {
   return (
-    <StyledContainer className={`container ${className}`} full={full}>
+    <StyledContainer className={`container ${className}`}>
       <div>{children}</div>
     </StyledContainer>
   )
 }
 const StyledContainer = styled.div`
   ${tw`m-auto`}
-  ${mediaQueries}
+  max-width: 360px;
+  ${widthQueries}
+  ${gutterQueries}
   > div {
     ${tw`flex flex-wrap`};
-    ${outerQueries};
+    ${outerQueries}
   }
 `
 

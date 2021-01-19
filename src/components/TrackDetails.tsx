@@ -42,8 +42,8 @@ const TrackDetails: React.FC<Props> = ({ track }) => {
     <StyledTrackDetails color={colors["dk-green"]} id={track.id}>
       {activeTrack.id == track.id ? (
         <div tw="py-5" id={`c-${track.id}`}>
-          <div tw="flex justify-between items-center">
-            <h4 tw="text-xl mb-0 font-bold">{track.title}</h4>
+          <div tw="lg:flex justify-between items-center">
+            <h4 tw="text-base pb-4 lg:mb-0 lg:text-xl mb-0 font-bold">{track.title}</h4>
             <TrackVersions track={track} handleChangeVersion={handleChangeVersion} version={activeTrack?.version} />
           </div>
           <TrackPlayer className="track-player" track={{ id: activeTrack.version.id, url: activeTrack.version.url }} />

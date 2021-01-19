@@ -12,29 +12,29 @@ type Props = {
 
 const Header: React.FC<Props> = ({ page }) => (
   <StyledHeader>
-    <Container>
-      <Col>
-        <nav className="navigation" tw="flex items-center py-8">
-          <span tw="w-1/3">
-            <PageLink className={page == "about-and-contact" ? "selected" : ""} tw="mr-6" to="/about-and-contact">
-              About &amp; Contact
-            </PageLink>
-            <PageLink className={page == "features" ? "selected" : ""} to="/features">
-              Featured Work
-            </PageLink>
-          </span>
-          <PageLink tw="w-1/3 flex flex-col items-center" to="/">
-            <Logo className="logo" tw="mb-1" />
+    <Col tw="w-full">
+      <nav className="navigation" tw="flex items-center py-5 sm:py-8">
+        <span tw="hidden sm:block sm:w-1/3 text-sm md:text-base">
+          <PageLink className={page == "about-and-contact" ? "selected" : ""} tw="mr-5 md:mr-6" to="/about-and-contact">
+            About &amp; Contact
+          </PageLink>
+          <PageLink className={page == "features" ? "selected" : ""} to="/features">
+            Featured Work
+          </PageLink>
+        </span>
+        <div tw="sm:w-1/3 flex justify-center items-center">
+          <PageLink tw="flex flex-col sm:items-center" to="/">
+            <Logo className="logo" tw="mb-2" />
             <Composer className="composer" />
           </PageLink>
-          <span tw="w-1/3 text-right">
-            <PageLink className={page == "library" ? "selected" : ""} to="/library">
-              Music Library
-            </PageLink>
-          </span>
-        </nav>
-      </Col>
-    </Container>
+        </div>
+        <span tw="hidden sm:block sm:w-1/3 text-sm md:text-base text-right">
+          <PageLink className={page == "library" ? "selected" : ""} to="/library">
+            Music Library
+          </PageLink>
+        </span>
+      </nav>
+    </Col>
   </StyledHeader>
 )
 
@@ -44,7 +44,7 @@ const StyledHeader = styled.header`
   width: 100%;
   top: 0;
   background: #fff;
-  z-index: 100;
+  ${tw`z-20`}
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   .navigation .selected {
     font-weight: 600;
@@ -54,7 +54,7 @@ const StyledHeader = styled.header`
     height: auto;
   }
   .composer {
-    width: 62px;
+    width: 70px;
     height: auto;
   }
 `

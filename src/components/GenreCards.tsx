@@ -17,30 +17,44 @@ interface Category {
 
 const GenreCards: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <StyledGenreCards tw="flex flex-wrap -mx-4" className={className}>
+    <StyledGenreCards tw="flex flex-wrap -mx-3 sm:-mx-4" className={className}>
       {playlists().map((playlist: Category) => (
-        <PageLink key={playlist.id} tw="w-1/3 p-4 pb-8 relative block" to={`/library/${playlist.slug}`}>
-          <div className="image" tw="w-full relative mb-2">
+        <PageLink
+          key={playlist.id}
+          tw="w-1/2 sm:w-1/2 md:w-1/3 px-3 xs:px-4 pb-6 sm:pb-10 relative block"
+          to={`/library/${playlist.slug}`}
+        >
+          <div className="image" tw="w-full relative mb-1 sm:mb-2">
             <div className="image-container">
               <Img fluid={playlist.image} />
             </div>
           </div>
-          <div tw="flex justify-between items-center">
+          <div tw="flex justify-between items-center text-sm md:text-base">
             <strong>{playlist.title == "Favorite" ? "Favorites" : playlist.title}</strong>
-            <span>{playlist.count} tracks</span>
+            <span>
+              {playlist.count}
+              <span tw="hidden sm:inline"> tracks</span>
+            </span>
           </div>
         </PageLink>
       ))}
       {genres().map((genre: Category) => (
-        <PageLink key={genre.id} tw="w-1/3 p-4 pb-8 relative block" to={`/library/genre/${genre.slug}`}>
+        <PageLink
+          key={genre.id}
+          tw="w-1/2 sm:w-1/2 md:w-1/3 px-3 xs:px-4 pb-6 sm:pb-10 relative block"
+          to={`/library/genre/${genre.slug}`}
+        >
           <div className="image" tw="w-full relative mb-2">
             <div className="image-container">
               <Img fluid={genre.image} />
             </div>
           </div>
-          <div tw="flex justify-between items-center">
+          <div tw="flex justify-between items-center text-sm md:text-base">
             <strong>{genre.title}</strong>
-            <span>{genre.count} tracks</span>
+            <span>
+              {genre.count}
+              <span tw="hidden sm:inline"> tracks</span>
+            </span>
           </div>
         </PageLink>
       ))}
