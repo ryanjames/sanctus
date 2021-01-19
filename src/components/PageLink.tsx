@@ -31,7 +31,7 @@ const PageLink: React.FC<Props> = ({ to, href, className, children }) => {
   )
 }
 
-const StyledPageLink = styled.span`
+const StyledPageLink = styled.a`
   ${tw``}
   cursor: pointer;
 `

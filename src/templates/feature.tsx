@@ -42,11 +42,11 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
         <Col>
           <Video src={feature.video} poster={feature.image} color={feature.color} />
           <div className="meta" tw="-mt-16 pt-3">
-            <div className="client-badge" tw="flex items-center ">
+            <div className="client-badge" tw="flex items-center">
               <ReactSVG src={feature.logo} tw="opacity-30" />
               <h1 tw="text-2xl ml-4 mb-2">{feature.title}</h1>
             </div>
-            <div className="categories" tw="-mt-16">
+            <div className="categories" tw="hidden xs:block xs:-mt-16">
               <dl tw="flex w-full justify-end text-sm mb-0">
                 <dt tw="block">Genres</dt>
                 {feature.genres.map(genre => (
