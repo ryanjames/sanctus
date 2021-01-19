@@ -14,11 +14,11 @@ const IndexPage: React.FC = () => {
   return (
     <StyledLayout page="about-and-contact">
       <Container>
-        <Col tw="flex flex-wrap pt-24">
-          <div tw="w-1/3">
+        <Col tw="flex flex-wrap pt-6 md:pt-24">
+          <div tw="w-full md:w-1/3">
             <Img fluid={content.aboutImage} />
           </div>
-          <div tw="w-2/3 pl-24">
+          <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24">
             <MD content={content.aboutBody} />
             <div tw="mt-12 pt-12 border-0 border-solid border-t border-gray-200">
               <ContactForm />
