@@ -89,7 +89,7 @@ const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
   .library-categories {
     @media (max-width: 640px) {
       transition: transform 0.4s ease-in-out;
-      transform: translateY(-100%);
+      transform: translateY(-140%);
       &.-open {
         transform: translateY(0);
       }
