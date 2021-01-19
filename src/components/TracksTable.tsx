@@ -64,7 +64,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
 
   const SearchInput = (
     <input
-      tw="w-full md:w-1/2 py-3 pl-3"
+      tw="w-full lg:w-2/3 py-3 pl-3"
       type="text"
       onChange={handleSearch}
       placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks (vibes, energy, or title)`}
@@ -111,7 +111,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
     <StyledTracksTable>
       <>{SearchInput}</>
       {!searchValue && placeholder ? (
-        <div className="table-placeholder" tw="mt-12 overflow-y-scroll">
+        <div className="table-placeholder" tw="mt-12 overflow-y-scroll overflow-x-hidden">
           {placeholder}
         </div>
       ) : (
@@ -124,7 +124,7 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
               <div tw="hidden md:block w-2/8">Vibes</div>
             </div>
           </div>
-          <div className="table-rows" tw="overflow-y-scroll">
+          <div className="table-rows" tw="overflow-y-scroll overflow-x-hidden">
             {filteredData.map(track => (
               <TrackRow key={track.id} track={track} />
             ))}
@@ -160,7 +160,9 @@ const StyledTracksTable = styled.div`
   }
   .table-placeholder,
   .table-rows {
-    height: calc(100vh - 280px);
+    @media (min-width: 640px) {
+      height: calc(100vh - 280px);
+    }
   }
   .track-row.hide {
     display: none;

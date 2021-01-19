@@ -41,7 +41,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
         </>
       )}
       <main>{children}</main>
-      <footer tw="text-center w-full block py-24" className={page ? `footer-${page}` : ""}>
+      <footer tw="text-center w-full block md:py-24" className={page ? `footer-${page}` : ""}>
         &copy; {year} {defaults.owner}
       </footer>
     </StyledLayout>
@@ -54,10 +54,12 @@ const StyledLayout = styled.div`
     height: 80px;
   }
   .footer-library {
-    position: fixed;
-    bottom: 0;
-    padding-top: 0;
     padding-bottom: 24px;
+    @media (min-width: 640px) {
+      position: fixed;
+      bottom: 0;
+      padding-top: 0;
+    }
   }
 `
 

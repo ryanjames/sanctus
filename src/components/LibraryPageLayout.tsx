@@ -42,7 +42,7 @@ const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }
             <LibraryCategories id={id} closeMenu={closeMenu} />
           </Container>
         </Col>
-        <Col tw="flex-1 overflow-visible relative">
+        <Col tw="flex-1 md:overflow-y-visible overflow-x-hidden relative">
           <div tw="sm:hidden flex justify-between pb-6">
             <h3 tw="mb-0">
               <PageLink to="/library">Music Library</PageLink>
@@ -82,7 +82,6 @@ mQw.forEach((value: string, key: string) => {
   }
   i += 1
 })
-console.log(tableWidthQueries)
 
 const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
   ${tw``}
@@ -109,11 +108,13 @@ const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
     }
   }
   .table-size {
-    position: absolute;
-    @media (max-width: 480px) {
-      width: 86%;
+    margin-right: 0px !important;
+    overflow: hidden;
+    @media (min-width: 640px) {
+      position: absolute;
+      margin-right: 24px;
     }
-    @media (max-width: 1024px) {
+    @media (min-width: 640px) and (max-width: 1024px) {
       width: 88%;
     }
     ${tableWidthQueries}

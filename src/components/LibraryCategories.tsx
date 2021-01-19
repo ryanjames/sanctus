@@ -80,7 +80,7 @@ const StyledLibraryCategories = styled.div`
   margin-top: 40px;
   margin-left: -14px;
   overflow-y: scroll;
-  overflow-x: visible;
+  overflow-x: hidden;
   strong {
     text-transform: uppercase;
     letter-spacing: 0.2em;
