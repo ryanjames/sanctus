@@ -32,6 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
       </Helmet>
       <SEO defaults={defaults} title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
       {page !== "home" && (
