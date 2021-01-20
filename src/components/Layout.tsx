@@ -52,7 +52,10 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
 const StyledLayout = styled.div`
   ${tw``}
   .header-spacer {
-    height: 80px;
+    height: 63px;
+    @media (min-width: 640px) {
+      height: 80px;
+    }
   }
   .footer-library {
     padding-bottom: 24px;

@@ -1,5 +1,4 @@
 import React, { useMemo, useContext, useEffect, useState, SyntheticEvent } from "react"
-import withLocation from "../utils/withLocation"
 import PageLink from "./PageLink"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
@@ -19,10 +18,9 @@ export interface Props {
     s: string
   }
   placeholder?: React.FC | HTMLElement
-  navigate: Function
 }
 
-const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placeholder }) => {
+const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
 
   const memoizedData = useMemo(() => data, [data])
@@ -38,11 +36,10 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
     return !inputValue && memoizedData ? memoizedData : highlightSearch(query, filteredData, keys)
   }
 
-  const [filteredData, setFilteredData] = useState(filterResults(search.s))
-  const [searchValue, setSearchValue] = useState(search.s || "")
+  const [filteredData, setFilteredData] = useState(filterResults(""))
+  const [searchValue, setSearchValue] = useState("")
 
   useEffect(() => {
-    navigate(`?s=${searchValue}`)
     updateActiveTrack({
       id: "",
       version: versionDefault,
@@ -50,16 +47,12 @@ const TracksTable: React.FC<Props> = ({ data, title, search, navigate, placehold
     if (window.player) {
       window.player.destroy()
     }
-  }, [searchValue])
+  }, [window])
 
-  let searchTimeOut: ReturnType<typeof setTimeout>
   const handleSearch = (e: SyntheticEvent<HTMLInputElement>) => {
-    clearTimeout(searchTimeOut)
     const inputValue: string = (e.target as HTMLInputElement).value
-    searchTimeOut = setTimeout(() => {
-      setSearchValue(inputValue)
-      setFilteredData(filterResults(inputValue))
-    }, 150)
+    setSearchValue(inputValue)
+    setFilteredData(filterResults(inputValue))
   }
 
   const SearchInput = (
@@ -180,4 +173,4 @@ const StyledTracksTable = styled.div`
   }
 `
 
-export default withLocation(TracksTable)
+export default TracksTable
