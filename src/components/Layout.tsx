@@ -42,7 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
         </>
       )}
       <main>{children}</main>
-      <footer tw="text-center w-full block md:py-24" className={page ? `footer-${page}` : ""}>
+      <footer tw="text-center w-full block py-12" className={page ? `footer-${page}` : ""}>
         &copy; {year} {defaults.owner}
       </footer>
     </StyledLayout>
