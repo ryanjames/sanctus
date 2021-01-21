@@ -44,7 +44,7 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
     if (window.player) {
       window.player.destroy()
     }
-  }, [window])
+  }, [window ? window : null])
 
   const handleSearch = (e: SyntheticEvent<HTMLInputElement>) => {
     const inputValue: string = (e.target as HTMLInputElement).value
