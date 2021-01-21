@@ -12,12 +12,9 @@ import TrackDetails from "./TrackDetails"
 import highlightSearch from "../utils/highlightSearch"
 
 export interface Props {
-  data: []
-  title: string
-  search: {
-    s: string
-  }
-  placeholder?: React.FC | HTMLElement
+  data: any
+  title?: string
+  placeholder?: any
 }
 
 const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
@@ -57,7 +54,7 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
 
   const SearchInput = (
     <input
-      tw="w-full lg:w-2/3 py-3 pl-3"
+      tw="w-full lg:w-1/2 xl:w-1/3 py-3 pl-3"
       type="text"
       onChange={handleSearch}
       placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks (vibes, energy, or title)`}
@@ -118,7 +115,7 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
             </div>
           </div>
           <div className="table-rows" tw="overflow-y-scroll overflow-x-hidden">
-            {filteredData.map(track => (
+            {filteredData.map((track: TrackShape) => (
               <TrackRow key={track.id} track={track} />
             ))}
           </div>

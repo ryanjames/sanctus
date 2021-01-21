@@ -1,23 +1,28 @@
-import React from "react"
+import React, { useContext } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { TrackShape } from "../models/tracks"
 import Select, { ValueType } from "react-select"
 import hex2rgba from "hex2rgba"
+import Download from "../graphics/download.svg"
+import Share from "../graphics/share.svg"
+import { isMobile } from "react-device-detect"
 import colors from "../config/colors"
-// import PageLink from "./PageLink"
-//import Container, { Col } from "./Container"
+import { SharedTrackContext, SharedTrackContextType } from "../contexts/SharedTrackContext"
 
 type Props = {
   className?: string
   track: TrackShape
   handleChangeVersion: (id: string) => void
   version: TrackShape
+  isShared: boolean
 }
 
 type Version = ValueType<{ value: string; label: string }, false>
 
-const TrackVersions: React.FC<Props> = ({ className, track, handleChangeVersion, version }) => {
+const TrackVersions: React.FC<Props> = ({ className, track, handleChangeVersion, version, isShared }) => {
+  const { updateSharedTrack } = useContext(SharedTrackContext) as SharedTrackContextType
+
   const parentTrack = [{ value: track.id, label: track.title }]
   const childTracks = track.children?.map(child => {
     return { value: child.id, label: child.title }
@@ -28,12 +33,18 @@ const TrackVersions: React.FC<Props> = ({ className, track, handleChangeVersion,
   const handleChange = (event: Version) => {
     handleChangeVersion(event?.value || "")
   }
+
+  const handleShared = () => {
+    updateSharedTrack(track)
+  }
+
   const download = version.url.replace("raw=1", "dl=1").replace("dl.dropboxusercontent", "www.dropbox")
   return (
-    <StyledTrackVersions color={hex2rgba(colors["dk-green"], 0.2)} className={`container ${className}`}>
+    <StyledTrackVersions tw="flex" color={hex2rgba(colors["dk-green"], 0.2)} className={`container ${className}`}>
       {tracks.length > 1 && (
         <Select
           styles={selectStyles}
+          tw="flex-1"
           className="version-select"
           isSearchable={false}
           classNamePrefix="version-select"
@@ -44,7 +55,18 @@ const TrackVersions: React.FC<Props> = ({ className, track, handleChangeVersion,
         />
       )}
       <a href={`mailto:dancoke@gmail.com?subject=License for '${version.title}' track`}>License</a>
-      <a href={download}>Download</a>
+      {!isMobile && (
+        <a href={download}>
+          {" "}
+          <Download />
+        </a>
+      )}
+      {!isShared && (
+        <a onClick={handleShared}>
+          {" "}
+          <Share />{" "}
+        </a>
+      )}
     </StyledTrackVersions>
   )
 }
@@ -68,7 +90,7 @@ const selectStyles = {
   }),
 }
 const StyledTrackVersions = styled.div<{ color: string }>`
-  ${tw`flex z-10 relative mr-1 bg-gray-200 p-2 rounded-md`}
+  ${tw`flex z-10 relative mr-1 bg-gray-200 p-2 lg:w-5/8 rounded-md`}
   .css-1okebmr-indicatorSeparator {
     display: none;
   }
@@ -76,8 +98,6 @@ const StyledTrackVersions = styled.div<{ color: string }>`
     background: ${props => props.color};
   }
   .version-select {
-    width: 240px;
-    ${tw`mr-2`}
     &:hover {
       cursor: pointer;
     }
@@ -86,10 +106,8 @@ const StyledTrackVersions = styled.div<{ color: string }>`
     background-color: #fff;
     display: block;
     min-height: 36px;
-    ${tw`flex items-center px-3 rounded-md`}
-    &:last-child {
-      ${tw`ml-2`}
-    }
+    ${tw`flex items-center px-3 rounded-md cursor-pointer`}
+    ${tw`ml-2`}
   }
 `
 export default TrackVersions

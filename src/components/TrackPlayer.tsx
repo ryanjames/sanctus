@@ -13,9 +13,10 @@ type Props = {
     id: string
     url: string
   }
+  pause: boolean
 }
 
-const TrackPlayer: React.FC<Props> = ({ track, className }) => {
+const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
   const handlePlay = () => {
     document.body.classList.add("player-playing")
     document.body.classList.remove("player-paused")
@@ -58,7 +59,7 @@ const TrackPlayer: React.FC<Props> = ({ track, className }) => {
       setTimeout(() => {
         durTotal = window.player.getDuration()
         window.player.id = track.id
-        if (isMobile) {
+        if (isMobile || pause) {
           document.body.classList.add("player-loaded", "player-paused")
         } else {
           window.player.play()

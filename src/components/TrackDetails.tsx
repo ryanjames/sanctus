@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import styled from "@emotion/styled"
 import { keyframes } from "@emotion/react"
 import colors from "../config/colors"
@@ -12,9 +12,10 @@ import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTr
 
 interface Props {
   track: TrackShape
+  open: boolean
 }
 
-const TrackDetails: React.FC<Props> = ({ track }) => {
+const TrackDetails: React.FC<Props> = ({ track, open }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
   const versions = () => {
     if (track.children && track.children.length) {
@@ -31,6 +32,12 @@ const TrackDetails: React.FC<Props> = ({ track }) => {
     })
   }
 
+  useEffect(() => {
+    if (open) {
+      handleExpand()
+    }
+  }, [open])
+
   const handleChangeVersion = (id?: string) => {
     const child = track.children?.find(child => child.id === id)
     updateActiveTrack({
@@ -43,11 +50,20 @@ const TrackDetails: React.FC<Props> = ({ track }) => {
     <StyledTrackDetails color={colors["dk-green"]} id={track.id}>
       {activeTrack.id == track.id ? (
         <div tw="py-5" id={`c-${track.id}`}>
-          <div tw="lg:flex justify-between items-center">
+          <div className="track-versions" tw="lg:flex justify-between items-center">
             <h4 tw="text-base pb-4 lg:mb-0 lg:text-xl mb-0 font-bold">{track.title}</h4>
-            <TrackVersions track={track} handleChangeVersion={handleChangeVersion} version={activeTrack?.version} />
+            <TrackVersions
+              track={track}
+              isShared={open ? true : false}
+              handleChangeVersion={handleChangeVersion}
+              version={activeTrack?.version}
+            />
           </div>
-          <TrackPlayer className="track-player" track={{ id: activeTrack.version.id, url: activeTrack.version.url }} />
+          <TrackPlayer
+            className="track-player"
+            pause={open ? true : false}
+            track={{ id: activeTrack.version.id, url: activeTrack.version.url }}
+          />
         </div>
       ) : (
         <div onClick={handleExpand} className="launcher" tw="text-base font-bold absolute flex items-center">

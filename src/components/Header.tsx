@@ -2,7 +2,7 @@ import React from "react"
 import PageLink from "./PageLink"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-import Container, { Col } from "./Container"
+import { Col } from "./Container"
 import Logo from "../graphics/logo.svg"
 import Composer from "../graphics/composer.svg"
 
