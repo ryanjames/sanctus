@@ -12,7 +12,7 @@ import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTr
 
 interface Props {
   track: TrackShape
-  open: boolean
+  open?: boolean
 }
 
 const TrackDetails: React.FC<Props> = ({ track, open }) => {

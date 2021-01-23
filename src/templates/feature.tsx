@@ -66,7 +66,7 @@ const FeaturePage: React.FC<Props> = ({ data }) => {
             </div>
           </div>
           <div className="description" tw="max-w-3xl pb-12">
-            <MD content={feature.description} />
+            <MD content={feature.description} externalLinks />
           </div>
           <ActiveTrackProvider>
             {feature.track && (

@@ -15,7 +15,6 @@ export interface FeatureShape {
   logo: string
   video: string
   description?: string
-  blurb: string
   genres: CategoryShape[]
   vibes: CategoryShape[]
   slug: string
@@ -89,7 +88,6 @@ export const getFeature = (query: any): FeatureShape => {
     logo: data.Feature_SVG.localFiles[0].publicURL,
     video: data.Feature_Video,
     description: data.Feature_Description,
-    blurb: data.Feature_Blurb,
     slug: slugify(data.Feature_Name, { lower: true, strict: true }),
     genres: genres,
     vibes: vibes,

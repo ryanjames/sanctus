@@ -59,7 +59,6 @@ const features = (): Array<FeatureShape> => {
                 }
                 Feature_Color
                 Feature_Description
-                Feature_Blurb
                 Feature_Video
               }
             }

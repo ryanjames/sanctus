@@ -20,7 +20,7 @@ const Hero: React.FC<Props> = ({ className, content }) => {
             <Logo className="logo" tw="mb-4" />
             <Composer className="composer" tw="mb-16" />
             <h2>
-              <MD content={content} removeRootP={true} />
+              <MD content={content} removeRootP />
             </h2>
           </div>
         </Col>
