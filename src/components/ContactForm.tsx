@@ -43,7 +43,13 @@ const ContactForm: React.FC<Props> = ({ className }) => {
 
   return (
     <StyledContactForm className={`container ${className}`}>
-      <form name="contact-form" method="post" action="/contact/thanks/" data-netlify="true" onSubmit={handleSubmit}>
+      <form
+        name="contact-form"
+        method="post"
+        action="/about-and-contact/?thanks=true"
+        data-netlify="true"
+        onSubmit={handleSubmit}
+      >
         <h3>Contact</h3>
         <div tw="flex">
           <div tw="w-1/2 pr-12">
@@ -86,7 +92,9 @@ const ContactForm: React.FC<Props> = ({ className }) => {
           </div>
         </div>
         <div tw="pt-5" className="field">
-          <button type="submit">Send</button>
+          <button tw="cursor-pointer" type="submit">
+            Send
+          </button>
         </div>
       </form>
     </StyledContactForm>

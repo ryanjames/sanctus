@@ -7,10 +7,34 @@ import ContactForm from "../components/ContactForm"
 import Container, { Col } from "../components/Container"
 import MD from "../utils/MD"
 import Img from "gatsby-image"
+import withLocation from "../utils/withLocation"
+import queryString from "query-string"
 import siteContent from "../staticQueries/siteContent"
+import PageLink from "../components/PageLink"
 
-const IndexPage: React.FC = () => {
+type Props = {
+  location: {
+    search: string
+  }
+}
+
+const Thanks = () => {
+  return (
+    <>
+      <strong>Thank you for getting in touch with me.</strong>
+      <br />
+      <p>I&apos;ll respond as quickly as I can.</p>
+      <br />
+      <PageLink tw="text-dk-green underline" to="/about-and-contact">
+        Submit another contact request
+      </PageLink>
+    </>
+  )
+}
+
+const IndexPage: React.FC<Props> = ({ location }) => {
   const content = siteContent()
+  const isThanks = queryString.parse(location.search).thanks
   return (
     <StyledLayout page="about-and-contact">
       <Container>
@@ -21,7 +45,7 @@ const IndexPage: React.FC = () => {
           <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24">
             <MD content={content.aboutBody} />
             <div tw="mt-12 pt-12 border-0 border-solid border-t border-gray-200">
-              <ContactForm />
+              {isThanks ? <Thanks /> : <ContactForm />}
             </div>
           </div>
         </Col>
@@ -39,4 +63,4 @@ const StyledLayout = styled(Layout)`
     ${tw`mb-8`}
   }
 `
-export default IndexPage
+export default withLocation(IndexPage)
