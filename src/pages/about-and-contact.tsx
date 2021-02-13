@@ -25,7 +25,7 @@ const Thanks = () => {
       <br />
       <p>I&apos;ll respond as quickly as I can.</p>
       <br />
-      <PageLink tw="text-dk-green underline" to="/about-and-contact">
+      <PageLink tw="text-hippie-blue underline" to="/about-and-contact">
         Submit another contact request
       </PageLink>
     </>

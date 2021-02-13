@@ -1,0 +1,36 @@
+import React from "react"
+import styled from "@emotion/styled"
+import tw from "twin.macro"
+// import PageLink from "./PageLink"
+//import Container, { Col } from "./Container"
+
+type Props = {
+  className?: string
+}
+
+const LogoWaveform: React.FC<Props> = ({ className }) => {
+  return (
+    <StyledLogoWaveform className={className}>
+      <svg width="140" height="47" viewBox="0 0 140 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M67.8501 31.4111V15.2556H72.1499V31.4111H67.8501Z" fill="white" />
+        <path d="M79.1585 38.7878V7.87893H83.4582V38.7878H79.1585Z" fill="white" />
+        <path d="M90.4668 29.1196V17.5471H94.7666V29.1196H90.4668Z" fill="white" />
+        <path d="M101.775 27.0792V19.5874H106.075V27.0792H101.775Z" fill="white" />
+        <path d="M113.084 37.4903V9.16592H117.383V37.4903H113.084Z" fill="white" />
+        <path d="M124.392 31.0553V15.6009H128.692V31.0553H124.392Z" fill="white" />
+        <path d="M135.7 27.0792V19.5874H140V27.0792H135.7Z" fill="white" />
+        <path d="M56.5418 46.6667V0H60.8415V46.6667H56.5418Z" fill="white" />
+        <path d="M45.2334 37.8879V8.76831H49.5332V37.8879H45.2334Z" fill="white" />
+        <path d="M33.925 30.3124V16.3438H38.2248V30.3124H33.925Z" fill="white" />
+        <path d="M22.6167 37.5426V9.12407H26.9165V37.5426H22.6167Z" fill="white" />
+        <path d="M11.3083 34.571V12.0852H15.6081V34.571H11.3083Z" fill="white" />
+        <path d="M0 27.0792V19.5874H4.29975V27.0792H0Z" fill="white" />
+      </svg>
+    </StyledLogoWaveform>
+  )
+}
+
+const StyledLogoWaveform = styled.div`
+  ${tw``}
+`
+export default LogoWaveform

@@ -12,7 +12,7 @@ const typography = new Typography({
   bodyFontFamily: ["Inter", "Helvetica Neue", "Segoe UI", "Helvetica", "Arial", "sans-serif"],
   overrideStyles: () => ({
     body: {
-      color: colors["off-black"],
+      color: colors["white"],
     },
     figCaption: {
       marginTop: `-${rhythm(1)}`,
@@ -39,7 +39,7 @@ const typography = new Typography({
     },
     "h2 a": {
       fontWeight: 600,
-      color: colors["dk-green"],
+      color: colors["hippie-blue"],
     },
     "p a": {
       textDecoration: "underline",

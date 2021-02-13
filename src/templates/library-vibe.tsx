@@ -19,7 +19,7 @@ const LibraryVibePage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const vibe = data.vibe.edges[0].node.data.Vibe_Name
   const id = data.vibe.edges[0].node.id
-  const description = `${vibe} music from the library of Dan Koch`
+  const description = `${vibe} music from the library of Sono Sanctus`
 
   return (
     <LibraryPageLayout title={vibe} id={id} description={description}>

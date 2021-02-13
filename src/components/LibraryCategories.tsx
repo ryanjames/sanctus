@@ -110,7 +110,7 @@ const StyledLibraryCategories = styled.div`
   }
   & .-selected {
     font-weight: bold;
-    ${tw`text-dk-green`}
+    ${tw`text-hippie-blue`}
     position: relative;
     &::before {
       content: "✓";

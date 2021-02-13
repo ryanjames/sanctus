@@ -10,7 +10,7 @@ const LibraryEnergyPage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const energy = tracksData[0].energy.name
   const id = tracksData[0].energy.id
-  const description = `${energy} energy music from the library of Dan Koch`
+  const description = `${energy} energy music from the library of Sono Sanctus`
 
   return (
     <LibraryPageLayout title={`${energy} Energy`} id={id} description={description}>

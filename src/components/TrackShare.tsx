@@ -36,7 +36,7 @@ const TrackShare: React.FC<Props> = ({ className, location }) => {
             <h2>{sharedTrack.title}</h2>
             <small tw="block pt-6 flex justify-between w-full">
               <span>Share link</span>
-              {isCopied ? <span style={{ color: colors["dk-green"] }}>Copied</span> : null}
+              {isCopied ? <span style={{ color: colors["hippie-blue"] }}>Copied</span> : null}
             </small>
             <CopyToClipboard
               tw="border border-gray-200 py-1 px-2 border-solid rounded block truncate"

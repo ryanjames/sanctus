@@ -30,9 +30,9 @@ const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
   }
 
   const loadPlayer = () => {
-    const color1 = hex2rgba(colors["dk-green"], 0.6)
-    const color2 = hex2rgba(colors["dk-green"], 0.4)
-    const progressColor = hex2rgba(colors["dk-green"], 0.5)
+    const color1 = hex2rgba(colors["hippie-blue"], 0.6)
+    const color2 = hex2rgba(colors["hippie-blue"], 0.4)
+    const progressColor = hex2rgba(colors["hippie-blue"], 0.5)
     const linGrad = window.document.createElement("canvas").getContext("2d")?.createLinearGradient(0, 0, 0, 120)
     linGrad?.addColorStop(0.5, color1)
     linGrad?.addColorStop(0.5, color2)
@@ -44,7 +44,7 @@ const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
       waveColor: isMobile ? color2 : linGrad,
       progressColor: progressColor,
       cursorWidth: 2,
-      cursorColor: colors["dk-green"],
+      cursorColor: colors["hippie-blue"],
       height: 60,
       responsive: true,
       barWidth: 3,
@@ -101,7 +101,7 @@ const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
   })
 
   return (
-    <StyledTrackPlayer className={className} tw="flex relative items-center" color={colors["dk-green"]}>
+    <StyledTrackPlayer className={className} tw="flex relative items-center" color={colors["hippie-blue"]}>
       <div className="controls" tw="w-8 h-6 relative">
         <Pause className="pause-control" onClick={handlePause} />
         <Play className="play-control" onClick={handlePlay} />

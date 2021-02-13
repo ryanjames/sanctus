@@ -62,7 +62,7 @@ const siteContent = (): ContentShape => {
     aboutSeoDescription: data.About_SEO_Description,
     musicLibrarySeoDescription: data.Music_Library_SEO_Description,
     defaults: {
-      owner: "Dan Koch",
+      owner: "Sono Sanctus",
       author: "Ryan James",
       title: data.Site_SEO_Title,
       description: data.Site_SEO_Description,

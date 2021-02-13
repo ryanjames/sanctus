@@ -47,7 +47,7 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
   }
 
   return (
-    <StyledTrackDetails color={colors["dk-green"]} id={track.id}>
+    <StyledTrackDetails color={colors["hippie-blue"]} id={track.id}>
       {activeTrack.id == track.id ? (
         <div tw="py-5" id={`c-${track.id}`}>
           <div className="track-versions" tw="lg:flex justify-between items-center">

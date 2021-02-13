@@ -4,13 +4,12 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
 //import Container, { Col } from "../components/Container"
-import features from "../staticQueries/features"
-import FeatureCards from "../components/FeatureCards"
+import LogoWaveform from "../components/LogoWaveform"
 
-const FeaturesPage: React.FC = () => {
+const WorkPage: React.FC = () => {
   return (
     <StyledLayout title="Features" page="features">
-      <FeatureCards features={features()} />
+      <></>
     </StyledLayout>
   )
 }
@@ -18,4 +17,4 @@ const FeaturesPage: React.FC = () => {
 const StyledLayout = styled(Layout)`
   ${tw``}
 `
-export default FeaturesPage
+export default WorkPage

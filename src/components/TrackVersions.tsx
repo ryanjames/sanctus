@@ -40,7 +40,7 @@ const TrackVersions: React.FC<Props> = ({ className, track, handleChangeVersion,
 
   const download = version.url.replace("raw=1", "dl=1").replace("dl.dropboxusercontent", "www.dropbox")
   return (
-    <StyledTrackVersions tw="flex" color={hex2rgba(colors["dk-green"], 0.2)} className={`container ${className}`}>
+    <StyledTrackVersions tw="flex" color={hex2rgba(colors["hippie-blue"], 0.2)} className={`container ${className}`}>
       {tracks.length > 1 && (
         <Select
           styles={selectStyles}
@@ -54,7 +54,7 @@ const TrackVersions: React.FC<Props> = ({ className, track, handleChangeVersion,
           options={tracks}
         />
       )}
-      <a href={`mailto:dancoke@gmail.com?subject=License for '${version.title}' track`}>License</a>
+      <a href={``}>License</a>
       {!isMobile && (
         <a href={download}>
           {" "}
@@ -75,7 +75,7 @@ const selectStyles = {
   option: (provided: any, state: any) => ({
     ...provided,
     backgroundColor: "#ffffff",
-    color: state.isSelected ? colors["dk-green"] : "#111111",
+    color: state.isSelected ? colors["hippie-blue"] : "#111111",
     fontWeight: state.isSelected ? 600 : 400,
     cursor: "pointer",
   }),

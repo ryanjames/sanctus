@@ -19,7 +19,7 @@ type Props = {
 
 const Library: React.FC<Props> = ({ data, location }) => {
   const tracksData = getTracks(data.tracks)
-  const description = `Music from the library of Dan Koch`
+  const description = `Music from the library of Sono Sanctus`
 
   let sharedTrack
   if (location.search) {
