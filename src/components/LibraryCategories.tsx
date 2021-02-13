@@ -5,8 +5,7 @@ import PageLink from "../components/PageLink"
 
 import Close from "../graphics/close.svg"
 import playlists, { PlaylistShape } from "../staticQueries/playlists"
-import genres, { GenreShape } from "../staticQueries/genres"
-import vibes, { VibeShape } from "../staticQueries/vibes"
+import Moods, { MoodShape } from "../staticQueries/moods"
 import energies, { EnergyShape } from "../staticQueries/energies"
 
 interface Props {

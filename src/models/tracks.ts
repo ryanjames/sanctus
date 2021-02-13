@@ -1,5 +1,4 @@
 import slugify from "slugify"
-import childTracks from "../staticQueries/childTracks"
 
 export interface CategoryShape {
   name: string

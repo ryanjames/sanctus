@@ -13,7 +13,6 @@ import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import TrackDetails from "../components/TrackDetails"
 import { Helmet } from "react-helmet"
 import FeatureCards from "../components/FeatureCards"
-import features from "../staticQueries/features"
 
 type Props = {
   data: {

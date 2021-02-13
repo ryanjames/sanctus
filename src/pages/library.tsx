@@ -8,7 +8,7 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { getTracks, QueryShape } from "../models/tracks"
 import queryString from "query-string"
-import GenreCards from "../components/GenreCards"
+import PlaylistCards from "../components/PlaylistCards"
 
 type Props = {
   data: { tracks: QueryShape }
@@ -34,7 +34,7 @@ const Library: React.FC<Props> = ({ data, location }) => {
     <>
       {sharedTrack && <TrackSheet track={sharedTrack} />}
       <StyledLibraryPageLayout tracksData={tracksData} title="Music Library" description={description}>
-        <TracksTable placeholder={<GenreCards />} data={tracksData} />
+        <TracksTable placeholder={<PlaylistCards />} data={tracksData} />
       </StyledLibraryPageLayout>
     </>
   )
@@ -48,24 +48,14 @@ const StyledLibraryPageLayout = styled(LibraryPageLayout)`
 
 export const pageQuery = graphql`
   query TracksQuery {
-    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Has_Parent: { eq: 0 } } }) {
+    tracks: allAirtable(filter: { table: { eq: "Tracks" }, data: { Published: { eq: true } } }) {
       edges {
         node {
           data {
             Track_Title
-            Parent {
-              id
-            }
-            Has_Parent
-            Genres {
+            Moods {
               data {
-                Genre_Name
-              }
-              id
-            }
-            Vibes {
-              data {
-                Vibe_Name
+                Mood_Name
               }
               id
             }

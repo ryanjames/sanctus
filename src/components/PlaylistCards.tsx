@@ -4,7 +4,6 @@ import tw from "twin.macro"
 import PageLink from "./PageLink"
 import Img, { FluidObject } from "gatsby-image"
 
-import genres from "../staticQueries/genres"
 import playlists from "../staticQueries/playlists"
 
 interface Category {
@@ -15,9 +14,9 @@ interface Category {
   image: FluidObject
 }
 
-const GenreCards: React.FC<{ className?: string }> = ({ className }) => {
+const PlaylistCards: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <StyledGenreCards tw="flex flex-wrap -mx-3 sm:-mx-4" className={className}>
+    <StyledPlaylistCards tw="flex flex-wrap -mx-3 sm:-mx-4" className={className}>
       {playlists().map((playlist: Category) => (
         <PageLink
           key={playlist.id}
@@ -38,31 +37,11 @@ const GenreCards: React.FC<{ className?: string }> = ({ className }) => {
           </div>
         </PageLink>
       ))}
-      {genres().map((genre: Category) => (
-        <PageLink
-          key={genre.id}
-          tw="w-1/2 sm:w-1/2 md:w-1/3 px-3 xs:px-4 pb-6 sm:pb-10 relative block"
-          to={`/library/genre/${genre.slug}`}
-        >
-          <div className="image" tw="w-full relative mb-2">
-            <div className="image-container">
-              <Img fluid={genre.image} />
-            </div>
-          </div>
-          <div tw="flex justify-between items-center text-sm md:text-base">
-            <strong>{genre.title}</strong>
-            <span>
-              {genre.count}
-              <span tw="hidden sm:inline"> tracks</span>
-            </span>
-          </div>
-        </PageLink>
-      ))}
-    </StyledGenreCards>
+    </StyledPlaylistCards>
   )
 }
 
-const StyledGenreCards = styled.div`
+const StyledPlaylistCards = styled.div`
   ${tw``}
   .image {
     padding-top: 70%;
@@ -80,4 +59,4 @@ const StyledGenreCards = styled.div`
     }
   }
 `
-export default GenreCards
+export default PlaylistCards

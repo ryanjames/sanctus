@@ -5,7 +5,6 @@ import colors from "../config/colors"
 import { isMobile } from "react-device-detect"
 import tw from "twin.macro"
 import TrackPlayer from "./TrackPlayer"
-import TrackVersions from "./TrackVersions"
 import Play from "../graphics/play.svg"
 import { TrackShape } from "../models/tracks"
 import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTrackContext"
@@ -52,12 +51,6 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
         <div tw="py-5" id={`c-${track.id}`}>
           <div className="track-versions" tw="lg:flex justify-between items-center">
             <h4 tw="text-base pb-4 lg:mb-0 lg:text-xl mb-0 font-bold">{track.title}</h4>
-            <TrackVersions
-              track={track}
-              isShared={open ? true : false}
-              handleChangeVersion={handleChangeVersion}
-              version={activeTrack?.version}
-            />
           </div>
           <TrackPlayer
             className="track-player"

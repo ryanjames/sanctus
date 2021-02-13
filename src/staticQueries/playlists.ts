@@ -35,11 +35,6 @@ const playlists = (): PlaylistShape => {
                 }
                 Playlist_Tracks {
                   id
-                  data {
-                    Parent {
-                      id
-                    }
-                  }
                 }
               }
               id
