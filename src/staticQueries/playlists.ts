@@ -49,7 +49,7 @@ const playlists = (): PlaylistShape => {
   } = query
 
   const Playlists = PlaylistsData.map((playlist: any) => {
-    const tracks = playlist.node.data.Playlist_Tracks.filter((track: any) => track.data.Parent === null)
+    const tracks = playlist.node.data.Playlist_Tracks
     return {
       id: playlist.node.id,
       title: playlist.node.data.Playlist_Name,

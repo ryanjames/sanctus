@@ -1,28 +1,28 @@
 import React from "react"
 import { Helmet } from "react-helmet"
-import siteContent, { DefaultsShape } from "../staticQueries/siteContent"
+import siteContent from "../staticQueries/siteContent"
 
 interface Props {
   title?: string
   description?: string
   owner?: string
-  defaults: DefaultsShape
   ogImage?: string
   meta?: []
 }
 
-const SEO: React.FC<Props> = ({ defaults, ogImage, owner, title, meta, description }) => {
+const SEO: React.FC<Props> = ({ ogImage, owner, title, meta, description }) => {
+  const content = siteContent()
   return (
     <Helmet
       htmlAttributes={{
         lang: "en",
       }}
-      title={title ? title : defaults.title}
-      titleTemplate={title ? `%s | ${defaults.title}` : defaults.title}
+      title={title ? title : content.title}
+      titleTemplate={title ? `%s | ${content.title}` : content.title}
       meta={[
         {
           name: `description`,
-          content: description ? description : defaults.description,
+          content: description ? description : content.description,
         },
         {
           property: `og:title`,
@@ -30,11 +30,11 @@ const SEO: React.FC<Props> = ({ defaults, ogImage, owner, title, meta, descripti
         },
         {
           property: `og:description`,
-          content: description ? description : defaults.description,
+          content: description ? description : content.description,
         },
         {
           property: `og:image`,
-          content: ogImage ? ogImage : defaults.ogImage,
+          content: ogImage ? ogImage : content.ogImage,
         },
         {
           property: `og:type`,
@@ -46,7 +46,7 @@ const SEO: React.FC<Props> = ({ defaults, ogImage, owner, title, meta, descripti
         },
         {
           name: `twitter:creator`,
-          content: owner ? owner : defaults.owner,
+          content: owner ? owner : content.owner,
         },
         {
           name: `twitter:title`,
@@ -54,7 +54,7 @@ const SEO: React.FC<Props> = ({ defaults, ogImage, owner, title, meta, descripti
         },
         {
           name: `twitter:description`,
-          content: description ? description : defaults.description,
+          content: description ? description : content.description,
         },
       ].concat(meta ? meta : [])}
     />

@@ -5,7 +5,7 @@ import PageLink from "../components/PageLink"
 
 import Close from "../graphics/close.svg"
 import playlists, { PlaylistShape } from "../staticQueries/playlists"
-import Moods, { MoodShape } from "../staticQueries/moods"
+import moods, { MoodShape } from "../staticQueries/moods"
 import energies, { EnergyShape } from "../staticQueries/energies"
 
 interface Props {
@@ -22,7 +22,7 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
         <ul>
           {playlists().map((playlist: PlaylistShape) => (
             <li key={playlist.id}>
-              <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/${playlist.slug}`}>
+              <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/playlist/${playlist.slug}`}>
                 {playlist.title == "Favorite" ? "Favorites" : playlist.title}
               </PageLink>
             </li>
@@ -31,10 +31,10 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
         <div>
           <strong>Genres</strong>
           <ul>
-            {genres().map((genre: GenreShape) => (
-              <li key={genre.id}>
-                <PageLink className={id == genre.id ? "-selected" : ""} to={`/library/genre/${genre.slug}`}>
-                  {genre.title}
+            {moods().map((mood: MoodShape) => (
+              <li key={mood.id}>
+                <PageLink className={id == mood.id ? "-selected" : ""} to={`/library/mood/${mood.slug}`}>
+                  {mood.title}
                 </PageLink>
               </li>
             ))}
@@ -47,18 +47,6 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
               <li key={energy.id}>
                 <PageLink className={id == energy.id ? "-selected" : ""} to={`/library/energy/${energy.slug}`}>
                   {energy.title}
-                </PageLink>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <strong>Vibes</strong>
-          <ul>
-            {vibes().map((vibe: VibeShape) => (
-              <li key={vibe.id}>
-                <PageLink className={id == vibe.id ? "-selected" : ""} to={`/library/vibe/${vibe.slug}`}>
-                  {vibe.title}
                 </PageLink>
               </li>
             ))}

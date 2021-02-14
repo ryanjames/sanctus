@@ -16,22 +16,12 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
-      playlists: allAirtable(filter: { table: { eq: "Playlists" } }) {
-        edges {
-          node {
-            id
-            data {
-              Playlist_Name
-            }
-          }
-        }
-      }
       moods: allAirtable(filter: { table: { eq: "Moods" } }) {
         edges {
           node {
             id
             data {
-              Moods_Name
+              Mood_Name
             }
           }
         }
@@ -43,6 +33,14 @@ exports.createPages = ({ actions, graphql }) => {
             data {
               Energy_Name
             }
+          }
+        }
+      }
+      caseStudies: allContentfulCaseStudy {
+        edges {
+          node {
+            id
+            slug
           }
         }
       }
@@ -58,7 +56,7 @@ exports.createPages = ({ actions, graphql }) => {
       const id = playlist.node.id
       const slug = slugify(playlist.node.data.Playlist_Name, { lower: true, strict: true })
       createPage({
-        path: "/library/" + slug,
+        path: "/library/playlist/" + slug,
         component: path.resolve(`src/templates/library-playlist.tsx`),
         context: {
           id,
@@ -66,26 +64,13 @@ exports.createPages = ({ actions, graphql }) => {
       })
     })
 
-    const genres = result.data.genres.edges
-    genres.forEach(genre => {
-      const id = genre.node.id
-      const slug = slugify(genre.node.data.Genre_Name, { lower: true, strict: true })
+    const moods = result.data.moods.edges
+    moods.forEach(mood => {
+      const id = mood.node.id
+      const slug = slugify(mood.node.data.Mood_Name, { lower: true, strict: true })
       createPage({
-        path: "/library/genre/" + slug,
-        component: path.resolve(`src/templates/library-genre.tsx`),
-        context: {
-          id,
-        },
-      })
-    })
-
-    const vibes = result.data.vibes.edges
-    vibes.forEach(vibe => {
-      const id = vibe.node.id
-      const slug = slugify(vibe.node.data.Vibe_Name, { lower: true, strict: true })
-      createPage({
-        path: "/library/vibe/" + slug,
-        component: path.resolve(`src/templates/library-vibe.tsx`),
+        path: "/library/mood/" + slug,
+        component: path.resolve(`src/templates/library-mood.tsx`),
         context: {
           id,
         },
@@ -105,13 +90,13 @@ exports.createPages = ({ actions, graphql }) => {
       })
     })
 
-    const features = result.data.features.edges
-    features.forEach(feature => {
-      const id = feature.node.id
-      const slug = slugify(feature.node.data.Feature_Name, { lower: true, strict: true })
+    const caseStudies = result.data.caseStudies.edges
+    caseStudies.forEach(caseStudy => {
+      const id = caseStudy.node.id
+      const slug = slugify(caseStudy.node.slug)
       createPage({
-        path: "/features/" + slug,
-        component: path.resolve(`src/templates/feature.tsx`),
+        path: "/work/" + slug,
+        component: path.resolve(`src/templates/case-study.tsx`),
         context: {
           id,
         },

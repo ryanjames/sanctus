@@ -50,7 +50,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
 }
 
 const StyledLayout = styled.div`
-  ${tw``}
+  ${tw`pt-32`}
   .navigation a {
     ${tw`ml-8`}
   }

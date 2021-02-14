@@ -21,7 +21,7 @@ const PlaylistCards: React.FC<{ className?: string }> = ({ className }) => {
         <PageLink
           key={playlist.id}
           tw="w-1/2 sm:w-1/2 md:w-1/3 px-3 xs:px-4 pb-6 sm:pb-10 relative block"
-          to={`/library/${playlist.slug}`}
+          to={`/library/playlist/${playlist.slug}`}
         >
           <div className="image" tw="w-full relative mb-1 sm:mb-2">
             <div className="image-container">

@@ -43,7 +43,7 @@ const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }
         <Container tw="pt-6 sm:pt-12">
           <Col
             className={`library-categories ${open ? "-open" : ""}`}
-            tw="absolute inset-0 z-30 bg-white sm:relative sm:block sm:w-1/3 md:w-1/4"
+            tw="absolute inset-0 z-30 bg-near-black sm:relative sm:block sm:w-1/3 md:w-1/4"
           >
             <Container>
               <h3 tw="hidden sm:inline mb-0">

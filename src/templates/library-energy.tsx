@@ -9,6 +9,7 @@ type Props = { data: { tracks: QueryShape } }
 const LibraryEnergyPage: React.FC<Props> = ({ data }) => {
   const tracksData = getTracks(data.tracks)
   const energy = tracksData[0].energy.name
+  console.log(energy)
   const id = tracksData[0].energy.id
   const description = `${energy} energy music from the library of Sono Sanctus`
 

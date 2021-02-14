@@ -1,51 +1,47 @@
 import { graphql, useStaticQuery } from "gatsby"
 import { FluidObject } from "gatsby-image"
 
-export interface DefaultsShape {
+interface ContentShape {
   owner: string
   author: string
   title: string
   description: string
-  ogImage: string
-}
-
-interface ContentShape {
-  homeIntro: string
-  aboutImage: FluidObject
-  aboutBody: string
-  aboutSeoDescription: string
+  ogImage: FluidObject
   musicLibrarySeoDescription: string
-  defaults: DefaultsShape
+  about: {
+    heading: string
+    body: string
+  }
 }
 
 const siteContent = (): ContentShape => {
   const query = useStaticQuery(
     graphql`
       query ContentQuery {
-        content: allAirtable(filter: { table: { eq: "Content" } }) {
+        metaData: allContentfulSiteMetadata {
           edges {
             node {
-              data {
-                Site_SEO_Title
-                Site_SEO_Description
-                OG_Image {
-                  localFiles {
-                    publicURL
-                  }
-                }
-                Home_Intro
-                About_Image {
-                  localFiles {
-                    childImageSharp {
-                      fluid(maxWidth: 2000) {
-                        ...GatsbyImageSharpFluid
-                      }
+              siteSeoTitle
+              siteSeoDescription
+              openGraphImage {
+                localFile {
+                  childImageSharp {
+                    fluid(maxWidth: 2000) {
+                      ...GatsbyImageSharpFluid
                     }
                   }
                 }
-                About_Body
-                About_SEO_Description
-                Music_Library_SEO_Description
+              }
+              musicLibrarySeoDescription
+            }
+          }
+        }
+        about: allContentfulAboutContent {
+          edges {
+            node {
+              heading
+              body {
+                raw
               }
             }
           }
@@ -54,19 +50,18 @@ const siteContent = (): ContentShape => {
     `
   )
 
-  const data = query.content.edges[0].node.data
+  const metaData = query.metaData.edges[0].node
+  const about = query.about.edges[0].node
   return {
-    homeIntro: data.Home_Intro,
-    aboutImage: data.About_Image.localFiles[0].childImageSharp.fluid,
-    aboutBody: data.About_Body,
-    aboutSeoDescription: data.About_SEO_Description,
-    musicLibrarySeoDescription: data.Music_Library_SEO_Description,
-    defaults: {
-      owner: "Sono Sanctus",
-      author: "Ryan James",
-      title: data.Site_SEO_Title,
-      description: data.Site_SEO_Description,
-      ogImage: data.OG_Image.localFiles[0].publicURL,
+    musicLibrarySeoDescription: metaData.musicLibrarySeoDescription,
+    owner: "Sono Sanctus",
+    author: "Ryan James",
+    title: metaData.siteSeoTitle,
+    description: metaData.siteSeoDescription,
+    ogImage: metaData.openGraphImage.localFile.publicURL,
+    about: {
+      heading: about.heading,
+      body: about.body.raw,
     },
   }
 }
