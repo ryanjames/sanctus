@@ -30,6 +30,14 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-contentful`,
+      options: {
+        spaceId: `iaub6mj1r3p0`,
+        accessToken: `WgEpb3m0ALcdz8ouzQ0o6l-_N3oZZfYYHF5ooorGC-M`,
+        downloadLocal: true,
+      },
+    },
+    {
       resolve: `gatsby-source-airtable`,
       options: {
         apiKey: `keyKlOXsPPK17LujD`,

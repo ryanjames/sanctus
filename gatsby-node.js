@@ -16,22 +16,22 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
-      genres: allAirtable(filter: { table: { eq: "Genres" } }) {
+      playlists: allAirtable(filter: { table: { eq: "Playlists" } }) {
         edges {
           node {
             id
             data {
-              Genre_Name
+              Playlist_Name
             }
           }
         }
       }
-      vibes: allAirtable(filter: { table: { eq: "Vibes" } }) {
+      moods: allAirtable(filter: { table: { eq: "Moods" } }) {
         edges {
           node {
             id
             data {
-              Vibe_Name
+              Moods_Name
             }
           }
         }
@@ -42,16 +42,6 @@ exports.createPages = ({ actions, graphql }) => {
             id
             data {
               Energy_Name
-            }
-          }
-        }
-      }
-      features: allAirtable(filter: { table: { eq: "Features" } }) {
-        edges {
-          node {
-            id
-            data {
-              Feature_Name
             }
           }
         }
