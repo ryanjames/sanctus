@@ -35,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
         <meta name="theme-color" content="#ffffff" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
       </Helmet>
-      <SEO defaults={defaults} title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
+      <SEO title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
       <span tw="fixed top-10 left-12">{page !== "home" ? <LogoWaveform /> : <LogoWordmark />}</span>
       <nav className="navigation" tw="fixed right-12 top-12">
         {page !== "home" && <PageLink to="/">Home</PageLink>}

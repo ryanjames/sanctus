@@ -12,6 +12,7 @@ interface Window {
     getDuration: Function
     id?: string
   }
+  webkitAudioContext: typeof AudioContext
 }
 
 declare module "*.svg" {
