@@ -54,10 +54,10 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
 
   const SearchInput = (
     <input
-      tw="w-full lg:w-1/2 xl:w-1/3 py-3 pl-3"
+      tw="w-full lg:w-2/3 xl:w-1/2 py-3 pl-3"
       type="text"
       onChange={handleSearch}
-      placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks (vibes, energy, or title)`}
+      placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks (moods, energy, or title)`}
     />
   )
 
@@ -70,22 +70,14 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
           className={`track-row ${activeTrack.id == track.id ? "hide" : ""}`}
         >
           <div tw="w-full md:w-3/8 text-lg font-bold" />
-          <div tw="hidden md:block w-1/8" className="category-link">
+          <div tw="hidden md:block w-2/8" className="category-link">
             <PageLink to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</PageLink>
           </div>
-          <div tw="hidden md:block w-2/8">
-            {track.genres?.map((genre: CategoryShape, index) => (
-              <span key={genre.id} className="category-link">
-                <PageLink to={`/library/genre/${genre.slug}`}>{genre.name}</PageLink>
-                {index < track.genres.length - 1 ? ", " : ""}
-              </span>
-            ))}
-          </div>
-          <div tw="hidden md:block w-2/8">
-            {track.vibes?.map((vibe: CategoryShape, index) => (
-              <span key={vibe.id} className="category-link">
-                <PageLink to={`/library/vibe/${vibe.slug}`}>{vibe.name}</PageLink>
-                {index < track.vibes.length - 1 ? ", " : ""}
+          <div tw="hidden md:block w-3/8">
+            {track.moods?.map((mood: CategoryShape, index) => (
+              <span key={mood.id} className="category-link">
+                <PageLink to={`/library/mood/${mood.slug}`}>{mood.name}</PageLink>
+                {index < track.moods.length - 1 ? ", " : ""}
               </span>
             ))}
           </div>
@@ -109,9 +101,8 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
           <div className="table-headings">
             <div tw="text-xs font-bold pt-9 uppercase tracking-widest pb-4 border-gray-200 border-0 border-b border-solid flex">
               <div tw="w-full md:w-3/8">Title</div>
-              <div tw="hidden md:block w-1/8">Energy</div>
-              <div tw="hidden md:block w-2/8">Genres</div>
-              <div tw="hidden md:block w-2/8">Vibes</div>
+              <div tw="hidden md:block w-2/8">Energy</div>
+              <div tw="hidden md:block w-3/8">Moods</div>
             </div>
           </div>
           <div className="table-rows" tw="overflow-y-scroll overflow-x-hidden">
@@ -156,6 +147,12 @@ const StyledTracksTable = styled.div`
   }
   .track-row.hide {
     display: none;
+  }
+  input {
+    background: transparent;
+    border: 1px solid #666;
+    border-radius: 4px;
+    ${tw`text-muted px-4`}
   }
   .category-link {
     ${tw`text-gray-400`}

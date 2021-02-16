@@ -19,7 +19,10 @@ const IndexPage: React.FC<Props> = () => {
   return (
     <StyledLayout page="about-and-contact">
       <Container>
-        <Col tw="flex flex-wrap pt-6 md:pt-24">
+        <Col tw="w-1/3 pt-16">
+          <h2 tw="text-5xl text-hippie-blue leading-tight">{content.about.heading}</h2>
+        </Col>
+        <Col tw="w-2/3 flex flex-wrap pt-6 md:pt-16">
           <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24">
             <MD content={content.about.body} />
             <iframe

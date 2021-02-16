@@ -17,8 +17,9 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
   return (
     <>
       <Close onClick={closeMenu} tw="cursor-pointer absolute right-6 top-6 sm:hidden" />
-      <h3 tw="mt-8 text-lg -mb-8 sm:hidden">Filters</h3>
+      <h3 tw="text-lg -mb-8 sm:hidden">Filters</h3>
       <StyledLibraryCategories>
+        <strong>Playlists</strong>
         <ul>
           {playlists().map((playlist: PlaylistShape) => (
             <li key={playlist.id}>
@@ -28,18 +29,6 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
             </li>
           ))}
         </ul>
-        <div>
-          <strong>Genres</strong>
-          <ul>
-            {moods().map((mood: MoodShape) => (
-              <li key={mood.id}>
-                <PageLink className={id == mood.id ? "-selected" : ""} to={`/library/mood/${mood.slug}`}>
-                  {mood.title}
-                </PageLink>
-              </li>
-            ))}
-          </ul>
-        </div>
         <div>
           <strong>Energies</strong>
           <ul>
@@ -52,19 +41,30 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
             ))}
           </ul>
         </div>
+        <div>
+          <strong>Moods</strong>
+          <ul>
+            {moods().map((mood: MoodShape) => (
+              <li key={mood.id}>
+                <PageLink className={id == mood.id ? "-selected" : ""} to={`/library/mood/${mood.slug}`}>
+                  {mood.title}
+                </PageLink>
+              </li>
+            ))}
+          </ul>
+        </div>
       </StyledLibraryCategories>
     </>
   )
 }
 
 const StyledLibraryCategories = styled.div`
-  ${tw``}
+  ${tw`-mt-8`}
   height: calc(100vh - 76px);
   @media (min-width: 640px) {
     height: calc(100vh - 240px);
   }
   width: 100%;
-  margin-top: 40px;
   margin-left: -14px;
   overflow-y: scroll;
   overflow-x: hidden;

@@ -41,17 +41,6 @@ const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }
         </Helmet>
         <TrackShare />
         <Container tw="pt-6 sm:pt-12">
-          <Col
-            className={`library-categories ${open ? "-open" : ""}`}
-            tw="absolute inset-0 z-30 bg-near-black sm:relative sm:block sm:w-1/3 md:w-1/4"
-          >
-            <Container>
-              <h3 tw="hidden sm:inline mb-0">
-                <PageLink to="/library">Music Library</PageLink>
-              </h3>
-              <LibraryCategories id={id} closeMenu={closeMenu} />
-            </Container>
-          </Col>
           <Col tw="flex-1 md:overflow-y-visible overflow-x-hidden relative">
             <div tw="sm:hidden flex justify-between pb-6">
               <h3 tw="mb-0">
@@ -62,6 +51,14 @@ const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }
             <ActiveTrackProvider>
               <div className="table-size">{children}</div>
             </ActiveTrackProvider>
+          </Col>
+          <Col
+            className={`library-categories ${open ? "-open" : ""}`}
+            tw="absolute inset-0 z-30 bg-near-black sm:relative sm:block sm:w-1/3 md:w-1/4"
+          >
+            <Container>
+              <LibraryCategories id={id} closeMenu={closeMenu} />
+            </Container>
           </Col>
         </Container>
       </SharedTrackProvider>
