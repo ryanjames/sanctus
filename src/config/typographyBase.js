@@ -46,7 +46,7 @@ const typography = new Typography({
       color: colors["gray-dark"],
     },
     small: {
-      fontWeight: 600,
+      fontWeight: 400,
       textTransform: "uppercase",
       letterSpacing: "0.2rem",
       marginBottom: `0.25rem`,
