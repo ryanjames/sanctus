@@ -17,6 +17,7 @@ export interface CaseStudyShape {
     slug: string
   }
   map: Function
+  sort: Function
   filter: Function
 }
 
@@ -39,6 +40,7 @@ export const getCaseStudy = (query: any): CaseStudyShape => {
     },
     feature: node.feature,
     map: Function,
+    sort: Function,
     filter: Function,
   }
 }
