@@ -28,8 +28,8 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
         <PageLink className="case-study-card" key={caseStudy.id} to={`/work/${caseStudy.slug}`}>
           <div className="content-container">
             <div className="content">
-              <small>{caseStudy.category.title}</small>
-              <h2 tw="pl-1/3 text-xl">{caseStudy.title}</h2>
+              <small>{caseStudy.title}</small>
+              <h2 tw="pl-1/3 text-xl">{caseStudy.category.title}</h2>
             </div>
           </div>
           <div className="image-container">
