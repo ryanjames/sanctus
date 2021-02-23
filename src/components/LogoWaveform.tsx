@@ -24,7 +24,7 @@ const LogoWaveform: React.FC<Props> = ({ className = "" }) => {
       setIsRunning(true)
       setTimeout(() => {
         setIsRun(true)
-      }, 1700)
+      }, 1000)
     }
   }
 
