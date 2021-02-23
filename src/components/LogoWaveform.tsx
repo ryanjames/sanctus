@@ -12,6 +12,7 @@ type Props = {
 const LogoWaveform: React.FC<Props> = ({ className = "" }) => {
   const [isRunning, setIsRunning] = useState(false)
   const [isRun, setIsRun] = useState(false)
+  const [direction, setDirection] = useState(1)
 
   const defaultOptions = {
     loop: false,
@@ -21,6 +22,7 @@ const LogoWaveform: React.FC<Props> = ({ className = "" }) => {
 
   const handleHover = () => {
     if (!isRun) {
+      setDirection(1)
       setIsRunning(true)
       setTimeout(() => {
         setIsRun(true)
@@ -28,10 +30,20 @@ const LogoWaveform: React.FC<Props> = ({ className = "" }) => {
     }
   }
 
+  const handleOut = () => {
+    if (isRun) {
+      setTimeout(() => {
+        setIsRun(false)
+        setIsRunning(true)
+        setDirection(-1)
+      }, 1000)
+    }
+  }
+
   return (
     <StyledLogoWaveform className={`${className} ${isRun ? "run" : ""}`}>
-      <div onMouseOver={handleHover}>
-        <Lottie options={defaultOptions} height={70} width={160} isStopped={!isRunning} />
+      <div onMouseOver={handleHover} onMouseLeave={handleOut}>
+        <Lottie options={defaultOptions} direction={direction} height={70} width={160} isStopped={!isRunning} />
         <span className="wordmark" tw="absolute top-0 w-64">
           <LogoWordmark />
         </span>
