@@ -7,6 +7,8 @@ import LogoWordmark from "../components/LogoWordmark"
 import tw from "twin.macro"
 import GlobalCss from "../config/GlobalCss"
 import { Helmet } from "react-helmet"
+import TransitionLink, { TransitionState } from "gatsby-plugin-transition-link"
+import { motion } from "framer-motion"
 
 export interface LayoutProps {
   className?: string
@@ -19,32 +21,60 @@ export interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ title, description, page, children, meta, owner, ogImage, className }) => {
-
   return (
-    <StyledLayout className={className}>
-      <GlobalCss />
-      <Helmet>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#ffffff" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
-      </Helmet>
-      <SEO title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
-      <div tw="fixed top-4 left-10">
-        <div tw="relative">{page !== "home" ? <LogoWaveform /> : <LogoWordmark />}</div>
-      </div>
-      <nav className="navigation" tw="fixed right-12 top-12">
-        {page !== "home" && <PageLink to="/">Home</PageLink>}
-        <PageLink to="/work">Work</PageLink>
-        <PageLink to="/library">Music Library</PageLink>
-        <PageLink to="/about-and-contact">About / Contact</PageLink>
-      </nav>
-      <main>{children}</main>
-      <footer />
-    </StyledLayout>
+    <TransitionState>
+      {({ transitionStatus, entry, exit }) => (
+        <StyledLayout className={className}>
+          <GlobalCss />
+          <Helmet>
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+            <link rel="manifest" href="/site.webmanifest" />
+            <meta name="msapplication-TileColor" content="#da532c" />
+            <meta name="theme-color" content="#ffffff" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
+          </Helmet>
+          <SEO title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
+          <motion.div
+            tw="fixed top-4 left-10"
+            initial={entry.state}
+            animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
+            transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
+          >
+            <div tw="relative">{page !== "home" ? <LogoWaveform /> : <LogoWordmark />}</div>
+          </motion.div>
+          <nav className="navigation" tw="fixed right-12 top-12">
+            {page !== "home" && (
+              <TransitionLink
+                to="/"
+                exit={{ length: 0.4, state: { opacity: 0 } }}
+                entry={{ delay: 0.4, state: { opacity: 1 } }}
+              >
+                Home
+              </TransitionLink>
+            )}
+            <TransitionLink
+              to="/work"
+              exit={{ length: 0.4, state: { opacity: 0 } }}
+              entry={{ delay: 0.4, state: { opacity: 1 } }}
+            >
+              Work
+            </TransitionLink>
+            <PageLink to="/library">Music Library</PageLink>
+            <PageLink to="/about-and-contact">About / Contact</PageLink>
+          </nav>
+          <motion.main
+            initial={entry.state}
+            animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
+            transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
+          >
+            {children}
+          </motion.main>
+          <footer />
+        </StyledLayout>
+      )}
+    </TransitionState>
   )
 }
 

@@ -27,7 +27,7 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
     visible: {
       transition: {
         when: "beforeChildren",
-        staggerChildren: 0.02,
+        staggerChildren: 0.5,
       },
     },
     hidden: {
@@ -58,7 +58,7 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
     },
     label: {
       visible: {
-        opacity: 1,
+        opacity: 0.5,
         bottom: -22,
         transition: baseTransition,
       },
@@ -73,7 +73,6 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
   const shuffleWaveform = () => {
     const newIndex = waveformIndex < waveforms.length - 1 ? waveformIndex + 1 : 0
     setWaveformIndex(newIndex)
-    console.log(newIndex)
   }
 
   return (
@@ -82,7 +81,7 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
         <PageLink className="case-study-card" key={caseStudy.id} to={`/work`} onMouseEnter={shuffleWaveform}>
           <div className="content-container">
             <div className="content">
-              <motion.small variants={waveItem.label}>{caseStudy.title}</motion.small>
+              <motion.small variants={waveItem.label}>{caseStudy.category.title}</motion.small>
               <motion.h2 variants={waveItem.title} tw="pl-1/3 text-xl">
                 <span>{caseStudy.category.title}</span>
               </motion.h2>
@@ -133,11 +132,13 @@ const StyledCaseStudiesWaveform = styled(motion.div)`
           span {
             display: block;
             transition: 0.3s ease-in-out;
+            opacity: 0;
             transform: scale(1);
             transform-origin: left;
           }
         }
         small {
+          transition: 0.3s ease-in-out;
           position: absolute;
           width: 100%;
           height: 16px;
@@ -171,9 +172,16 @@ const StyledCaseStudiesWaveform = styled(motion.div)`
       .image {
         opacity: 0.8;
       }
-      .content-container .content h2 span {
-        color: #fff;
-        transform: scale(1.3);
+      .content-container .content {
+        h2 span {
+          color: #fff;
+          opacity: 1;
+          transform: scale(1.3);
+        }
+        small {
+          opacity: 0 !important;
+          bottom: -50px !important;
+        }
       }
     }
   }

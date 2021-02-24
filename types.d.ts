@@ -1,5 +1,6 @@
 declare module "hex2rgba"
 declare module "stringquery"
+declare module "gatsby-plugin-transition-link"
 
 interface Window {
   player: {
