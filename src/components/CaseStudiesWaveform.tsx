@@ -58,7 +58,7 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
     },
     label: {
       visible: {
-        opacity: 0.5,
+        opacity: 1,
         bottom: -22,
         transition: baseTransition,
       },
