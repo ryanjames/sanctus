@@ -27,7 +27,7 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
     visible: {
       transition: {
         when: "beforeChildren",
-        staggerChildren: 0.08,
+        staggerChildren: 0.5,
       },
     },
     hidden: {
@@ -38,7 +38,7 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
   }
 
   const baseTransition = {
-    duration: 0.5,
+    duration: 0.25,
     type: "tween",
     ease: "easeInOut",
   }
