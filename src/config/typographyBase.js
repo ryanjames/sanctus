@@ -35,7 +35,7 @@ const typography = new Typography({
     },
     a: {
       textDecoration: "none",
-      color: colors["off-black"],
+      color: colors["white"],
     },
     "h2 a": {
       fontWeight: 600,

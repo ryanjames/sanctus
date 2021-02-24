@@ -1,6 +1,7 @@
 import React from "react"
 // import PageLink from "../components/PageLink"
 //import siteContent from "../staticQueries/siteContent"
+import { TransitionState } from "gatsby-plugin-transition-link"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
