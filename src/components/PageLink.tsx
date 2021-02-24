@@ -7,9 +7,10 @@ interface Props {
   to?: string
   href?: string
   className?: string
+  onMouseEnter?: any
 }
 
-const PageLink: React.FC<Props> = ({ to, href, className, children }) => {
+const PageLink: React.FC<Props> = ({ to, href, className, children, onMouseEnter }) => {
   let url = to || ""
   if (href) {
     url = `/${href.replace(/http:\/\/\/|http:\/\/|\//, "")}`
@@ -25,7 +26,7 @@ const PageLink: React.FC<Props> = ({ to, href, className, children }) => {
   }
 
   return (
-    <StyledPageLink className={className} onClick={go}>
+    <StyledPageLink className={className} onClick={go} onMouseEnter={onMouseEnter}>
       {children}
     </StyledPageLink>
   )

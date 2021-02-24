@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import caseStudies from "../staticQueries/caseStudies"
 import { CaseStudyShape } from "../models/case-study"
+import { motion } from "framer-motion"
 import PageLink from "./PageLink"
 
 type Props = {
@@ -16,30 +17,97 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
 
   const waveforms = [
     [40, 50, 100, 40, 50, 40],
-    [40, 60, 40, 100, 50, 60],
-    [36, 60, 80, 100, 36, 60],
+    [60, 70, 40, 80, 36, 70],
+    [36, 60, 80, 100, 50, 60],
   ]
 
-  const waveform = waveforms[Math.floor(Math.random() * waveforms.length)]
+  const [waveformIndex, setWaveformIndex] = useState(0)
+
+  const waveAnimation = {
+    visible: {
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.02,
+      },
+    },
+    hidden: {
+      transition: {
+        when: "afterChildren",
+      },
+    },
+  }
+
+  const baseTransition = {
+    duration: 0.25,
+    type: "tween",
+    ease: "easeInOut",
+  }
+
+  const waveItem = {
+    title: {
+      visible: {
+        opacity: 1,
+        marginLeft: 0,
+        transition: baseTransition,
+      },
+      hidden: {
+        opacity: 0,
+        marginLeft: 50,
+        transition: baseTransition,
+      },
+    },
+    label: {
+      visible: {
+        opacity: 1,
+        bottom: -22,
+        transition: baseTransition,
+      },
+      hidden: {
+        opacity: 0,
+        bottom: -50,
+        transition: baseTransition,
+      },
+    },
+  }
+
+  const shuffleWaveform = () => {
+    const newIndex = waveformIndex < waveforms.length - 1 ? waveformIndex + 1 : 0
+    setWaveformIndex(newIndex)
+    console.log(newIndex)
+  }
 
   return (
-    <StyledCaseStudiesWaveform className={className}>
+    <StyledCaseStudiesWaveform className={className} initial="hidden" animate="visible" variants={waveAnimation}>
       {featuredCaseStudies.map((caseStudy: CaseStudyShape, index: number) => (
-        <PageLink className="case-study-card" key={caseStudy.id} to={`/work/${caseStudy.slug}`}>
+        <PageLink className="case-study-card" key={caseStudy.id} to={`/work`} onMouseEnter={shuffleWaveform}>
           <div className="content-container">
             <div className="content">
-              <small>{caseStudy.title}</small>
-              <h2 tw="pl-1/3 text-xl">{caseStudy.category.title}</h2>
+              <motion.small variants={waveItem.label}>{caseStudy.title}</motion.small>
+              <motion.h2 variants={waveItem.title} tw="pl-1/3 text-xl">
+                <span>{caseStudy.category.title}</span>
+              </motion.h2>
             </div>
           </div>
-          <div className="image-container">
-            <div
-              className="image"
-              style={{
-                backgroundImage: `url(${caseStudy.image.src})`,
-                height: `${waveform[index]}%`,
+          <div className="wave-container">
+            <motion.div
+              className="image-container"
+              variants={{
+                hidden: { height: "10%", opacity: 0 },
+                visible: {
+                  height: "100%",
+                  opacity: 1,
+                  transition: { ease: "easeInOut", duration: 0.5, type: "tween" },
+                },
               }}
-            ></div>
+            >
+              <div
+                className="image"
+                style={{
+                  backgroundImage: `url(${caseStudy.image.src})`,
+                  height: waveforms[waveformIndex][index] + "%",
+                }}
+              ></div>
+            </motion.div>
           </div>
         </PageLink>
       ))}
@@ -47,7 +115,7 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
   )
 }
 
-const StyledCaseStudiesWaveform = styled.div`
+const StyledCaseStudiesWaveform = styled(motion.div)`
   ${tw`flex w-full mt-8 mx-auto`}
   height: calc(100vh - 180px);
   width: calc((100vh - 180px) * 2);
@@ -62,11 +130,15 @@ const StyledCaseStudiesWaveform = styled.div`
         width: 100%;
         height: 33.3333%;
         h2 {
-          transition: 0.3s ease-in-out;
+          span {
+            display: block;
+            transition: 0.3s ease-in-out;
+            transform: scale(1);
+            transform-origin: left;
+          }
         }
         small {
           position: absolute;
-          bottom: -22px;
           width: 100%;
           height: 16px;
           text-align: right;
@@ -76,13 +148,17 @@ const StyledCaseStudiesWaveform = styled.div`
         }
       }
     }
-    .image-container {
+    .wave-container {
       z-index: 1;
+      ${tw`flex h-full items-center`}
       position: absolute;
-      ${tw`flex items-center h-full`};
       top: 0;
+      bottom: 0;
       width: 42%;
       left: 29%;
+      .image-container {
+        ${tw`flex items-center h-full w-full`};
+      }
       .image {
         transition: 0.3s ease-in-out;
         ${tw`w-full opacity-30`};
@@ -95,8 +171,9 @@ const StyledCaseStudiesWaveform = styled.div`
       .image {
         opacity: 0.8;
       }
-      h2 {
+      .content-container .content h2 span {
         color: #fff;
+        transform: scale(1.3);
       }
     }
   }
