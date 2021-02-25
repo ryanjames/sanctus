@@ -1,7 +1,7 @@
 import React, { useEffect, useState, SyntheticEvent } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-// import PageLink from "./PageLink"
+import PageLink from "./PageLink"
 //import Container, { Col } from "./Container"
 
 type Props = {
@@ -178,7 +178,9 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
           />
         </g>
       </svg>
-      <h2 tw="text-base ml-1 -mt-4 text-muted">A sound and music design studio</h2>
+      <PageLink tw="block text-base ml-1 -mt-4 text-muted" to="/">
+        A sound and music design studio
+      </PageLink>
     </StyledLogo>
   )
 }
