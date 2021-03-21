@@ -16,6 +16,7 @@ const IndexPage: React.FC = () => {
 }
 
 const StyledLayout = styled(Layout)`
-  ${tw``}
+  ${tw`flex items-center justify-center h-full w-full`}
+  min-height: 100vh;
 `
 export default IndexPage

@@ -10,8 +10,12 @@ const GlobalCss: React.FC = () => (
     <Global
       styles={css`
         ${tw``}
+        html {
+          min-height: 100vh;
+        }
         body {
           width: 100%;
+          min-height: 100vh;
           background-color: ${colors["near-black"]};
         }
         figcaption {

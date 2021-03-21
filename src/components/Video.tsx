@@ -12,26 +12,22 @@ interface Props {
   src: string
   color: string
   poster: FluidObject
+  autoplay: boolean
 }
 
-const Video: React.FC<Props> = ({ src, poster, color }) => {
+const Video: React.FC<Props> = ({ src, poster, color, autoplay = false }) => {
   const color1 = hex2rgba(color)
   const color2 = hex2rgba(color, 0)
 
   const [play, setPlay] = useState<boolean>(false)
   const [inProgress, setInProgress] = useState<boolean>(false)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [autoplay, setAutoplay] = useState<boolean>(false)
   const [volume, setVolume] = useState(1)
 
   const handlePlay = () => {
     setPlay(false)
     setPlay(true)
   }
-
-  useEffect(() => {
-    setAutoplay(true)
-  })
 
   const handlePause = () => {
     let intVolume = 1
@@ -133,7 +129,7 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
             width="100%"
             volume={volume}
             height="100%"
-            controls={true}
+            controls={false}
             onPause={handleOnPause}
             onPlay={handleOnPlay}
             onEnded={handleOnEnded}
@@ -143,11 +139,9 @@ const Video: React.FC<Props> = ({ src, poster, color }) => {
       </div>
       <div tw="flex justify-center pt-6">
         <div tw="h-16" className={`controls ${inProgress ? "show" : ""}`}>
-          {/*
           <Play className={`play-control ${isPlaying ? "" : "show"}`} onClick={handleResume} />
           <Pause className={`pause-control ${isPlaying ? "show" : ""}`} onClick={handlePause} />
           <Restart className="restart-control" tw="ml-8 cursor-pointer" onClick={handleRestart} />
-          */}
         </div>
       </div>
     </StyledVideo>

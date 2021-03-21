@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import caseStudies from "../staticQueries/caseStudies"
@@ -6,11 +6,40 @@ import { CaseStudyShape } from "../models/case-study"
 import { motion } from "framer-motion"
 import PageLink from "./PageLink"
 
+const getWindowDimensions = () => {
+  const { innerWidth: width, innerHeight: height } = window
+  return {
+    width,
+    height,
+  }
+}
+
+const waveformStyle = () => {
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions())
+    }
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  const width = windowDimensions.width
+  const height = windowDimensions.height
+  if (width / 2 > height - 140) {
+    return "-wide"
+  } else {
+    return "-narrow"
+  }
+}
+
 type Props = {
   className?: string
 }
 
-const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
+const CaseStudiesWaveform: React.FC<Props> = ({ className = "" }) => {
   const featuredCaseStudies = caseStudies()
     .filter((obj: CaseStudyShape) => obj.feature == true)
     .sort((a: CaseStudyShape, b: CaseStudyShape) => (a.title > b.title ? 1 : -1))
@@ -76,9 +105,19 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
   }
 
   return (
-    <StyledCaseStudiesWaveform className={className} initial="hidden" animate="visible" variants={waveAnimation}>
+    <StyledCaseStudiesWaveform
+      className={`${className} ${waveformStyle()}`}
+      initial="hidden"
+      animate="visible"
+      variants={waveAnimation}
+    >
       {featuredCaseStudies.map((caseStudy: CaseStudyShape, index: number) => (
-        <PageLink className="case-study-card" key={caseStudy.id} to={`/work`} onMouseEnter={shuffleWaveform}>
+        <PageLink
+          className="case-study-card"
+          key={caseStudy.id}
+          to={`/work?category=${caseStudy.category.slug}`}
+          onMouseEnter={shuffleWaveform}
+        >
           <div className="content-container">
             <div className="content">
               <motion.small variants={waveItem.label}>{caseStudy.category.title}</motion.small>
@@ -115,9 +154,19 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className }) => {
 }
 
 const StyledCaseStudiesWaveform = styled(motion.div)`
-  ${tw`flex w-full mt-8 mx-auto`}
-  height: calc(100vh - 180px);
-  width: calc((100vh - 180px) * 2);
+  ${tw`flex mx-auto`}
+  &.-wide {
+    min-height: 500px;
+    height: calc(100vh - 180px);
+    width: 1000px;
+    @media (min-height: 680px) {
+      width: calc((100vh - 180px) * 2);
+    }
+  }
+  &.-narrow {
+    width: calc(100vw - 100px);
+    height: calc((100vw - 180px) / 2);
+  }
   .case-study-card {
     ${tw`relative`}
     width: 16.66666%;

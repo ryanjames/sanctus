@@ -5,9 +5,36 @@ import Layout from "../components/Layout"
 import Video from "../components/Video"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-import MD from "../utils/MD"
 import { getCaseStudy } from "../models/case-study"
 import { Helmet } from "react-helmet"
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
+
+/*
+import { BLOCKS, MARKS } from "@contentful/rich-text-types"
+import { renderRichText } from "gatsby-source-contentful/rich-text"
+
+const Bold = ({ children }) => <span className="bold">{children}</span>
+const Text = ({ children }) => <p className="align-center">{children}</p>
+
+const formattingOptions = {
+  renderMark: {
+    [MARKS.BOLD]: text => <Bold>{text}</Bold>,
+  },
+  renderNode: {
+    [BLOCKS.PARAGRAPH]: (node, children) => <Text>{children}</Text>,
+    [BLOCKS.EMBEDDED_ASSET]: node => {
+      return (
+        <>
+          <h2>Embedded Asset</h2>
+          <pre>
+            <code>{JSON.stringify(node, null, 2)}</code>
+          </pre>
+        </>
+      )
+    },
+  },
+}
+*/
 
 type Props = {
   data: {
@@ -22,6 +49,9 @@ type Props = {
 
 const CaseStudyPage: React.FC<Props> = ({ data }) => {
   const caseStudy = getCaseStudy(data.caseStudy.edges[0])
+  const content = JSON.parse(caseStudy.body)
+
+  console.log(content)
 
   return (
     <StyledLayout>
@@ -37,7 +67,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
             </div>
           </div>
           <div className="description" tw="max-w-3xl pb-12">
-            <MD content={caseStudy.body} externalLinks />
+            {documentToReactComponents(content)}
           </div>
         </Col>
       </Container>
@@ -87,6 +117,17 @@ export const pageQuery = graphql`
           }
           body {
             raw
+            references {
+              ... on ContentfulAsset {
+                contentful_id
+                fixed(width: 1600) {
+                  width
+                  height
+                  src
+                  srcSet
+                }
+              }
+            }
           }
           slug
         }

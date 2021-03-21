@@ -1,31 +1,134 @@
-import React from "react"
+import React, { useState, SyntheticEvent } from "react"
 // import PageLink from "../components/PageLink"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
+import withLocation from "../utils/withLocation"
+import queryString from "query-string"
 import Layout from "../components/Layout"
 import caseStudies from "../staticQueries/caseStudies"
 import { CaseStudyShape } from "../models/case-study"
 import Container, { Col } from "../components/Container"
 import PageLink from "../components/PageLink"
+import { motion } from "framer-motion"
 
-const WorkPage: React.FC = () => {
+type Props = {
+  navigate: Function
+  location: {
+    origin: string
+    search: string
+  }
+}
+
+const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   const caseStudiesData = caseStudies().sort((a: CaseStudyShape, b: CaseStudyShape) => (a.title > b.title ? 1 : -1))
+  const currentCategory: string = (queryString.parse(location.search).category as string) || "all"
+  const [category, setCategory] = useState(currentCategory)
+  const [visibility, setVisibility] = useState("visible")
+
+  const changeCategory = (e: SyntheticEvent) => {
+    const target = e.target as HTMLTextAreaElement
+    setVisibility("hidden")
+    setTimeout(() => {
+      if (target.id == "all") {
+        navigate(`${location.origin}/work`)
+      } else {
+        navigate(`${location.origin}/work/?category=${target.id}`)
+      }
+      setCategory(target.id)
+      setVisibility("visible")
+    }, 400)
+  }
+
+  const itemsAnimation = {
+    visible: {
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.08,
+      },
+    },
+    hidden: {
+      transition: {
+        when: "afterChildren",
+      },
+    },
+  }
+
+  const baseTransition = {
+    duration: 0.3,
+    type: "tween",
+    ease: "easeInOut",
+  }
+
+  const workItem = {
+    container: {
+      visible: {
+        opacity: 1,
+        marginLeft: 0,
+        transition: baseTransition,
+      },
+      hidden: {
+        opacity: 0,
+        marginLeft: 50,
+        transition: baseTransition,
+      },
+    },
+    title: {
+      visible: {
+        opacity: 1,
+        marginLeft: 0,
+        transition: baseTransition,
+      },
+      hidden: {
+        opacity: 0,
+        marginLeft: 50,
+        transition: baseTransition,
+      },
+    },
+    image: {
+      visible: {
+        opacity: 0.3,
+        transition: baseTransition,
+      },
+      hidden: {
+        opacity: 0,
+        transition: baseTransition,
+      },
+    },
+  }
 
   return (
     <StyledLayout title="Features" page="features">
       <Container>
         <Col>
+          <span id="all" onClick={changeCategory}>
+            All Work
+          </span>
           {caseStudiesData.map((caseStudy: CaseStudyShape) => (
-            <PageLink className="case-study-row" key={caseStudy.id} to={`/work/${caseStudy.slug}`}>
-              <h2>{caseStudy.title}</h2>
-              <div
-                className="image"
-                style={{
-                  backgroundImage: `url(${caseStudy.image.src})`,
-                }}
-              />
-            </PageLink>
+            <span id={caseStudy.category.slug} onClick={changeCategory} key={caseStudy.id}>
+              {caseStudy.category.title}
+            </span>
           ))}
+          <motion.div className="caseStudies" initial="hidden" animate={visibility} variants={itemsAnimation}>
+            {caseStudiesData
+              .filter((caseStudy: CaseStudyShape) => {
+                return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
+              })
+              .map((caseStudy: CaseStudyShape) => (
+                <motion.div variants={workItem.container} key={caseStudy.id}>
+                  <PageLink className="case-study-row" to={`/work/${caseStudy.slug}`}>
+                    <motion.h2 variants={workItem.title}>{caseStudy.title}</motion.h2>
+                    <motion.div
+                      variants={workItem.image}
+                      className="image"
+                      initial="hidden"
+                      style={{
+                        backgroundImage: `url(${caseStudy.image.src})`,
+                      }}
+                    />
+                  </PageLink>
+                </motion.div>
+            ))}
+          </motion.div>
         </Col>
       </Container>
     </StyledLayout>
@@ -51,9 +154,9 @@ const StyledLayout = styled(Layout)`
     }
     &:hover {
       .image {
-        opacity: 0.8;
+        opacity: 0.8 !important;
       }
     }
   }
 `
-export default WorkPage
+export default withLocation(WorkPage)
