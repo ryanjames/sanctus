@@ -4,6 +4,7 @@ import Container, { Col } from "../components/Container"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
 import styled from "@emotion/styled"
+import PageLink from "../components/PageLink"
 import tw from "twin.macro"
 import { getCaseStudy } from "../models/case-study"
 import { Helmet } from "react-helmet"
@@ -51,8 +52,6 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
   const caseStudy = getCaseStudy(data.caseStudy.edges[0])
   const content = JSON.parse(caseStudy.body)
 
-  console.log(content)
-
   return (
     <StyledLayout>
       <Helmet>
@@ -61,14 +60,24 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
       <div tw="-mt-32 relative z-10">
         <Video autoplay={false} src={caseStudy.video} poster={caseStudy.image} color={caseStudy.color} />
       </div>
-      <Container className="caseStudy-content" tw="pt-8 pb-32">
-        <Col>
-          <div className="meta" tw="-mt-16 pt-3">
-            <div className="client-badge" tw="flex items-center">
-              <h1 tw="text-2xl ml-4 mb-2">{caseStudy.title}</h1>
-            </div>
-          </div>
-          <div className="description" tw="max-w-3xl pb-12">
+      <Container className="caseStudy-content" tw="pb-32">
+        <Col tw="w-1/4 text-gray-500">
+          <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Client</label>
+          <p>{caseStudy.client}</p>
+          <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Studio</label>
+          <p>{caseStudy.studio}</p>
+          <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Role</label>
+          <p>{caseStudy.role}</p>
+          <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Category</label>
+          <p>
+            <PageLink tw="text-gray-500 hover:text-white" to={`/work/?category=${caseStudy.category.slug}`}>
+              {caseStudy.category.title}
+            </PageLink>
+          </p>
+        </Col>
+        <Col tw="w-3/4">
+          <h1 tw="text-3xl font-normal mb-12">{caseStudy.title}</h1>
+          <div className="description" tw="pb-12">
             {documentToReactComponents(content)}
           </div>
         </Col>
@@ -86,12 +95,12 @@ const StyledLayout = styled(Layout)`
     background: linear-gradient(rgba(28, 30, 40, 0.8), rgba(28, 30, 40, 0));
   }
   .caseStudy-content {
-    .categories a {
-      border-bottom: 1px solid #aaa;
-    }
     .description {
       p {
-        ${tw`text-xl`}
+        ${tw`text-base leading-relaxed`}
+      }
+      h3 {
+        ${tw`text-xl py-8 font-normal`}
       }
     }
   }
@@ -105,6 +114,9 @@ export const pageQuery = graphql`
         node {
           id
           title
+          client
+          studio
+          role
           overlayColor
           image {
             localFile {

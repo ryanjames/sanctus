@@ -7,6 +7,7 @@ import Container, { Col } from "../components/Container"
 import MD from "../utils/MD"
 import withLocation from "../utils/withLocation"
 import siteContent from "../staticQueries/siteContent"
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 
 type Props = {
   location: {
@@ -16,6 +17,7 @@ type Props = {
 
 const IndexPage: React.FC<Props> = () => {
   const content = siteContent()
+  const aboutBody = JSON.parse(content.about.body)
   return (
     <StyledLayout page="about-and-contact">
       <Container>
@@ -24,7 +26,7 @@ const IndexPage: React.FC<Props> = () => {
         </Col>
         <Col tw="w-2/3 flex flex-wrap pt-6 md:pt-16">
           <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24">
-            <MD content={content.about.body} />
+            {documentToReactComponents(aboutBody)}
             <iframe
               src="https://hello.dubsado.com:443/public/form/view/5e261ec3aaf30e10a43fc372"
               frameBorder="0"
@@ -40,13 +42,13 @@ const StyledLayout = styled(Layout)`
   ${tw``}
   iframe {
     width: 100%;
-    height: 500px;
-  }
-  h3 {
-    ${tw`text-lg`}
+    height: 800px;
   }
   p {
-    ${tw`mb-8`}
+    ${tw`text-base leading-relaxed`}
+  }
+  h3 {
+    ${tw`text-xl py-8 font-normal`}
   }
 `
 export default withLocation(IndexPage)
