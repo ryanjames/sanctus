@@ -28,8 +28,8 @@ const waveformStyle = () => {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const width = windowDimensions.width
-  const height = windowDimensions.height
+  const width = windowDimensions ? windowDimensions.width : 0
+  const height = windowDimensions ? windowDimensions.height : 0
   if (width / 2 > height - 140) {
     return "-wide"
   } else {
