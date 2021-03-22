@@ -43,7 +43,11 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
         <h2 tw="text-lg pr-12">{track.title}</h2>
         <label tw="text-xs font-bold pt-9 uppercase tracking-widest mb-4">Licensing</label>
         <p>Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-        <a tw="mt-5 inline-block" href={`mailto:info@sonosanctus.com?subject=License for '${track.title}' track`}>
+        <a
+          className="modal-button"
+          tw="mt-5 inline-block"
+          href={`mailto:info@sonosanctus.com?subject=License for '${track.title}' track`}
+        >
           Contact Us
         </a>
       </div>
