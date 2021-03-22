@@ -20,7 +20,7 @@ type Props = {
 }
 
 const WorkPage: React.FC<Props> = ({ navigate, location }) => {
-  const caseStudiesData = caseStudies().sort((a: CaseStudyShape, b: CaseStudyShape) => (a.title > b.title ? 1 : -1))
+  const caseStudiesData = caseStudies().sort((a: CaseStudyShape, b: CaseStudyShape) => (a.feature > b.feature ? 1 : -1))
   const currentCategory: string = (queryString.parse(location.search).category as string) || "all"
   const [category, setCategory] = useState(currentCategory)
   const [visibility, setVisibility] = useState("visible")
@@ -95,19 +95,25 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
       },
     },
   }
-
   return (
     <StyledLayout title="Features" page="features">
-      <Container>
+      <Col>
         <Col>
-          <span id="all" onClick={changeCategory}>
-            All Work
-          </span>
-          {caseStudiesData.map((caseStudy: CaseStudyShape) => (
-            <span id={caseStudy.category.slug} onClick={changeCategory} key={caseStudy.id}>
-              {caseStudy.category.title}
+          <div className="features-menu">
+            <span className={category == "all" ? "-selected" : ""} id="all" onClick={changeCategory}>
+              All Work
             </span>
-          ))}
+            {caseStudiesData.map((caseStudy: CaseStudyShape) => (
+              <span
+                className={category == caseStudy.category.slug ? "-selected" : ""}
+                id={caseStudy.category.slug}
+                onClick={changeCategory}
+                key={caseStudy.id}
+              >
+                {caseStudy.category.title}
+              </span>
+            ))}
+          </div>
           <motion.div className="caseStudies" initial="hidden" animate={visibility} variants={itemsAnimation}>
             {caseStudiesData
               .filter((caseStudy: CaseStudyShape) => {
@@ -115,8 +121,14 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
               })
               .map((caseStudy: CaseStudyShape) => (
                 <motion.div variants={workItem.container} key={caseStudy.id}>
-                  <PageLink className="case-study-row" to={`/work/${caseStudy.slug}`}>
-                    <motion.h2 variants={workItem.title}>{caseStudy.title}</motion.h2>
+                  <PageLink
+                    className={`case-study-row${caseStudy.feature ? " feature" : ""}`}
+                    to={`/work/${caseStudy.slug}`}
+                  >
+                    <motion.h2 variants={workItem.title}>
+                      {caseStudy.title}
+                      {caseStudy.feature}
+                    </motion.h2>
                     <motion.div
                       variants={workItem.image}
                       className="image"
@@ -130,15 +142,34 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
             ))}
           </motion.div>
         </Col>
-      </Container>
+      </Col>
     </StyledLayout>
   )
 }
 
 const StyledLayout = styled(Layout)`
   ${tw``}
+  .features-menu {
+    ${tw`text-xs py-9 uppercase tracking-widest mb-4`}
+    span {
+      transition: all 0.2s ease-in-out;
+      margin-right: 32px;
+      color: rgba(255,255,255, 0.5);
+      &:hover {
+        color: rgba(255,255,255, 0.7);
+        cursor: pointer;
+      }
+      &.-selected {
+        color: white;
+        font-weight: bold;
+      }
+    }
+  }
   .case-study-row {
     ${tw`relative block h-32 mb-8`}
+    &.feature {
+      ${tw`h-64`}
+    }
     h2 {
       ${tw`text-lg pt-6`}
       position: relative;

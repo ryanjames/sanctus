@@ -13,9 +13,10 @@ interface Props {
   color: string
   poster: FluidObject
   autoplay: boolean
+  
 }
 
-const Video: React.FC<Props> = ({ src, poster, color, autoplay = false }) => {
+const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, className }) => {
   const color1 = hex2rgba(color)
   const color2 = hex2rgba(color, 0)
 
@@ -107,7 +108,7 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false }) => {
   const player = useRef<ReactPlayer>(null)
 
   return (
-    <StyledVideo color1={color1} color2={color2}>
+    <StyledVideo className={className} color1={color1} color2={color2}>
       <div className={`video-container ${inProgress ? "playing" : ""}`} tw="relative overflow-hidden">
         <div tw="absolute inset-0">
           <div
@@ -149,9 +150,9 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false }) => {
 }
 
 const StyledVideo = styled.div<{ color1: string; color2: string }>`
-  ${tw``}
   .video-container {
-    padding-top: 56.25%;
+    height: 56.25vw;
+    max-height: 80vh;
   }
   .image-container {
     transition: all 0.6s ease-in-out;
@@ -181,10 +182,13 @@ const StyledVideo = styled.div<{ color1: string; color2: string }>`
       top: 0;
       left: 0;
       z-index: -1;
+      path {
+        fill: white;
+      }
       &:hover {
         cursor: pointer;
         path {
-          fill: ${props => props.color1};
+          fill: white;
         }
       }
       &.show {
@@ -192,9 +196,12 @@ const StyledVideo = styled.div<{ color1: string; color2: string }>`
         z-index: 1;
       }
     }
-    .restart-control:hover {
+    .restart-control {
       path {
-        fill: ${props => props.color1};
+        fill: white;
+      }
+      &:hover path {
+        fill: white;
       }
     }
   }

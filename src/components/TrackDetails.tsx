@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import { keyframes } from "@emotion/react"
 import colors from "../config/colors"
 import { isMobile } from "react-device-detect"
 import tw from "twin.macro"
 import TrackPlayer from "./TrackPlayer"
+import Modal from "./Modal"
 import Play from "../graphics/play.svg"
 import { TrackShape } from "../models/tracks"
 import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTrackContext"
@@ -16,12 +17,7 @@ interface Props {
 
 const TrackDetails: React.FC<Props> = ({ track, open }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
-  const versions = () => {
-    if (track.children && track.children.length) {
-      const count = track.children.length + 1
-      return <span>({count} versions)</span>
-    }
-  }
+  const [modal, setModal] = useState("")
 
   const handleExpand = () => {
     document.body.className = ""
@@ -37,20 +33,58 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
     }
   }, [open])
 
-  const handleChangeVersion = (id?: string) => {
-    const child = track.children?.find(child => child.id === id)
-    updateActiveTrack({
-      id: track.id,
-      version: child ? child : track,
-    })
+  const closeModal = () => {
+    setModal("")
+  }
+
+  const License: React.FC<Props> = ({ track }) => {
+    return (
+      <div tw="w-96">
+        <h2 tw="text-lg pr-12">{track.title}</h2>
+        <label tw="text-xs font-bold pt-9 uppercase tracking-widest mb-4">Licensing</label>
+        <p>Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+        <a tw="mt-5 inline-block" href={`mailto:info@sonosanctus.com?subject=License for '${track.title}' track`}>
+          Contact Us
+        </a>
+      </div>
+    )
+  }
+
+  const Download: React.FC<Props> = ({ track }) => {
+    console.log(track.url)
+    const download = track.url.replace("raw=1", "dl=1").replace("dl.dropboxusercontent", "www.dropbox")
+    return (
+      <div tw="w-96">
+        <h2 tw="text-lg pr-12">{track.title}</h2>
+        <label tw="text-xs font-bold pt-9 uppercase tracking-widest mb-4">Download Sample</label>
+        <p>Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+        <a href={download} className="modal-button" tw="mt-5 inline-block">
+          Download Sample
+        </a>
+      </div>
+    )
   }
 
   return (
-    <StyledTrackDetails color={colors["hippie-blue"]} id={track.id}>
+    <StyledTrackDetails color={colors["white"]} id={track.id}>
       {activeTrack.id == track.id ? (
         <div tw="py-5" id={`c-${track.id}`}>
           <div className="track-versions" tw="lg:flex justify-between items-center">
             <h4 tw="text-base pb-4 lg:mb-0 lg:text-xl mb-0 font-bold">{track.title}</h4>
+            <div className="track-actions" tw="flex">
+              <div onClick={() => setModal("license")}>License</div>
+              <div onClick={() => setModal("download")}>Download Sample</div>
+              {modal == "download" && (
+                <Modal close={closeModal}>
+                  <Download track={track} />
+                </Modal>
+              )}
+              {modal == "license" && (
+                <Modal close={closeModal}>
+                  <License track={track} />
+                </Modal>
+              )}
+            </div>
           </div>
           <TrackPlayer
             className="track-player"
@@ -59,9 +93,9 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
           />
         </div>
       ) : (
-        <div onClick={handleExpand} className="launcher" tw="text-base font-bold absolute flex items-center">
+        <div onClick={handleExpand} className="launcher" tw="text-sm absolute flex items-center">
           {!isMobile && <Play tw="mr-2" />}
-          {track.title} {versions()}
+          {track.title}
         </div>
       )}
     </StyledTrackDetails>
@@ -78,8 +112,8 @@ const loading = keyframes`
 const StyledTrackDetails = styled.div<{ color: string; id: string }>`
   ${tw`relative`}
   #c-${props => props.id} {
-    border-top: solid 2px ${props => props.color};
-    border-bottom: solid 2px ${props => props.color};
+    border-top: solid 1px ${props => props.color};
+    border-bottom: solid 1px ${props => props.color};
     .track-player {
       background-size: 30px 30px;
       background-image: linear-gradient(
@@ -96,6 +130,17 @@ const StyledTrackDetails = styled.div<{ color: string; id: string }>`
       .player-loaded & {
         background-image: none;
       }
+    }
+  }
+  .track-actions {
+    ${tw`-mt-2`}
+  }
+  .track-actions > div {
+    transition: all 0.2s ease-in-out;
+    ${tw`rounded bg-gray-700 py-2 px-3 mr-3`}
+    &:hover {
+      cursor: pointer;
+      ${tw`bg-gray-500`}
     }
   }
   .launcher {

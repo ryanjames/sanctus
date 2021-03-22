@@ -19,6 +19,13 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
       <Close onClick={closeMenu} tw="cursor-pointer absolute right-6 top-6 sm:hidden" />
       <h3 tw="text-lg -mb-8 sm:hidden">Filters</h3>
       <StyledLibraryCategories>
+        <ul>
+          <li>
+            <PageLink className={!id ? "-selected" : ""} to="/library/">
+              All Tracks
+            </PageLink>
+          </li>
+        </ul>
         <strong>Playlists</strong>
         <ul>
           {playlists().map((playlist: PlaylistShape) => (

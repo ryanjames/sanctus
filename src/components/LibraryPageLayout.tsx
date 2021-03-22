@@ -41,7 +41,7 @@ const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }
         </Helmet>
         <TrackShare />
         <Container tw="pt-6 sm:pt-12">
-          <Col tw="flex-1 md:overflow-y-visible overflow-x-hidden relative">
+          <Col tw="flex-1 md:overflow-y-visible overflow-x-hidden relative" className="inner-container">
             <div tw="sm:hidden flex justify-between pb-6">
               <h3 tw="mb-0">
                 <PageLink to="/library">Music Library</PageLink>
@@ -93,6 +93,9 @@ mQw.forEach((value: string, key: string) => {
 
 const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
   ${tw``}
+  .inner-container {
+    height: calc(100vh - 160px);
+  }
   .library-categories {
     @media (max-width: 640px) {
       transition: transform 0.4s ease-in-out;

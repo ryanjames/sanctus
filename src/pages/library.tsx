@@ -17,7 +17,7 @@ type Props = {
   }
 }
 
-const Library: React.FC<Props> = ({ data, location }) => {
+const Library: React.FC<Props> = ({ data, location, className }) => {
   const tracksData = getTracks(data.tracks)
   const description = `Music from the library of Sono Sanctus`
 
@@ -33,7 +33,12 @@ const Library: React.FC<Props> = ({ data, location }) => {
   return (
     <>
       {sharedTrack && <TrackSheet track={sharedTrack} />}
-      <StyledLibraryPageLayout tracksData={tracksData} title="Music Library" description={description}>
+      <StyledLibraryPageLayout
+        className={className}
+        tracksData={tracksData}
+        title="Music Library"
+        description={description}
+      >
         <TracksTable data={tracksData} />
       </StyledLibraryPageLayout>
     </>
@@ -43,7 +48,7 @@ const Library: React.FC<Props> = ({ data, location }) => {
 export default withLocation(Library)
 
 const StyledLibraryPageLayout = styled(LibraryPageLayout)`
-  ${tw``}
+  height: calc(100vh - 200px);
 `
 
 export const pageQuery = graphql`

@@ -68,21 +68,12 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
     />
   )
 
-  const handleClick = () => {
-    console.log("Handle my clicks!")
-  }
-
   const rowRenderer = ({ key, index, style, parent }) => {
     const track = filteredData[index]
     return (
       <CellMeasurer cache={cache} key={key} parent={parent} rowIndex={index} columnIndex={0}>
         {({ measure, registerChild }) => (
-          <div
-            onClick={handleClick}
-            ref={registerChild}
-            tw="border-gray-200 border-0 border-b border-solid text-sm"
-            style={style}
-          >
+          <div ref={registerChild} tw="border-gray-200 border-0 border-b border-solid text-sm" style={style}>
             <div
               tw="flex flex-wrap w-full h-16 items-center"
               className={`track-row ${activeTrack.id == track.id ? "hide" : ""}`}
@@ -182,10 +173,15 @@ const StyledTracksTable = styled.div`
     outline: none;
   }
   input {
+    transition: border 0.3s ease-in-out;
     background: transparent;
     border: 1px solid #666;
     border-radius: 4px;
+    outline: none;
     ${tw`text-muted px-4`}
+    &:focus {
+      border-color: #fff;
+    }
   }
   .category-link {
     ${tw`text-gray-400`}
@@ -193,8 +189,7 @@ const StyledTracksTable = styled.div`
       border-bottom: 1px solid;
       ${tw`border-gray-400 text-gray-400`}
       &:hover {
-        color: #111;
-        ${tw`border-gray-700 text-gray-700`}
+        ${tw`border-gray-200 text-white`}
       }
     }
   }

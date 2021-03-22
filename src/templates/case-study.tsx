@@ -58,9 +58,11 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
       <Helmet>
         <script src="https://unpkg.com/wavesurfer.js"></script>
       </Helmet>
+      <div tw="-mt-32 relative z-10">
+        <Video autoplay={false} src={caseStudy.video} poster={caseStudy.image} color={caseStudy.color} />
+      </div>
       <Container className="caseStudy-content" tw="pt-8 pb-32">
         <Col>
-          <Video src={caseStudy.video} poster={caseStudy.image} color={caseStudy.color} />
           <div className="meta" tw="-mt-16 pt-3">
             <div className="client-badge" tw="flex items-center">
               <h1 tw="text-2xl ml-4 mb-2">{caseStudy.title}</h1>
@@ -79,6 +81,9 @@ const StyledLayout = styled(Layout)`
   ${tw``}
   .client-badge svg path {
     fill: #111;
+  }
+  .video-gradient {
+    background: linear-gradient(rgba(28, 30, 40, 0.8), rgba(28, 30, 40, 0));
   }
   .caseStudy-content {
     .categories a {

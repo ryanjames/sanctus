@@ -17,7 +17,6 @@ type Props = {
 }
 
 const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
-
   const handlePlay = () => {
     document.body.classList.add("player-playing")
     document.body.classList.remove("player-paused")
@@ -32,9 +31,9 @@ const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
 
   const loadPlayer = () => {
     if (!document.getElementById(`t-${track.id}`).firstChild) {
-      const color1 = hex2rgba(colors["hippie-blue"], 0.6)
-      const color2 = hex2rgba(colors["hippie-blue"], 0.4)
-      const progressColor = hex2rgba(colors["hippie-blue"], 0.5)
+      const color1 = hex2rgba(colors["white"], 0.6)
+      const color2 = hex2rgba(colors["white"], 0.4)
+      const progressColor = hex2rgba(colors["white"], 0.7)
       const linGrad = window.document.createElement("canvas").getContext("2d")?.createLinearGradient(0, 0, 0, 120)
       linGrad?.addColorStop(0.5, color1)
       linGrad?.addColorStop(0.5, color2)
@@ -46,7 +45,7 @@ const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
         waveColor: isMobile ? color2 : linGrad,
         progressColor: progressColor,
         cursorWidth: 2,
-        cursorColor: colors["hippie-blue"],
+        cursorColor: colors["white"],
         height: 60,
         responsive: true,
         barWidth: 3,
@@ -104,7 +103,7 @@ const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
   })
 
   return (
-    <StyledTrackPlayer className={className} tw="flex relative items-center" color={colors["hippie-blue"]}>
+    <StyledTrackPlayer className={className} tw="flex relative items-center" color={colors["white"]}>
       <div className="controls" tw="w-8 h-6 relative">
         <Pause className="pause-control" onClick={handlePause} />
         <Play className="play-control" onClick={handlePlay} />
@@ -128,6 +127,9 @@ const StyledTrackPlayer = styled.div<{ color: string }>`
     z-index: -1;
     width: 18px;
     height: 18px;
+    path {
+      fill: #fff;
+    }
     &:hover {
       cursor: pointer;
       path {
