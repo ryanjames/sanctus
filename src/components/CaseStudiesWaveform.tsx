@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import PageLink from "./PageLink"
 
 const getWindowDimensions = () => {
-  if (window) {
+  if (typeof window !== "undefined") {
     const { innerWidth: width, innerHeight: height } = window
     return {
       width,
