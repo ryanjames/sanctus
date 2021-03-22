@@ -6,6 +6,8 @@ import { mQw, sizes, gutters } from "../utils/mediaQueries"
 import { matchSorter } from "match-sorter"
 import { TrackShape, CategoryShape } from "../models/tracks"
 import { ActiveTrackContext, ActiveTrackContextType, versionDefault } from "../contexts/ActiveTrackContext"
+import { AutoSizer, List, CellMeasurer, CellMeasurerCache } from "react-virtualized"
+import "react-virtualized/styles.css"
 
 import TrackDetails from "./TrackDetails"
 
@@ -19,6 +21,11 @@ export interface Props {
 
 const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
+
+  const cache = new CellMeasurerCache({
+    fixedWidth: true,
+    defaultHeight: 56,
+  })
 
   const memoizedData = useMemo(() => data, [data])
 
@@ -61,31 +68,44 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
     />
   )
 
-  type Track = { track: TrackShape }
-  const TrackRow: React.FC<Track> = ({ track }) => {
+  const handleClick = () => {
+    console.log("Handle my clicks!")
+  }
+
+  const rowRenderer = ({ key, index, style, parent }) => {
+    const track = filteredData[index]
     return (
-      <div tw="border-gray-200 border-0 border-b border-solid text-sm">
-        <div
-          tw="flex flex-wrap w-full h-16 items-center"
-          className={`track-row ${activeTrack.id == track.id ? "hide" : ""}`}
-        >
-          <div tw="w-full md:w-3/8 text-lg font-bold" />
-          <div tw="hidden md:block w-2/8" className="category-link">
-            <PageLink to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</PageLink>
+      <CellMeasurer cache={cache} key={key} parent={parent} rowIndex={index} columnIndex={0}>
+        {({ measure, registerChild }) => (
+          <div
+            onClick={handleClick}
+            ref={registerChild}
+            tw="border-gray-200 border-0 border-b border-solid text-sm"
+            style={style}
+          >
+            <div
+              tw="flex flex-wrap w-full h-16 items-center"
+              className={`track-row ${activeTrack.id == track.id ? "hide" : ""}`}
+            >
+              <div tw="w-full md:w-3/8 text-lg font-bold" />
+              <div tw="hidden md:block w-2/8" className="category-link">
+                <PageLink to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</PageLink>
+              </div>
+              <div tw="hidden md:block w-3/8">
+                {track.moods?.map((mood: CategoryShape, index: number) => (
+                  <span key={mood.id} className="category-link">
+                    <PageLink to={`/library/mood/${mood.slug}`}>{mood.name}</PageLink>
+                    {index < track.moods.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div tw="w-full">
+              <TrackDetails track={track} />
+            </div>
           </div>
-          <div tw="hidden md:block w-3/8">
-            {track.moods?.map((mood: CategoryShape, index) => (
-              <span key={mood.id} className="category-link">
-                <PageLink to={`/library/mood/${mood.slug}`}>{mood.name}</PageLink>
-                {index < track.moods.length - 1 ? ", " : ""}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div tw="w-full">
-          <TrackDetails track={track} />
-        </div>
-      </div>
+        )}
+      </CellMeasurer>
     )
   }
 
@@ -106,9 +126,19 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
             </div>
           </div>
           <div className="table-rows" tw="overflow-y-scroll overflow-x-hidden">
-            {filteredData.map((track: TrackShape) => (
-              <TrackRow key={track.id} track={track} />
-            ))}
+            <AutoSizer>
+              {({height, width}) => (
+                <List
+                  height={height}
+                  rowCount={filteredData.length}
+                  deferredMeasurementCache={cache}
+                  rowHeight={cache.rowHeight}
+                  rowRenderer={rowRenderer}
+                  overscanRowCount={10}
+                  width={width}
+                />
+              )}
+            </AutoSizer>
           </div>
         </div>
       )}
@@ -147,6 +177,9 @@ const StyledTracksTable = styled.div`
   }
   .track-row.hide {
     display: none;
+  }
+  .ReactVirtualized__Grid {
+    outline: none;
   }
   input {
     background: transparent;

@@ -17,9 +17,8 @@ const PageLink: React.FC<Props> = ({ to, href, className, children, onMouseEnter
   }
 
   const go = () => {
-    if (window.WaveSurfer && window.player && url) {
+    if (window.player) {
       document.body.className = ""
-      window.player.pause()
       window.player.destroy()
     }
     navigate(url)

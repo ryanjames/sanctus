@@ -17,6 +17,7 @@ type Props = {
 }
 
 const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
+
   const handlePlay = () => {
     document.body.classList.add("player-playing")
     document.body.classList.remove("player-paused")
@@ -30,54 +31,56 @@ const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
   }
 
   const loadPlayer = () => {
-    const color1 = hex2rgba(colors["hippie-blue"], 0.6)
-    const color2 = hex2rgba(colors["hippie-blue"], 0.4)
-    const progressColor = hex2rgba(colors["hippie-blue"], 0.5)
-    const linGrad = window.document.createElement("canvas").getContext("2d")?.createLinearGradient(0, 0, 0, 120)
-    linGrad?.addColorStop(0.5, color1)
-    linGrad?.addColorStop(0.5, color2)
-    const timeContainer = document.getElementById(`time-${track.id}`)
-    let durTotal = 0
+    if (!document.getElementById(`t-${track.id}`).firstChild) {
+      const color1 = hex2rgba(colors["hippie-blue"], 0.6)
+      const color2 = hex2rgba(colors["hippie-blue"], 0.4)
+      const progressColor = hex2rgba(colors["hippie-blue"], 0.5)
+      const linGrad = window.document.createElement("canvas").getContext("2d")?.createLinearGradient(0, 0, 0, 120)
+      linGrad?.addColorStop(0.5, color1)
+      linGrad?.addColorStop(0.5, color2)
+      const timeContainer = document.getElementById(`time-${track.id}`)
+      let durTotal = 0
 
-    window.player = new window.WaveSurfer({
-      container: `#t-${track.id}`,
-      waveColor: isMobile ? color2 : linGrad,
-      progressColor: progressColor,
-      cursorWidth: 2,
-      cursorColor: colors["hippie-blue"],
-      height: 60,
-      responsive: true,
-      barWidth: 3,
-      barGap: 1,
-      barMinHeight: 4,
-      barRadius: 4,
-    })
-    window.player.init()
-    window.player.load(track.url)
-
-    window.player.on("ready", () => {
-      setTimeout(() => {
-        durTotal = window.player.getDuration()
-        window.player.id = track.id
-        if (isMobile || pause) {
-          document.body.classList.add("player-loaded", "player-paused")
-        } else {
-          window.player.play()
-          document.body.classList.remove("player-paused")
-          document.body.classList.add("player-loaded", "player-playing")
-        }
-      }, 30)
-    })
-    if (timeContainer) {
-      window.player.on("audioprocess", (time: any) => {
-        durTotal = durTotal == 0 ? window.player.getDuration() : durTotal
-        const durMinutes = Math.floor(durTotal / 60)
-        const durSeconds = ("00" + Math.floor(durTotal - durMinutes * 60)).slice(-2)
-        const duration = durMinutes + ":" + durSeconds
-        const minutes = Math.floor((time % 3600) / 60)
-        const seconds = ("00" + Math.floor(time % 60)).slice(-2)
-        timeContainer.textContent = minutes + ":" + seconds + " | " + duration
+      window.player = new window.WaveSurfer({
+        container: `#t-${track.id}`,
+        waveColor: isMobile ? color2 : linGrad,
+        progressColor: progressColor,
+        cursorWidth: 2,
+        cursorColor: colors["hippie-blue"],
+        height: 60,
+        responsive: true,
+        barWidth: 3,
+        barGap: 1,
+        barMinHeight: 4,
+        barRadius: 4,
       })
+      window.player.init()
+      window.player.load(track.url)
+
+      window.player.on("ready", () => {
+        setTimeout(() => {
+          durTotal = window.player.getDuration()
+          window.player.id = track.id
+          if (isMobile || pause) {
+            document.body.classList.add("player-loaded", "player-paused")
+          } else {
+            window.player.play()
+            document.body.classList.remove("player-paused")
+            document.body.classList.add("player-loaded", "player-playing")
+          }
+        }, 30)
+      })
+      if (timeContainer) {
+        window.player.on("audioprocess", (time: any) => {
+          durTotal = durTotal == 0 ? window.player.getDuration() : durTotal
+          const durMinutes = Math.floor(durTotal / 60)
+          const durSeconds = ("00" + Math.floor(durTotal - durMinutes * 60)).slice(-2)
+          const duration = durMinutes + ":" + durSeconds
+          const minutes = Math.floor((time % 3600) / 60)
+          const seconds = ("00" + Math.floor(time % 60)).slice(-2)
+          timeContainer.textContent = minutes + ":" + seconds + " | " + duration
+        })
+      }
     }
   }
 

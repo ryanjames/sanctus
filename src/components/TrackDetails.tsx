@@ -78,11 +78,9 @@ const loading = keyframes`
 const StyledTrackDetails = styled.div<{ color: string; id: string }>`
   ${tw`relative`}
   #c-${props => props.id} {
-    transition: all 0.4s ease-in-out;
     border-top: solid 2px ${props => props.color};
     border-bottom: solid 2px ${props => props.color};
     .track-player {
-      margin-top: 24px;
       background-size: 30px 30px;
       background-image: linear-gradient(
         45deg,

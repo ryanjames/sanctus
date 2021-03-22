@@ -34,7 +34,7 @@ const Library: React.FC<Props> = ({ data, location }) => {
     <>
       {sharedTrack && <TrackSheet track={sharedTrack} />}
       <StyledLibraryPageLayout tracksData={tracksData} title="Music Library" description={description}>
-        <TracksTable placeholder={<PlaylistCards />} data={tracksData} />
+        <TracksTable data={tracksData} />
       </StyledLibraryPageLayout>
     </>
   )
