@@ -3,6 +3,7 @@ import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
+import ReactPlayer from "react-player"
 import styled from "@emotion/styled"
 import PageLink from "../components/PageLink"
 import tw from "twin.macro"
@@ -10,36 +11,21 @@ import { getCaseStudy } from "../models/case-study"
 import { Helmet } from "react-helmet"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 
-/*
 import { BLOCKS, MARKS } from "@contentful/rich-text-types"
+/*
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 
 const Bold = ({ children }) => <span className="bold">{children}</span>
 const Text = ({ children }) => <p className="align-center">{children}</p>
 
-const formattingOptions = {
-  renderMark: {
-    [MARKS.BOLD]: text => <Bold>{text}</Bold>,
-  },
-  renderNode: {
-    [BLOCKS.PARAGRAPH]: (node, children) => <Text>{children}</Text>,
-    [BLOCKS.EMBEDDED_ASSET]: node => {
-      return (
-        <>
-          <h2>Embedded Asset</h2>
-          <pre>
-            <code>{JSON.stringify(node, null, 2)}</code>
-          </pre>
-        </>
-      )
-    },
-  },
-}
 */
 
 type Props = {
   data: {
     caseStudy: {
+      edges: string[]
+    }
+    assets: {
       edges: string[]
     }
   }
@@ -50,7 +36,25 @@ type Props = {
 
 const CaseStudyPage: React.FC<Props> = ({ data }) => {
   const caseStudy = getCaseStudy(data.caseStudy.edges[0])
+  const assets = data.assets.edges
+
   const content = JSON.parse(caseStudy.body)
+
+  console.log(content)
+
+  const formattingOptions = {
+    renderMark: {
+      [MARKS.CODE]: node => <div className="inline-video"><ReactPlayer url={node} controls={true} /></div>,
+    },
+    renderNode: {
+      [BLOCKS.EMBEDDED_ASSET]: node => {
+        const img = assets.find(i => i.next.contentful_id === node.data.target.sys.id).next
+        const title = img.title
+        const src = img.fixed.src
+        return <img tw="my-12" src={src} alt={title} />
+      },
+    },
+  }
 
   return (
     <StyledLayout>
@@ -78,7 +82,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
         <Col tw="w-3/4">
           <h1 tw="text-3xl font-normal mb-12">{caseStudy.title}</h1>
           <div className="description" tw="pb-12">
-            {documentToReactComponents(content)}
+            {documentToReactComponents(content, formattingOptions)}
           </div>
         </Col>
       </Container>
@@ -90,6 +94,16 @@ const StyledLayout = styled(Layout)`
   ${tw``}
   .client-badge svg path {
     fill: #111;
+  }
+  .inline-video {
+    padding-top: 56.25%;
+    position: relative;
+    margin: 40px 0;
+    > div {
+      ${tw`absolute inset-0`}
+      width: 100% !important;
+      height: 100% !important;
+    }
   }
   .video-gradient {
     background: linear-gradient(rgba(28, 30, 40, 0.8), rgba(28, 30, 40, 0));
@@ -109,6 +123,17 @@ export default CaseStudyPage
 
 export const pageQuery = graphql`
   query CaseStudyQuery($id: String!) {
+    assets: allContentfulAsset {
+      edges {
+        next {
+          title
+          contentful_id
+          fixed(width: 1600) {
+            src
+          }
+        }
+      }
+    }
     caseStudy: allContentfulCaseStudy(filter: { id: { eq: $id } }) {
       edges {
         node {
@@ -134,17 +159,6 @@ export const pageQuery = graphql`
           }
           body {
             raw
-            references {
-              ... on ContentfulAsset {
-                contentful_id
-                fixed(width: 1600) {
-                  width
-                  height
-                  src
-                  srcSet
-                }
-              }
-            }
           }
           slug
         }
