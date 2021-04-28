@@ -48,12 +48,13 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
     },
     renderNode: {
       [BLOCKS.EMBEDDED_ASSET]: node => {
-        const asset = assets.filter(obj => {
+        const validAsset = assets.filter(obj => {
           if (obj.next) {
             return obj.next.contentful_id === node.data.target.sys.id
           }
-        })[0].next
-        if (asset.file.contentType) {
+        })
+        if (validAsset[0].next) {
+          const asset = validAsset[0].next
           const type = asset.file.contentType
           const newLocal = null
           switch (type) {
