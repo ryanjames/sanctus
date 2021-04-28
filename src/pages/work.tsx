@@ -7,7 +7,7 @@ import queryString from "query-string"
 import Layout from "../components/Layout"
 import caseStudies from "../staticQueries/caseStudies"
 import { CaseStudyShape } from "../models/case-study"
-import Container, { Col } from "../components/Container"
+import { Col } from "../components/Container"
 import PageLink from "../components/PageLink"
 import { motion } from "framer-motion"
 
@@ -18,6 +18,67 @@ type Props = {
     search: string
   }
 }
+
+type Category = {
+  title: string
+  slug: string
+}
+
+type CaseStudy = {
+  caseStudy: CaseStudyShape
+}
+
+const itemsAnimation = {
+  visible: {
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.08,
+    },
+  },
+  hidden: {
+    transition: {
+      when: "afterChildren",
+    },
+  },
+}
+
+const baseTransition = {
+  duration: 0.3,
+  type: "tween",
+  ease: "easeInOut",
+}
+
+const workItem = {
+  container: {
+    visible: {
+      opacity: 1,
+      marginLeft: 0,
+      transition: baseTransition,
+    },
+    hidden: {
+      opacity: 0,
+      marginLeft: 50,
+      transition: baseTransition,
+    },
+  },
+}
+
+const CaseStudy: React.FC<CaseStudy> = ({ caseStudy }) => (
+  <motion.div variants={workItem.container}>
+    <PageLink className={`case-study-row${caseStudy.feature ? " feature" : ""}`} to={`/work/${caseStudy.slug}`}>
+      <h2>
+        {caseStudy.title}
+        {caseStudy.feature}
+      </h2>
+      <div
+        className="image"
+        style={{
+          backgroundImage: `url(${caseStudy.image.src})`,
+        }}
+      />
+    </PageLink>
+  </motion.div>
+)
 
 const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   const caseStudiesData = caseStudies().sort((a: CaseStudyShape, b: CaseStudyShape) => (a.feature > b.feature ? 1 : -1))
@@ -39,62 +100,15 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
     }, 400)
   }
 
-  const itemsAnimation = {
-    visible: {
-      transition: {
-        when: "beforeChildren",
-        staggerChildren: 0.08,
-      },
-    },
-    hidden: {
-      transition: {
-        when: "afterChildren",
-      },
-    },
-  }
+  const categories: Category[] = []
+  caseStudiesData.filter((item: CaseStudyShape) => {
+    const i = categories.findIndex(x => x.title == item.category.title)
+    if (i <= -1) {
+      categories.push({ title: item.category.title, slug: item.category.slug })
+    }
+    return null
+  })
 
-  const baseTransition = {
-    duration: 0.3,
-    type: "tween",
-    ease: "easeInOut",
-  }
-
-  const workItem = {
-    container: {
-      visible: {
-        opacity: 1,
-        marginLeft: 0,
-        transition: baseTransition,
-      },
-      hidden: {
-        opacity: 0,
-        marginLeft: 50,
-        transition: baseTransition,
-      },
-    },
-    title: {
-      visible: {
-        opacity: 1,
-        marginLeft: 0,
-        transition: baseTransition,
-      },
-      hidden: {
-        opacity: 0,
-        marginLeft: 50,
-        transition: baseTransition,
-      },
-    },
-    image: {
-      visible: {
-        opacity: 0.3,
-        transition: baseTransition,
-      },
-      hidden: {
-        opacity: 0,
-        transition: baseTransition,
-      },
-    },
-  }
   return (
     <StyledLayout title="Features" page="features">
       <Col>
@@ -103,14 +117,14 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
             <span className={category == "all" ? "-selected" : ""} id="all" onClick={changeCategory}>
               All Work
             </span>
-            {caseStudiesData.map((caseStudy: CaseStudyShape) => (
+            {categories.map(item => (
               <span
-                className={category == caseStudy.category.slug ? "-selected" : ""}
-                id={caseStudy.category.slug}
+                className={category == item.slug ? "-selected" : ""}
+                id={item.slug}
                 onClick={changeCategory}
-                key={caseStudy.id}
+                key={item.slug}
               >
-                {caseStudy.category.title}
+                {item.title}
               </span>
             ))}
           </div>
@@ -119,27 +133,22 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
               .filter((caseStudy: CaseStudyShape) => {
                 return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
               })
+              .filter((caseStudy: CaseStudyShape) => {
+                return caseStudy.feature
+              })
               .map((caseStudy: CaseStudyShape) => (
-                <motion.div variants={workItem.container} key={caseStudy.id}>
-                  <PageLink
-                    className={`case-study-row${caseStudy.feature ? " feature" : ""}`}
-                    to={`/work/${caseStudy.slug}`}
-                  >
-                    <motion.h2 variants={workItem.title}>
-                      {caseStudy.title}
-                      {caseStudy.feature}
-                    </motion.h2>
-                    <motion.div
-                      variants={workItem.image}
-                      className="image"
-                      initial="hidden"
-                      style={{
-                        backgroundImage: `url(${caseStudy.image.src})`,
-                      }}
-                    />
-                  </PageLink>
-                </motion.div>
-            ))}
+                <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
+              ))}
+            {caseStudiesData
+              .filter((caseStudy: CaseStudyShape) => {
+                return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
+              })
+              .filter((caseStudy: CaseStudyShape) => {
+                return !caseStudy.feature
+              })
+              .map((caseStudy: CaseStudyShape) => (
+                <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
+              ))}
           </motion.div>
         </Col>
       </Col>
@@ -154,9 +163,9 @@ const StyledLayout = styled(Layout)`
     span {
       transition: all 0.2s ease-in-out;
       margin-right: 32px;
-      color: rgba(255,255,255, 0.5);
+      color: rgba(255, 255, 255, 0.5);
       &:hover {
-        color: rgba(255,255,255, 0.7);
+        color: rgba(255, 255, 255, 0.7);
         cursor: pointer;
       }
       &.-selected {
@@ -176,12 +185,12 @@ const StyledLayout = styled(Layout)`
       z-index: 2;
     }
     .image {
+      opacity: 0.3;
       transition: 0.2s ease-in-out;
       ${tw`absolute top-0 left-16 right-0 bottom-0`}
       background-position: center;
       background-size: cover;
       z-index: 1;
-      opacity: 0.3;
     }
     &:hover {
       .image {

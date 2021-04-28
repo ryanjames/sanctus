@@ -44,17 +44,21 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
 
   const formattingOptions = {
     renderMark: {
-      [MARKS.CODE]: node => <div className="inline-video"><ReactPlayer url={node} controls={true} /></div>,
+      [MARKS.CODE]: node => {
+        return (
+          <div className="inline-video">
+            <ReactPlayer url={node} controls={true} />
+          </div>
+        )
+      },
     },
     renderNode: {
       [BLOCKS.EMBEDDED_ASSET]: node => {
-        const validAsset = assets.filter(obj => {
-          if (obj.next) {
-            return obj.next.contentful_id === node.data.target.sys.id
-          }
+        const linkedAsset = assets.filter(obj => {
+          return obj.node.contentful_id == node.data.target.sys.id
         })
-        if (validAsset[0]) {
-          const asset = validAsset[0].next
+        if (linkedAsset[0]) {
+          const asset = linkedAsset[0].node
           const type = asset.file.contentType
           const newLocal = null
           switch (type) {
@@ -157,7 +161,7 @@ export const pageQuery = graphql`
   query CaseStudyQuery($id: String!) {
     assets: allContentfulAsset {
       edges {
-        next {
+        node {
           title
           contentful_id
           fixed(width: 1600) {
