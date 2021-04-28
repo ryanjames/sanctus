@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useRef } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import ReactPlayer from "react-player"
@@ -13,7 +13,7 @@ interface Props {
   color: string
   poster: FluidObject
   autoplay: boolean
-  
+  className?: string
 }
 
 const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, className }) => {

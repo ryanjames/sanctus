@@ -12,8 +12,7 @@ export const versionDefault = {
   title: "",
   length: "",
   url: "",
-  genres: [],
-  vibes: [],
+  moods: [],
   energy: {
     name: "",
     id: "",

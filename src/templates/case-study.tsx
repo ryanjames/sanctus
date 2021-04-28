@@ -4,7 +4,9 @@ import Container, { Col } from "../components/Container"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
 import ReactPlayer from "react-player"
+import InlinePlayer from "../components/InlinePlayer"
 import styled from "@emotion/styled"
+import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import PageLink from "../components/PageLink"
 import tw from "twin.macro"
 import { getCaseStudy } from "../models/case-study"
@@ -40,18 +42,41 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
 
   const content = JSON.parse(caseStudy.body)
 
-  console.log(content)
-
   const formattingOptions = {
     renderMark: {
       [MARKS.CODE]: node => <div className="inline-video"><ReactPlayer url={node} controls={true} /></div>,
     },
     renderNode: {
       [BLOCKS.EMBEDDED_ASSET]: node => {
-        const img = assets.find(i => i.next.contentful_id === node.data.target.sys.id).next
-        const title = img.title
-        const src = img.fixed.src
-        return <img tw="my-12" src={src} alt={title} />
+        const asset = assets.find(i => i.next.contentful_id === node.data.target.sys.id).next
+        const type = asset.file.contentType
+        const newLocal = null
+        switch (type) {
+          case "image/jpeg":
+            return <img tw="my-12" src={asset.fixed.src} alt={asset.title} />
+            break
+          case "audio/x-wav":
+            return (
+              <InlinePlayer
+                track={{
+                  id: asset.contentful_id,
+                  title: asset.title,
+                  length: "",
+                  url: asset.file.url,
+                  moods: [],
+                  energy: {
+                    name: "",
+                    id: "",
+                    slug: "",
+                  },
+                  priority: 0,
+                }}
+              />
+            )
+            break
+          default:
+            return newLocal
+        }
       },
     },
   }
@@ -82,7 +107,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
         <Col tw="w-3/4">
           <h1 tw="text-3xl font-normal mb-12">{caseStudy.title}</h1>
           <div className="description" tw="pb-12">
-            {documentToReactComponents(content, formattingOptions)}
+            <ActiveTrackProvider>{documentToReactComponents(content, formattingOptions)}</ActiveTrackProvider>
           </div>
         </Col>
       </Container>
@@ -130,6 +155,10 @@ export const pageQuery = graphql`
           contentful_id
           fixed(width: 1600) {
             src
+          }
+          file {
+            contentType
+            url
           }
         }
       }
