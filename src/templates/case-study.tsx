@@ -48,34 +48,40 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
     },
     renderNode: {
       [BLOCKS.EMBEDDED_ASSET]: node => {
-        const asset = assets.find(i => i.next.contentful_id === node.data.target.sys.id).next
-        const type = asset.file.contentType
-        const newLocal = null
-        switch (type) {
-          case "image/jpeg":
-            return <img tw="my-12" src={asset.fixed.src} alt={asset.title} />
-            break
-          case "audio/x-wav":
-            return (
-              <InlinePlayer
-                track={{
-                  id: asset.contentful_id,
-                  title: asset.title,
-                  length: "",
-                  url: asset.file.url,
-                  moods: [],
-                  energy: {
-                    name: "",
-                    id: "",
-                    slug: "",
-                  },
-                  priority: 0,
-                }}
-              />
-            )
-            break
-          default:
-            return newLocal
+        const asset = assets.filter(obj => {
+          if (obj.next) {
+            return obj.next.contentful_id === node.data.target.sys.id
+          }
+        })[0].next
+        if (asset.file.contentType) {
+          const type = asset.file.contentType
+          const newLocal = null
+          switch (type) {
+            case "image/jpeg":
+              return <img tw="my-12" src={asset.fixed.src} alt={asset.title} />
+              break
+            case "audio/x-wav":
+              return (
+                <InlinePlayer
+                  track={{
+                    id: asset.contentful_id,
+                    title: asset.title,
+                    length: "",
+                    url: asset.file.url,
+                    moods: [],
+                    energy: {
+                      name: "",
+                      id: "",
+                      slug: "",
+                    },
+                    priority: 0,
+                  }}
+                />
+              )
+              break
+            default:
+              return newLocal
+          }
         }
       },
     },
