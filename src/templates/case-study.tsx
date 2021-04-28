@@ -53,7 +53,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
             return obj.next.contentful_id === node.data.target.sys.id
           }
         })
-        if (validAsset[0].next) {
+        if (validAsset[0]) {
           const asset = validAsset[0].next
           const type = asset.file.contentType
           const newLocal = null
