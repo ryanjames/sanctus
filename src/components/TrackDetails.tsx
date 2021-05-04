@@ -18,6 +18,7 @@ interface Props {
 const TrackDetails: React.FC<Props> = ({ track, open }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
   const [modal, setModal] = useState("")
+  const [licenseSubmitted, setLicenseSubmitted] = useState(false)
 
   const handleExpand = () => {
     document.body.className = ""
@@ -37,19 +38,47 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
     setModal("")
   }
 
+  const handleLicensingSubmit = e => {
+    e.preventDefault()
+    const licenseForm = document.getElementById("licenseForm")
+    const formData = new FormData(licenseForm)
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString(),
+    })
+      .then(() => setLicenseSubmitted(true))
+      .catch(error => alert(error))
+  }
+
   const License: React.FC<Props> = ({ track }) => {
     return (
       <div tw="w-96">
         <h2 tw="text-lg pr-12">{track.title}</h2>
         <label tw="text-xs font-bold pt-9 uppercase tracking-widest mb-4">Licensing</label>
         <p>Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-        <a
-          className="modal-button"
-          tw="mt-5 inline-block"
-          href={`mailto:info@sonosanctus.com?subject=License for '${track.title}' track`}
-        >
-          Contact Us
-        </a>
+        {!licenseSubmitted ? (
+          <form id="licenseForm" name="licensing" method="POST" data-netlify="true" onSubmit={handleLicensingSubmit}>
+            <input
+              required
+              tw="text-sm bg-transparent border border-solid p-3 text-white w-full border-gray-600 rounded mb-4"
+              placeholder="Name"
+              type="text"
+              name="name"
+            />
+            <input
+              required
+              tw="text-sm bg-transparent border border-solid p-3 text-white w-full border-gray-600 rounded mb-4"
+              placeholder="Email"
+              type="email"
+              name="email"
+            />
+            <input type="hidden" name="track" value={track.title} />
+            <button tw="text-white border-0 text-sm rounded bg-gray-700 py-2 px-6 mr-3 cursor-pointer" type="submit">Send</button>
+          </form>
+        ) : (
+          <div tw="p-4 bg-gray-900 rounded">Thank you for your inquiry. We'll get back to you as soon as we can.</div>
+        )}
       </div>
     )
   }
