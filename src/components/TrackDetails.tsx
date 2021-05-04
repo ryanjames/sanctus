@@ -8,6 +8,7 @@ import TrackPlayer from "./TrackPlayer"
 import Modal from "./Modal"
 import Play from "../graphics/play.svg"
 import { TrackShape } from "../models/tracks"
+import siteContent from "../staticQueries/siteContent"
 import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTrackContext"
 
 interface Props {
@@ -50,13 +51,14 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
       .then(() => setLicenseSubmitted(true))
       .catch(error => alert(error))
   }
+  const content = siteContent()
 
   const License: React.FC<Props> = ({ track }) => {
     return (
       <div tw="w-96">
         <h2 tw="text-lg pr-12">{track.title}</h2>
         <label tw="text-xs font-bold pt-9 uppercase tracking-widest mb-4">Licensing</label>
-        <p>Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+        <p>{content.licensingIntro}</p>
         {!licenseSubmitted ? (
           <form id="licenseForm" name="licensing" method="POST" data-netlify="true" onSubmit={handleLicensingSubmit}>
             <input
@@ -90,7 +92,7 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
       <div tw="w-96">
         <h2 tw="text-lg pr-12">{track.title}</h2>
         <label tw="text-xs font-bold pt-9 uppercase tracking-widest mb-4">Download Sample</label>
-        <p>Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+        <p>{content.downloadSampleIntro}</p>
         <a href={download} className="modal-button" tw="mt-5 inline-block">
           Download Sample
         </a>

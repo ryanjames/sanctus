@@ -6,6 +6,8 @@ interface ContentShape {
   author: string
   title: string
   description: string
+  licensingIntro: string
+  downloadSampleIntro: string
   ogImage: FluidObject
   musicLibrarySeoDescription: string
   about: {
@@ -23,6 +25,8 @@ const siteContent = (): ContentShape => {
             node {
               siteSeoTitle
               siteSeoDescription
+              downloadSampleIntro
+              licensingIntro
               openGraphImage {
                 localFile {
                   childImageSharp {
@@ -57,6 +61,8 @@ const siteContent = (): ContentShape => {
     owner: "Sono Sanctus",
     author: "Ryan James",
     title: metaData.siteSeoTitle,
+    downloadSampleIntro: metaData.downloadSampleIntro,
+    licensingIntro: metaData.licensingIntro,
     description: metaData.siteSeoDescription,
     ogImage: metaData.openGraphImage.localFile.publicURL,
     about: {
