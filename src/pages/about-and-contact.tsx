@@ -28,7 +28,7 @@ const IndexPage: React.FC<Props> = () => {
           <h2 tw="text-5xl text-hippie-blue leading-tight">{content.about.heading}</h2>
         </Col>
         <Col tw="w-2/3 flex flex-wrap pt-6 md:pt-16">
-          <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24">
+          <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24 relative">
             <ActiveTrackProvider>
               {documentToReactComponents(aboutBody, formattingOptions(aboutAssets))}
             </ActiveTrackProvider>
@@ -44,10 +44,17 @@ const IndexPage: React.FC<Props> = () => {
 }
 
 const StyledLayout = styled(Layout)`
-  ${tw``}
   iframe {
     width: 100%;
     height: 800px;
+  }
+  img {
+    position: absolute;
+    transform: translateX(-100%) translateX(-40px);
+    margin-top: 6px;
+    width: calc(100vw / 2);
+    max-width: none;
+    max-width: 700px;
   }
   p {
     ${tw`text-base leading-relaxed`}
