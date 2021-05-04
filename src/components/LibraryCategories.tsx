@@ -25,16 +25,28 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
               All Tracks
             </PageLink>
           </li>
+          {playlists()
+            .filter((playlist: PlaylistShape) => playlist.title == "Favorites")
+            .map((playlist: PlaylistShape) => (
+              <li key={playlist.id}>
+                <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/playlist/${playlist.slug}`}>
+                  {playlist.title}
+                </PageLink>
+              </li>
+            ))}
         </ul>
         <strong>Playlists</strong>
         <ul>
-          {playlists().map((playlist: PlaylistShape) => (
-            <li key={playlist.id}>
-              <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/playlist/${playlist.slug}`}>
-                {playlist.title == "Favorite" ? "Favorites" : playlist.title}
-              </PageLink>
-            </li>
-          ))}
+          {playlists()
+            .filter((playlist: PlaylistShape) => playlist.title !== "Favorites")
+            .filter((playlist: PlaylistShape) => playlist.active)
+            .map((playlist: PlaylistShape) => (
+              <li key={playlist.id}>
+                <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/playlist/${playlist.slug}`}>
+                  {playlist.title}
+                </PageLink>
+              </li>
+            ))}
         </ul>
         <div>
           <strong>Energies</strong>
@@ -69,7 +81,7 @@ const StyledLibraryCategories = styled.div`
   ${tw`-mt-8`}
   height: calc(100vh - 76px);
   @media (min-width: 640px) {
-    height: calc(100vh - 240px);
+    height: calc(100vh - 140px);
   }
   width: 100%;
   margin-left: -14px;

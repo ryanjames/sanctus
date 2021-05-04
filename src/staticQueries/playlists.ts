@@ -9,10 +9,12 @@ interface Image {
 export interface PlaylistShape {
   id: string
   title: string
+  active: boolean
   slug: string
   count: number
   image: string | Image
   map: Function
+  filter: Function
 }
 
 const playlists = (): PlaylistShape => {
@@ -24,15 +26,7 @@ const playlists = (): PlaylistShape => {
             node {
               data {
                 Playlist_Name
-                Playlist_Image {
-                  localFiles {
-                    childImageSharp {
-                      fluid(maxWidth: 600) {
-                        ...GatsbyImageSharpFluid
-                      }
-                    }
-                  }
-                }
+                Playlist_Active
                 Playlist_Tracks {
                   id
                 }
@@ -53,8 +47,8 @@ const playlists = (): PlaylistShape => {
     return {
       id: playlist.node.id,
       title: playlist.node.data.Playlist_Name,
+      active: playlist.node.data.Playlist_Active,
       slug: slugify(playlist.node.data.Playlist_Name, { lower: true, strict: true }),
-      image: playlist.node.data.Playlist_Image.localFiles[0].childImageSharp.fluid,
       count: tracks.length,
     }
   })

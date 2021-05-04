@@ -66,7 +66,6 @@ module.exports = {
             baseId: `appMlZDjXXmJYrF6k`,
             tableName: `Playlists`,
             tableLinks: [`Playlist_Tracks`],
-            mapping: { Playlist_Image: `fileNode` },
           },
         ],
       },

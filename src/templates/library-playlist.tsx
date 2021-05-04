@@ -2,14 +2,19 @@ import React from "react"
 import { graphql } from "gatsby"
 import TracksTable from "../components/TracksTable"
 import LibraryPageLayout from "../components/LibraryPageLayout"
-import { getTracks, QueryShape, PlaylistQueryShape } from "../models/tracks"
+import { getTracks, QueryShape } from "../models/tracks"
 
 type Props = {
   data: {
     tracks: QueryShape
     playlist: {
       edges: {
-        node: PlaylistQueryShape
+        node: {
+          id: string
+          data: {
+            Playlist_Name: string
+          }
+        }
       }[]
     }
   }
