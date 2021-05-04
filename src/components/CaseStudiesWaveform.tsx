@@ -16,36 +16,11 @@ const getWindowDimensions = () => {
   }
 }
 
-const waveformStyle = () => {
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions())
-    }
-
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-  const width = windowDimensions ? windowDimensions.width : 0
-  const height = windowDimensions ? windowDimensions.height : 0
-  if (width / 2 > height - 140) {
-    return "-wide"
-  } else {
-    return "-narrow"
-  }
-}
-
 type Props = {
   className?: string
 }
 
 const CaseStudiesWaveform: React.FC<Props> = ({ className = "" }) => {
-  const featuredCaseStudies = caseStudies()
-    .filter((obj: CaseStudyShape) => obj.feature == true)
-    .sort((a: CaseStudyShape, b: CaseStudyShape) => (a.title > b.title ? 1 : -1))
-
   const waveforms = [
     [40, 50, 100, 40, 50, 40],
     [60, 70, 40, 80, 36, 70],
@@ -53,6 +28,39 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className = "" }) => {
   ]
 
   const [waveformIndex, setWaveformIndex] = useState(0)
+
+  const featuredCaseStudies = caseStudies()
+    .filter((obj: CaseStudyShape) => obj.feature == true)
+    .sort((a: CaseStudyShape, b: CaseStudyShape) => (a.title > b.title ? 1 : -1))
+
+  const waveformStyle = () => {
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
+
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions())
+      }
+
+      //Preload Images
+      featuredCaseStudies.map((caseStudy: CaseStudyShape) => {
+        const img = new Image()
+        img.src = caseStudy.image.src
+        console.log(img)
+      })
+
+      window.addEventListener("resize", handleResize)
+      return () => window.removeEventListener("resize", handleResize)
+    }, [])
+
+    const width = windowDimensions ? windowDimensions.width : 0
+    const height = windowDimensions ? windowDimensions.height : 0
+    if (width / 2 > height - 140) {
+      return "-wide"
+    } else {
+      return "-narrow"
+    }
+  }
+
 
   const waveAnimation = {
     visible: {
