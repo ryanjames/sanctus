@@ -26,6 +26,19 @@ const GlobalCss: React.FC = () => (
         figure img {
           width: 100%;
         }
+        .inline-video {
+          padding-top: 56.25%;
+          position: relative;
+          margin: 40px 0 !important;
+          > div {
+            ${tw`absolute inset-0`}
+            width: 100% !important;
+            height: 100% !important;
+          }
+        }
+        .inline-image {
+          ${tw`my-12`}
+        }
         ${typography()}
       `}
     />

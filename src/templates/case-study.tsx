@@ -3,8 +3,6 @@ import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
-import ReactPlayer from "react-player"
-import InlinePlayer from "../components/InlinePlayer"
 import styled from "@emotion/styled"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import PageLink from "../components/PageLink"
@@ -12,8 +10,9 @@ import tw from "twin.macro"
 import { getCaseStudy } from "../models/case-study"
 import { Helmet } from "react-helmet"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
+import formattingOptions from "../utils/formattingOptions"
+import assets from "../staticQueries/assets"
 
-import { BLOCKS, MARKS } from "@contentful/rich-text-types"
 /*
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 
@@ -27,9 +26,6 @@ type Props = {
     caseStudy: {
       edges: string[]
     }
-    assets: {
-      edges: string[]
-    }
   }
   search?: {
     play: string
@@ -38,59 +34,9 @@ type Props = {
 
 const CaseStudyPage: React.FC<Props> = ({ data }) => {
   const caseStudy = getCaseStudy(data.caseStudy.edges[0])
-  const assets = data.assets.edges
+  const caseStudyAssets = assets()
 
   const content = JSON.parse(caseStudy.body)
-
-  const formattingOptions = {
-    renderMark: {
-      [MARKS.CODE]: node => {
-        return (
-          <div className="inline-video">
-            <ReactPlayer url={node} controls={true} />
-          </div>
-        )
-      },
-    },
-    renderNode: {
-      [BLOCKS.EMBEDDED_ASSET]: node => {
-        const linkedAsset = assets.filter(obj => {
-          return obj.node.contentful_id == node.data.target.sys.id
-        })
-        if (linkedAsset[0]) {
-          const asset = linkedAsset[0].node
-          const type = asset.file.contentType
-          const newLocal = null
-          switch (type) {
-            case "image/jpeg":
-              return <img tw="my-12" src={asset.fixed.src} alt={asset.title} />
-              break
-            case "audio/x-wav":
-              return (
-                <InlinePlayer
-                  track={{
-                    id: asset.contentful_id,
-                    title: asset.title,
-                    length: "",
-                    url: asset.file.url,
-                    moods: [],
-                    energy: {
-                      name: "",
-                      id: "",
-                      slug: "",
-                    },
-                    priority: 0,
-                  }}
-                />
-              )
-              break
-            default:
-              return newLocal
-          }
-        }
-      },
-    },
-  }
 
   return (
     <StyledLayout>
@@ -118,7 +64,9 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
         <Col tw="w-3/4">
           <h1 tw="text-3xl font-normal mb-12">{caseStudy.title}</h1>
           <div className="description" tw="pb-12">
-            <ActiveTrackProvider>{documentToReactComponents(content, formattingOptions)}</ActiveTrackProvider>
+            <ActiveTrackProvider>
+              {documentToReactComponents(content, formattingOptions(caseStudyAssets))}
+            </ActiveTrackProvider>
           </div>
         </Col>
       </Container>
@@ -130,16 +78,6 @@ const StyledLayout = styled(Layout)`
   ${tw``}
   .client-badge svg path {
     fill: #111;
-  }
-  .inline-video {
-    padding-top: 56.25%;
-    position: relative;
-    margin: 40px 0;
-    > div {
-      ${tw`absolute inset-0`}
-      width: 100% !important;
-      height: 100% !important;
-    }
   }
   .video-gradient {
     background: linear-gradient(rgba(28, 30, 40, 0.8), rgba(28, 30, 40, 0));
@@ -159,21 +97,6 @@ export default CaseStudyPage
 
 export const pageQuery = graphql`
   query CaseStudyQuery($id: String!) {
-    assets: allContentfulAsset {
-      edges {
-        node {
-          title
-          contentful_id
-          fixed(width: 1600) {
-            src
-          }
-          file {
-            contentType
-            url
-          }
-        }
-      }
-    }
     caseStudy: allContentfulCaseStudy(filter: { id: { eq: $id } }) {
       edges {
         node {
