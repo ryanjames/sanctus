@@ -112,45 +112,43 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   return (
     <StyledLayout title="Features" page="features">
       <Col>
-        <Col>
-          <div className="features-menu">
-            <span className={category == "all" ? "-selected" : ""} id="all" onClick={changeCategory}>
-              All Work
+        <div className="features-menu">
+          <span className={category == "all" ? "-selected" : ""} id="all" onClick={changeCategory}>
+            All Work
+          </span>
+          {categories.map(item => (
+            <span
+              className={category == item.slug ? "-selected" : ""}
+              id={item.slug}
+              onClick={changeCategory}
+              key={item.slug}
+            >
+              {item.title}
             </span>
-            {categories.map(item => (
-              <span
-                className={category == item.slug ? "-selected" : ""}
-                id={item.slug}
-                onClick={changeCategory}
-                key={item.slug}
-              >
-                {item.title}
-              </span>
+          ))}
+        </div>
+        <motion.div className="caseStudies" initial="hidden" animate={visibility} variants={itemsAnimation}>
+          {caseStudiesData
+            .filter((caseStudy: CaseStudyShape) => {
+              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
+            })
+            .filter((caseStudy: CaseStudyShape) => {
+              return caseStudy.feature
+            })
+            .map((caseStudy: CaseStudyShape) => (
+              <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
             ))}
-          </div>
-          <motion.div className="caseStudies" initial="hidden" animate={visibility} variants={itemsAnimation}>
-            {caseStudiesData
-              .filter((caseStudy: CaseStudyShape) => {
-                return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
-              })
-              .filter((caseStudy: CaseStudyShape) => {
-                return caseStudy.feature
-              })
-              .map((caseStudy: CaseStudyShape) => (
-                <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
-              ))}
-            {caseStudiesData
-              .filter((caseStudy: CaseStudyShape) => {
-                return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
-              })
-              .filter((caseStudy: CaseStudyShape) => {
-                return !caseStudy.feature
-              })
-              .map((caseStudy: CaseStudyShape) => (
-                <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
-              ))}
-          </motion.div>
-        </Col>
+          {caseStudiesData
+            .filter((caseStudy: CaseStudyShape) => {
+              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
+            })
+            .filter((caseStudy: CaseStudyShape) => {
+              return !caseStudy.feature
+            })
+            .map((caseStudy: CaseStudyShape) => (
+              <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
+            ))}
+        </motion.div>
       </Col>
     </StyledLayout>
   )
@@ -162,6 +160,7 @@ const StyledLayout = styled(Layout)`
     ${tw`text-xs py-9 uppercase tracking-widest mb-4`}
     span {
       transition: all 0.2s ease-in-out;
+      ${tw`inline-block pb-6`}
       margin-right: 32px;
       color: rgba(255, 255, 255, 0.5);
       &:hover {
@@ -175,9 +174,9 @@ const StyledLayout = styled(Layout)`
     }
   }
   .case-study-row {
-    ${tw`relative block h-32 mb-8`}
+    ${tw`relative block h-24 md:h-32 mb-8`}
     &.feature {
-      ${tw`h-64`}
+      ${tw`h-40 md:h-64`}
     }
     h2 {
       ${tw`text-lg pt-6`}
@@ -187,7 +186,7 @@ const StyledLayout = styled(Layout)`
     .image {
       opacity: 0.3;
       transition: 0.2s ease-in-out;
-      ${tw`absolute top-0 left-16 right-0 bottom-0`}
+      ${tw`absolute top-0 left-6 md:left-16 right-0 bottom-0`}
       background-position: center;
       background-size: cover;
       z-index: 1;

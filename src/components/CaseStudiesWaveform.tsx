@@ -45,7 +45,6 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className = "" }) => {
       featuredCaseStudies.map((caseStudy: CaseStudyShape) => {
         const img = new Image()
         img.src = caseStudy.image.src
-        console.log(img)
       })
 
       window.addEventListener("resize", handleResize)

@@ -28,7 +28,7 @@ const StyledModal = styled.div`
   ${tw`fixed inset-0 z-10 flex justify-center items-center`}
   background-color: rgba(28, 30, 40, 0.8);
   .modal-inner {
-    ${tw`text-white relative pt-10 px-12 pb-12 bg-gray-800 rounded`}
+    ${tw`text-white relative pt-6 sm:pb-6 sm:pt-10 px-6 sm:px-12 bg-gray-800 rounded`}
   }
   .modal-close {
     ${tw`absolute top-0 right-0 mt-8 mr-10 text-3xl text-gray-300`}

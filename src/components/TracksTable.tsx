@@ -162,9 +162,7 @@ const StyledTracksTable = styled.div`
   }
   .table-placeholder,
   .table-rows {
-    @media (min-width: 640px) {
-      height: calc(100vh - 280px);
-    }
+    height: calc(100vh - 280px);
   }
   .track-row.hide {
     display: none;

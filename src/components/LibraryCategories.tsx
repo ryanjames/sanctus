@@ -16,8 +16,8 @@ interface Props {
 const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
   return (
     <>
-      <Close onClick={closeMenu} tw="cursor-pointer absolute right-6 top-6 sm:hidden" />
-      <h3 tw="text-lg -mb-8 sm:hidden">Filters</h3>
+      <Close className="close" onClick={closeMenu} tw="cursor-pointer absolute right-6 top-6 sm:hidden" />
+      <h3 tw="text-lg -mt-8 sm:hidden">Filters</h3>
       <StyledLibraryCategories>
         <ul>
           <li>
@@ -78,7 +78,7 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
 }
 
 const StyledLibraryCategories = styled.div`
-  ${tw`-mt-8`}
+  ${tw`mt-0 sm:-mt-8`}
   height: calc(100vh - 76px);
   @media (min-width: 640px) {
     height: calc(100vh - 140px);

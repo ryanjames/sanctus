@@ -1,16 +1,19 @@
 import React from "react"
-// import PageLink from "../components/PageLink"
-//import siteContent from "../staticQueries/siteContent"
-import { TransitionState } from "gatsby-plugin-transition-link"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
 import CaseStudiesWaveform from "../components/CaseStudiesWaveform"
+import CaseStudiesWaveformMobile from "../components/CaseStudiesWaveformMobile"
 
 const IndexPage: React.FC = () => {
   return (
     <StyledLayout page="home">
-      <CaseStudiesWaveform />
+      <span tw="hidden md:inline">
+        <CaseStudiesWaveform />
+      </span>
+      <span tw="md:hidden">
+        <CaseStudiesWaveformMobile />
+      </span>
     </StyledLayout>
   )
 }

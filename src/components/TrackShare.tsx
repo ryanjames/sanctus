@@ -7,11 +7,6 @@ import colors from "../config/colors"
 import tw from "twin.macro"
 import withLocation from "../utils/withLocation"
 import Close from "../graphics/close.svg"
-import Logo from "../graphics/logo.svg"
-import Composer from "../graphics/composer.svg"
-import TrackDetails from "../components/TrackDetails"
-import PageLink from "../components/PageLink"
-import TrackPlayer from "./TrackPlayer"
 
 type Props = {
   className?: string

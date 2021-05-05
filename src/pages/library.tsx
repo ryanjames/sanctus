@@ -24,7 +24,6 @@ const Library: React.FC<Props> = ({ data, location, className }) => {
   let sharedTrack
   if (location.search) {
     const queriedTrackId = queryString.parse(location.search).track
-    console.log(queriedTrackId)
     sharedTrack = tracksData.filter(obj => {
       return obj.id == queriedTrackId
     })[0]

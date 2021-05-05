@@ -55,7 +55,7 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
 
   const License: React.FC<Props> = ({ track }) => {
     return (
-      <div tw="w-96">
+      <div tw="w-56 sm:w-96">
         <h2 tw="text-lg pr-12">{track.title}</h2>
         <label tw="text-xs font-bold pt-9 uppercase tracking-widest mb-4">Licensing</label>
         <p>{content.licensingIntro}</p>
@@ -86,7 +86,6 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
   }
 
   const Download: React.FC<Props> = ({ track }) => {
-    console.log(track.url)
     const download = track.url.replace("raw=1", "dl=1").replace("dl.dropboxusercontent", "www.dropbox")
     return (
       <div tw="w-96">

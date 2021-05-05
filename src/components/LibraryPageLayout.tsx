@@ -54,7 +54,7 @@ const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }
           </Col>
           <Col
             className={`library-categories ${open ? "-open" : ""}`}
-            tw="absolute inset-0 z-30 bg-near-black sm:relative sm:block sm:w-1/3 md:w-1/4"
+            tw="absolute inset-0 bg-near-black z-50 sm:relative sm:block sm:w-1/3 md:w-1/4"
           >
             <Container>
               <LibraryCategories id={id} closeMenu={closeMenu} />
@@ -97,6 +97,13 @@ const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
     height: calc(100vh - 160px);
   }
   .library-categories {
+    ${tw`pt-24 sm:pt-12`}
+    .close {
+      position: fixed;
+    }
+    .close path {
+      fill: #ffffff !important;
+    }
     @media (max-width: 640px) {
       transition: transform 0.4s ease-in-out;
       transform: translateY(-140%);
