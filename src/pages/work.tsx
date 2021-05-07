@@ -82,7 +82,7 @@ const CaseStudy: React.FC<CaseStudy> = ({ caseStudy }) => (
 
 const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   const caseStudiesData = caseStudies().sort((a: CaseStudyShape, b: CaseStudyShape) => (a.feature > b.feature ? 1 : -1))
-  const [category, setCategory] = useState((queryString.parse(location.search).category as string) || "all")
+  const [category, setCategory] = useState("nothing")
   const [visibility, setVisibility] = useState("visible")
 
   const changeCategory = (e: SyntheticEvent) => {
@@ -100,6 +100,9 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   }
 
   useEffect(() => {
+    const queryParam = queryString.parse(location.search).category as string
+    const queryCategory = queryParam ? queryParam : "all"
+    setCategory(queryCategory)
     //Preload Images
     caseStudiesData.map((caseStudy: CaseStudyShape) => {
       const img = new Image()

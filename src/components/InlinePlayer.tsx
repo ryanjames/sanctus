@@ -67,7 +67,7 @@ const loading = keyframes`
 `
 
 const StyledInlinePlayer = styled.div<{ color: string; id: string }>`
-  ${tw`relative my-16`}
+  ${tw`relative my-16 min-h-16`}
   #c-${props => props.id} {
     border-top: solid 1px ${props => props.color};
     border-bottom: solid 1px ${props => props.color};
