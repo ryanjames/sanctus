@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent } from "react"
+import React, { useState, useEffect, SyntheticEvent } from "react"
 // import PageLink from "../components/PageLink"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
@@ -99,6 +99,14 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
       setVisibility("visible")
     }, 400)
   }
+
+  useEffect(() => {
+    //Preload Images
+    caseStudiesData.map((caseStudy: CaseStudyShape) => {
+      const img = new Image()
+      img.src = caseStudy.image.src
+    })
+  })
 
   const categories: Category[] = []
   caseStudiesData.filter((item: CaseStudyShape) => {

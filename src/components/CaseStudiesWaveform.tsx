@@ -60,7 +60,6 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className = "" }) => {
     }
   }
 
-
   const waveAnimation = {
     visible: {
       transition: {
