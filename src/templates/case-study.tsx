@@ -43,25 +43,33 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
       <Helmet>
         <script src="https://unpkg.com/wavesurfer.js"></script>
       </Helmet>
-      <div tw="-mt-32 relative z-10">
+      <div tw="lg:-mt-32 relative z-10">
         <Video autoplay={false} src={caseStudy.video} poster={caseStudy.image} color={caseStudy.color} />
       </div>
       <Container className="caseStudy-content" tw="pb-32">
-        <Col tw="w-1/4 text-gray-500">
-          <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Client</label>
-          <p>{caseStudy.client}</p>
-          <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Studio</label>
-          <p>{caseStudy.studio}</p>
-          <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Role</label>
-          <p>{caseStudy.role}</p>
-          <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Category</label>
-          <p>
-            <PageLink tw="text-gray-500 hover:text-white" to={`/work/?category=${caseStudy.category.slug}`}>
-              {caseStudy.category.title}
-            </PageLink>
-          </p>
+        <Col tw="md:w-1/4 flex flex-wrap md:block text-gray-500">
+          <div tw="sm:w-1/2 pr-8">
+            <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Client</label>
+            <p>{caseStudy.client}</p>
+          </div>
+          <div tw="sm:w-1/2 pr-8">
+            <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Studio</label>
+            <p>{caseStudy.studio}</p>
+          </div>
+          <div tw="sm:w-1/2 pr-8">
+            <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Role</label>
+            <p>{caseStudy.role}</p>
+          </div>
+          <div tw="sm:w-1/2 pr-8">
+            <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Category</label>
+            <p>
+              <PageLink tw="text-gray-500 hover:text-white" to={`/work/?category=${caseStudy.category.slug}`}>
+                {caseStudy.category.title}
+              </PageLink>
+            </p>
+          </div>
         </Col>
-        <Col tw="w-3/4">
+        <Col tw="md:w-3/4">
           <h1 tw="text-3xl font-normal mb-12">{caseStudy.title}</h1>
           <div className="description" tw="pb-12">
             <ActiveTrackProvider>

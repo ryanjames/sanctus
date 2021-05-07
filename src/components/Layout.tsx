@@ -106,7 +106,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
             <Nav page={page} />
           </div>
           <motion.main
-            tw="w-full md:w-auto sm:px-12 md:px-0"
+            tw="w-full md:w-auto"
             initial={entry.state}
             animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
             transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 3.4 }}

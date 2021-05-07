@@ -82,22 +82,21 @@ const CaseStudy: React.FC<CaseStudy> = ({ caseStudy }) => (
 
 const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   const caseStudiesData = caseStudies().sort((a: CaseStudyShape, b: CaseStudyShape) => (a.feature > b.feature ? 1 : -1))
-  const currentCategory: string = (queryString.parse(location.search).category as string) || "all"
-  const [category, setCategory] = useState(currentCategory)
+  const [category, setCategory] = useState((queryString.parse(location.search).category as string) || "all")
   const [visibility, setVisibility] = useState("visible")
 
   const changeCategory = (e: SyntheticEvent) => {
     const target = e.target as HTMLTextAreaElement
     setVisibility("hidden")
+    setCategory(target.id)
     setTimeout(() => {
       if (target.id == "all") {
         navigate(`${location.origin}/work`)
       } else {
         navigate(`${location.origin}/work/?category=${target.id}`)
       }
-      setCategory(target.id)
       setVisibility("visible")
-    }, 400)
+    }, 600)
   }
 
   useEffect(() => {
