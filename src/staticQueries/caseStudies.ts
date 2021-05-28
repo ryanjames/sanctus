@@ -11,6 +11,7 @@ const caseStudies = (): CaseStudyShape => {
               id
               title
               slug
+              priority
               feature
               overlayColor
               image {
@@ -25,7 +26,8 @@ const caseStudies = (): CaseStudyShape => {
               videoUrl
               client
               role
-              studio
+              project
+              projectLabel
               body {
                 raw
               }
@@ -48,17 +50,19 @@ const caseStudies = (): CaseStudyShape => {
     title: study.node.title,
     slug: study.node.slug,
     color: study.node.overlayColor,
-    image: study.node.image.localFile.childImageSharp.fluid,
+    image: study.node.image.localFile ? study.node.image.localFile.childImageSharp.fluid : null,
     video: study.node.videoUrl,
     body: study.node.body.raw,
     client: study.node.client,
     role: study.node.role,
-    studio: study.node.studio,
+    project: study.node.project,
+    projectLabel: study.node.projectLabel,
     category: {
       title: study.node.category.title,
       slug: study.node.category.slug,
     },
     feature: study.node.feature,
+    priority: study.node.priority,
   }))
 
   CaseStudies.push(CaseStudies.shift())

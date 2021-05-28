@@ -63,22 +63,26 @@ const workItem = {
   },
 }
 
-const CaseStudy: React.FC<CaseStudy> = ({ caseStudy }) => (
-  <motion.div variants={workItem.container}>
-    <PageLink className={`case-study-row${caseStudy.feature ? " feature" : ""}`} to={`/work/${caseStudy.slug}`}>
-      <h2>
-        {caseStudy.title}
-        {caseStudy.feature}
-      </h2>
-      <div
-        className="image"
-        style={{
-          backgroundImage: `url(${caseStudy.image.src})`,
-        }}
-      />
-    </PageLink>
-  </motion.div>
-)
+interface priorityShape {
+  [key: string]: string
+}
+
+const CaseStudy: React.FC<CaseStudy> = ({ caseStudy }) => {
+  const priorityClasses: priorityShape = {
+    "No Priority": "",
+    "High Priority": "prioritized",
+    Feature: "feature",
+  }
+  const priorityClass = priorityClasses[caseStudy.priority]
+  return (
+    <motion.div variants={workItem.container}>
+      <PageLink className={`case-study-row ${priorityClass}`} to={`/work/${caseStudy.slug}`}>
+        <h2>{caseStudy.title}</h2>
+        <div className="image" style={caseStudy.image ? { backgroundImage: `url(${caseStudy.image.src})` } : {}} />
+      </PageLink>
+    </motion.div>
+  )
+}
 
 const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   const caseStudiesData = caseStudies().sort((a: CaseStudyShape, b: CaseStudyShape) => (a.feature > b.feature ? 1 : -1))
@@ -106,7 +110,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
     //Preload Images
     caseStudiesData.map((caseStudy: CaseStudyShape) => {
       const img = new Image()
-      img.src = caseStudy.image.src
+      img.src = caseStudy.image ? caseStudy.image.src : ""
     })
   })
 
@@ -120,7 +124,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   })
 
   return (
-    <StyledLayout title="Features" page="features">
+    <StyledLayout title="Work" page="features">
       <Col>
         <div className="features-menu">
           <span className={category == "all" ? "-selected" : ""} id="all" onClick={changeCategory}>
@@ -143,7 +147,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
               return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
             })
             .filter((caseStudy: CaseStudyShape) => {
-              return caseStudy.feature
+              return caseStudy.priority == "Feature"
             })
             .map((caseStudy: CaseStudyShape) => (
               <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
@@ -153,7 +157,17 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
               return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
             })
             .filter((caseStudy: CaseStudyShape) => {
-              return !caseStudy.feature
+              return caseStudy.priority == "High Priority"
+            })
+            .map((caseStudy: CaseStudyShape) => (
+              <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
+            ))}
+          {caseStudiesData
+            .filter((caseStudy: CaseStudyShape) => {
+              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
+            })
+            .filter((caseStudy: CaseStudyShape) => {
+              return !caseStudy.priority || caseStudy.priority == "No Priority"
             })
             .map((caseStudy: CaseStudyShape) => (
               <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
@@ -186,6 +200,9 @@ const StyledLayout = styled(Layout)`
   .case-study-row {
     ${tw`relative block h-24 md:h-32 mb-8`}
     &.feature {
+      ${tw`h-64 md:h-96`}
+    }
+    &.prioritized {
       ${tw`h-40 md:h-64`}
     }
     h2 {

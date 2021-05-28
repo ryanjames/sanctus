@@ -22,11 +22,10 @@ const formattingOptions = assets => {
         if (linkedAsset[0]) {
           const asset = linkedAsset[0]
           const type = asset.type
-          const newLocal = null
-          switch (type) {
-            case "image/jpeg":
+          switch (true) {
+            case type.includes("image"):
               return <img className="inline-image" src={asset.sizedUrl.src} alt={asset.title} />
-            case "audio/x-wav":
+            case type.includes("audio"):
               return (
                 <InlinePlayer
                   track={{
@@ -45,7 +44,7 @@ const formattingOptions = assets => {
                 />
               )
             default:
-              return newLocal
+              return null
           }
         }
       },

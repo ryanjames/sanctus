@@ -22,7 +22,7 @@ const IndexPage: React.FC<Props> = () => {
   const aboutBody = JSON.parse(content.about.body)
   const aboutAssets = assets()
   return (
-    <StyledLayout page="about-and-contact">
+    <StyledLayout title="About / Contact" page="about-and-contact">
       <Container>
         <Col tw="md:w-1/3 pt-16">
           <h2 tw="text-5xl text-hippie-blue leading-tight">{content.about.heading}</h2>

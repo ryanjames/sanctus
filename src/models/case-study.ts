@@ -10,8 +10,10 @@ export interface CaseStudyShape {
   body: string
   client: string
   role: string
-  studio: string
+  project: string
+  projectLabel: string
   feature: boolean
+  priority: string
   category: {
     title: string
     slug: string
@@ -33,12 +35,14 @@ export const getCaseStudy = (query: any): CaseStudyShape => {
     body: node.body.raw,
     client: node.client,
     role: node.role,
-    studio: node.studio,
+    project: node.project,
+    projectLabel: node.projectLabel,
     category: {
       title: node.category.title,
       slug: node.category.slug,
     },
     feature: node.feature,
+    priority: node.priority,
     map: Function,
     sort: Function,
     filter: Function,

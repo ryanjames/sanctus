@@ -8,7 +8,6 @@ import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 import PageLink from "../components/PageLink"
 import tw from "twin.macro"
 import { getCaseStudy } from "../models/case-study"
-import Img, { FluidObject } from "gatsby-image"
 import { Helmet } from "react-helmet"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import formattingOptions from "../utils/formattingOptions"
@@ -40,7 +39,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
   const content = JSON.parse(caseStudy.body)
 
   return (
-    <StyledLayout>
+    <StyledLayout title={`Case Study: ${caseStudy.title}`}>
       <Helmet>
         <script src="https://unpkg.com/wavesurfer.js"></script>
       </Helmet>
@@ -58,14 +57,18 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
       )}
       <Container className="caseStudy-content" tw="pb-32">
         <Col tw="md:w-1/4 flex flex-wrap md:block pb-12 md:pb-0 text-gray-500">
-          <div tw="sm:w-1/2 md:w-full pr-8">
-            <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Client</label>
-            <p>{caseStudy.client}</p>
-          </div>
-          <div tw="sm:w-1/2 md:w-full pr-8">
-            <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Studio</label>
-            <p>{caseStudy.studio}</p>
-          </div>
+          {caseStudy.client && (
+            <div tw="sm:w-1/2 md:w-full pr-8">
+              <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Client</label>
+              <p>{caseStudy.client}</p>
+            </div>
+          )}
+          {caseStudy.project && (
+            <div tw="sm:w-1/2 md:w-full pr-8">
+              <label tw="text-xs pt-9 uppercase tracking-widest mb-4">{caseStudy.projectLabel ?? "Studio"}</label>
+              <p>{caseStudy.project}</p>
+            </div>
+          )}
           <div tw="sm:w-1/2 md:w-full pr-8">
             <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Role</label>
             <p>{caseStudy.role}</p>
@@ -121,7 +124,8 @@ export const pageQuery = graphql`
           id
           title
           client
-          studio
+          project
+          projectLabel
           role
           overlayColor
           image {
