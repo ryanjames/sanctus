@@ -130,7 +130,7 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
             width="100%"
             volume={volume}
             height="100%"
-            controls={false}
+            controls={true}
             onPause={handleOnPause}
             onPlay={handleOnPlay}
             onEnded={handleOnEnded}
@@ -140,9 +140,11 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
       </div>
       <div tw="flex justify-center pt-6">
         <div tw="h-16" className={`controls ${inProgress ? "show" : ""}`}>
+      {/*
           <Play className={`play-control ${isPlaying ? "" : "show"}`} onClick={handleResume} />
           <Pause className={`pause-control ${isPlaying ? "show" : ""}`} onClick={handlePause} />
           <Restart className="restart-control" tw="ml-8 cursor-pointer" onClick={handleRestart} />
+      */}
         </div>
       </div>
     </StyledVideo>
