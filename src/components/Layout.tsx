@@ -53,12 +53,20 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
         Music Library
       </TransitionLink>
       <TransitionLink
-        className={page == "about-and-contact" ? "-selected" : ""}
-        to="/about-and-contact"
+        className={page == "about" ? "-selected" : ""}
+        to="/about"
         exit={{ length: 0.4, state: { opacity: 0 } }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
-        About / Contact
+        About
+      </TransitionLink>
+      <TransitionLink
+        className={page == "contact" ? "-selected" : ""}
+        to="/contact"
+        exit={{ length: 0.4, state: { opacity: 0 } }}
+        entry={{ delay: 0.4, state: { opacity: 1 } }}
+      >
+        Contact
       </TransitionLink>
     </nav>
   )

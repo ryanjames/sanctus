@@ -1,6 +1,25 @@
 import { graphql, useStaticQuery } from "gatsby"
 import { FluidObject } from "gatsby-image"
 
+type PageShape = {
+  node: {
+    page: string
+    heading: string
+    body: {
+      raw: string
+    }
+    seoDescription: string
+  }
+}
+
+type PagesShape = {
+  [key: string]: {
+    heading: string
+    body: string
+    description: string
+  }
+}
+
 interface ContentShape {
   owner: string
   author: string
@@ -10,10 +29,7 @@ interface ContentShape {
   downloadSampleIntro: string
   ogImage: FluidObject
   musicLibrarySeoDescription: string
-  about: {
-    heading: string
-    body: string
-  }
+  pages: PagesShape
 }
 
 const siteContent = (): ContentShape => {
@@ -40,13 +56,15 @@ const siteContent = (): ContentShape => {
             }
           }
         }
-        about: allContentfulAboutContent {
+        pages: allContentfulPageContent {
           edges {
             node {
+              page
               heading
               body {
                 raw
               }
+              seoDescription
             }
           }
         }
@@ -55,7 +73,14 @@ const siteContent = (): ContentShape => {
   )
 
   const metaData = query.metaData.edges[0].node
-  const about = query.about.edges[0].node
+  const pages: PagesShape = {}
+  query.pages.edges.forEach((page: PageShape) => {
+    pages[page.node.page] = {
+      heading: page.node.heading,
+      body: page.node.body.raw,
+      description: page.node.seoDescription,
+    }
+  })
   return {
     musicLibrarySeoDescription: metaData.musicLibrarySeoDescription,
     owner: "Sono Sanctus",
@@ -65,10 +90,7 @@ const siteContent = (): ContentShape => {
     licensingIntro: metaData.licensingIntro,
     description: metaData.siteSeoDescription,
     ogImage: metaData.openGraphImage.localFile.publicURL,
-    about: {
-      heading: about.heading,
-      body: about.body.raw,
-    },
+    pages: pages,
   }
 }
 

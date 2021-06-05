@@ -18,20 +18,17 @@ type Props = {
 }
 
 const IndexPage: React.FC<Props> = () => {
-  const content = siteContent()
-  const aboutBody = JSON.parse(content.about.body)
-  const aboutAssets = assets()
+  const content = siteContent().pages["Contact"]
+  const body = JSON.parse(content.body)
   return (
-    <StyledLayout title="About / Contact" page="about-and-contact">
+    <StyledLayout title="Contact" page="contact" description={content.description}>
       <Container>
         <Col tw="md:w-1/3 pt-16">
-          <h2 tw="text-5xl text-hippie-blue leading-tight">{content.about.heading}</h2>
+          <h2 tw="text-5xl text-hippie-blue leading-tight">{content.heading}</h2>
         </Col>
         <Col tw="md:w-2/3 flex flex-wrap pt-6 md:pt-16">
-          <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24 relative">
-            <ActiveTrackProvider>
-              {documentToReactComponents(aboutBody, formattingOptions(aboutAssets))}
-            </ActiveTrackProvider>
+          <div tw="w-full md:w-2/3 pt-2 md:pl-24 relative">
+            <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
             <iframe
               src="https://hello.dubsado.com:443/public/form/view/5e261ec3aaf30e10a43fc372"
               frameBorder="0"
