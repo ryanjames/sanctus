@@ -16,6 +16,12 @@ interface Props {
   open?: boolean
 }
 
+const handleMuteAll = () => {
+  if (typeof window !== "undefined") {
+    window.muteAll()
+  }
+}
+
 const TrackDetails: React.FC<Props> = ({ track, open }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
   const [modal, setModal] = useState("")
@@ -23,7 +29,7 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
 
   const handleExpand = () => {
     document.body.className = ""
-    window.muteAll()
+    handleMuteAll()
     updateActiveTrack({
       id: track.id,
       version: track,

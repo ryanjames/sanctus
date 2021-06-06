@@ -10,6 +10,12 @@ interface Props {
   onMouseEnter?: any
 }
 
+const handleMuteAll = () => {
+  if (typeof window !== "undefined") {
+    window.muteAll()
+  }
+}
+
 const PageLink: React.FC<Props> = ({ to, href, className, children, onMouseEnter }) => {
   let url = to || ""
   if (href) {
@@ -21,7 +27,7 @@ const PageLink: React.FC<Props> = ({ to, href, className, children, onMouseEnter
       document.body.className = ""
       window.player.destroy()
     }
-    window.muteAll()
+    handleMuteAll()
     navigate(url)
   }
 

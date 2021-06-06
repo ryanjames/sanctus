@@ -12,6 +12,9 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
   const [ready, setReady] = useState(false)
   const letters = ["s1", "a", "n", "c", "t", "u", "s2"]
 
+  if (typeof window !== "undefined") {
+  }
+
   useEffect(() => {
     const context = window.logoAudioContext
 
@@ -118,6 +121,12 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
     }
   }
 
+  const handleMuteAll = () => {
+    if (typeof window !== "undefined") {
+      window.muteAll()
+    }
+  }
+
   return (
     <StyledLogo className={`${className} ${ready ? "ready" : ""} ${waveFinished ? "-withWave" : ""}`}>
       <svg
@@ -128,7 +137,7 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g id="x" onClick={window.muteAll()}>
+        <g id="x" onClick={handleMuteAll}>
           <rect opacity="0" x="155" y="29" width="21" height="24" fill="white" />
           <path
             d="M172.8 36.6L170.2 34L165.4 38.8L160.6 34L158 36.6L162.8 41.4L158 46.2L160.6 48.8L165.4 44L170.2 48.8L172.8 46.2L168 41.4L172.8 36.6Z"

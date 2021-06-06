@@ -24,13 +24,19 @@ export interface LayoutProps {
   ogImage?: string
 }
 
+const handleMuteAll = () => {
+  if (typeof window !== "undefined") {
+    window.muteAll()
+  }
+}
+
 const Nav: React.FC<LayoutProps> = ({ page }) => {
   return (
     <nav>
       {page !== "home" && (
         <TransitionLink
           to="/"
-          exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
+          exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => handleMuteAll() }}
           entry={{ delay: 0.4, state: { opacity: 1 } }}
         >
           Home
@@ -39,7 +45,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       <TransitionLink
         className={page == "features" ? "-selected" : ""}
         to="/work"
-        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
+        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => handleMuteAll() }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
         Work
@@ -47,7 +53,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       <TransitionLink
         className={page == "library" ? "-selected" : ""}
         to="/library"
-        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
+        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => handleMuteAll() }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
         Music Library
@@ -55,7 +61,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       <TransitionLink
         className={page == "about" ? "-selected" : ""}
         to="/about"
-        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
+        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => handleMuteAll() }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
         About
@@ -63,7 +69,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       <TransitionLink
         className={page == "contact" ? "-selected" : ""}
         to="/contact"
-        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
+        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => handleMuteAll() }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
         Contact
