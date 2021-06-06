@@ -21,6 +21,7 @@ const PageLink: React.FC<Props> = ({ to, href, className, children, onMouseEnter
       document.body.className = ""
       window.player.destroy()
     }
+    window.muteAll()
     navigate(url)
   }
 

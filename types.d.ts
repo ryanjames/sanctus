@@ -13,6 +13,10 @@ interface Window {
     getDuration: Function
     id?: string
   }
+  logoAudioContext: AudioContext
+  logoAudio: { [key: string]: any } = {}
+  logoAudioReady: boolean
+  muteAll: Function
   webkitAudioContext: typeof AudioContext
 }
 

@@ -85,6 +85,7 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
   }
 
   const handleOnPlay = () => {
+    window.muteAll()
     setIsPlaying(true)
     setInProgress(true)
   }

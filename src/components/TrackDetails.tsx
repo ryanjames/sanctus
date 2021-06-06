@@ -23,6 +23,7 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
 
   const handleExpand = () => {
     document.body.className = ""
+    window.muteAll()
     updateActiveTrack({
       id: track.id,
       version: track,

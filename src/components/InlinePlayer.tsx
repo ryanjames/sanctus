@@ -18,6 +18,7 @@ const InlinePlayer: React.FC<Props> = ({ track }) => {
 
   const play = () => {
     document.body.className = ""
+    window.muteAll()
     updateActiveTrack({
       id: track.id,
       version: {

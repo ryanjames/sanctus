@@ -18,6 +18,7 @@ type Props = {
 
 const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
   const handlePlay = () => {
+    window.muteAll()
     document.body.classList.add("player-playing")
     document.body.classList.remove("player-paused")
     window.player.play()

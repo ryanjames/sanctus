@@ -30,7 +30,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       {page !== "home" && (
         <TransitionLink
           to="/"
-          exit={{ length: 0.4, state: { opacity: 0 } }}
+          exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
           entry={{ delay: 0.4, state: { opacity: 1 } }}
         >
           Home
@@ -39,7 +39,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       <TransitionLink
         className={page == "features" ? "-selected" : ""}
         to="/work"
-        exit={{ length: 0.4, state: { opacity: 0 } }}
+        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
         Work
@@ -47,7 +47,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       <TransitionLink
         className={page == "library" ? "-selected" : ""}
         to="/library"
-        exit={{ length: 0.4, state: { opacity: 0 } }}
+        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
         Music Library
@@ -55,7 +55,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       <TransitionLink
         className={page == "about" ? "-selected" : ""}
         to="/about"
-        exit={{ length: 0.4, state: { opacity: 0 } }}
+        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
         About
@@ -63,7 +63,7 @@ const Nav: React.FC<LayoutProps> = ({ page }) => {
       <TransitionLink
         className={page == "contact" ? "-selected" : ""}
         to="/contact"
-        exit={{ length: 0.4, state: { opacity: 0 } }}
+        exit={{ length: 0.4, state: { opacity: 0 }, trigger: () => window.muteAll() }}
         entry={{ delay: 0.4, state: { opacity: 1 } }}
       >
         Contact
@@ -101,6 +101,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
             transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
           >
             <div tw="hidden md:block relative">{page !== "home" ? <LogoWaveform /> : <LogoWordmark />}</div>
+
             <div tw="relative md:hidden">
               <LogoWordmarkMobile />
             </div>
