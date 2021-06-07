@@ -15,7 +15,7 @@ type Props = {
   }
 }
 
-const Library: React.FC<Props> = ({ data, className }) => {
+const Library: React.FC<Props> = ({ data, location, className }) => {
   const tracksData = getTracks(data.tracks)
   const description = `Music from the library of Sono Sanctus`
 

@@ -12,11 +12,11 @@ import queryString from "query-string"
 interface Props {
   closeMenu: Function
   location: {
-    origin: string
+    search: string
   }
 }
 
-const LibraryCategories: React.FC<Props> = ({ closeMenu }) => {
+const LibraryCategories: React.FC<Props> = ({ location, closeMenu }) => {
   const assembleUrl = (string: string) => {
     const newQuery = []
     const newQueryCategory = string.split("=")[0]

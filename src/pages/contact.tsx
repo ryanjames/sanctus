@@ -4,20 +4,13 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
 import Container, { Col } from "../components/Container"
-import withLocation from "../utils/withLocation"
 import siteContent from "../staticQueries/siteContent"
 import formattingOptions from "../utils/formattingOptions"
 import assets from "../staticQueries/assets"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 
-type Props = {
-  location: {
-    search: string
-  }
-}
-
-const IndexPage: React.FC<Props> = () => {
+const IndexPage: React.FC = () => {
   const content = siteContent().pages["Contact"]
   const body = JSON.parse(content.body)
   return (
@@ -62,4 +55,4 @@ const StyledLayout = styled(Layout)`
     ${tw`text-xl py-8 font-normal`}
   }
 `
-export default withLocation(IndexPage)
+export default IndexPage
