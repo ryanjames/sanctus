@@ -5,6 +5,7 @@ import LibraryPageLayout from "../components/LibraryPageLayout"
 import styled from "@emotion/styled"
 import { getTracks, QueryShape } from "../models/tracks"
 import queryString from "query-string"
+import withLocation from "../utils/withLocation"
 
 type Props = {
   data: { tracks: QueryShape }
@@ -27,7 +28,7 @@ const Library: React.FC<Props> = ({ data, className }) => {
   )
 }
 
-export default Library
+export default withLocation(Library)
 
 const StyledLibraryPageLayout = styled(LibraryPageLayout)`
   height: calc(100vh - 200px);

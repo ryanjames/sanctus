@@ -2,7 +2,6 @@ import React, { useMemo, useRef, useContext, useEffect, useState, SyntheticEvent
 import PageLink from "./PageLink"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-import withLocation from "../utils/withLocation"
 import { mQw, sizes, gutters } from "../utils/mediaQueries"
 import { matchSorter } from "match-sorter"
 import { CategoryShape } from "../models/tracks"
@@ -240,4 +239,4 @@ const StyledTracksTable = styled.div`
   }
 `
 
-export default withLocation(TracksTable)
+export default TracksTable
