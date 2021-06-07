@@ -145,31 +145,39 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder, urlQuery }) =>
           {placeholder}
         </div>
       ) : (
-        <div className="tracks-table">
-          <div className="table-headings">
-            <div tw="text-xs font-bold pt-9 uppercase tracking-widest pb-4 border-gray-200 border-0 border-b border-solid flex">
-              <div tw="w-full md:w-3/8">Title</div>
-              <div tw="hidden md:block w-2/8">Energy</div>
-              <div tw="hidden md:block w-3/8">Moods</div>
+        <>
+          {filteredData.length > 0 ? (
+            <div className="tracks-table">
+              <div className="table-headings">
+                <div tw="text-xs font-bold pt-9 uppercase tracking-widest pb-4 border-gray-200 border-0 border-b border-solid flex">
+                  <div tw="w-full md:w-3/8">Title</div>
+                  <div tw="hidden md:block w-2/8">Energy</div>
+                  <div tw="hidden md:block w-3/8">Moods</div>
+                </div>
+              </div>
+              <div className="table-rows" tw="overflow-y-scroll overflow-x-hidden">
+                <AutoSizer key={Math.random()}>
+                  {({height, width}) => (
+                    <List
+                      height={height}
+                      rowCount={filteredData.length}
+                      deferredMeasurementCache={cache}
+                      rowHeight={cache.rowHeight}
+                      rowRenderer={rowRenderer}
+                      overscanRowCount={10}
+                      data={filteredData}
+                      width={width}
+                    />
+                  )}
+                </AutoSizer>
+              </div>
             </div>
-          </div>
-          <div className="table-rows" tw="overflow-y-scroll overflow-x-hidden">
-            <AutoSizer key={Math.random()}>
-              {({height, width}) => (
-                <List
-                  height={height}
-                  rowCount={filteredData.length}
-                  deferredMeasurementCache={cache}
-                  rowHeight={cache.rowHeight}
-                  rowRenderer={rowRenderer}
-                  overscanRowCount={10}
-                  data={filteredData}
-                  width={width}
-                />
-              )}
-            </AutoSizer>
-          </div>
-        </div>
+          ) : (
+            <div className="tracks-table" tw="pt-8">
+              No tracks matched your parameters.
+            </div>
+          )}
+        </>
       )}
     </StyledTracksTable>
   )
