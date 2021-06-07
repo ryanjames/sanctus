@@ -15,14 +15,14 @@ import tw from "twin.macro"
 import { Helmet } from "react-helmet"
 
 interface Props extends LayoutProps {
-  id?: string
   search: {
     track: string
   }
   tracksData: TrackShape[]
+  setTracksData: Function
 }
 
-const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }) => {
+const LibraryPageLayout: React.FC<Props> = ({ title, description, children }) => {
   const [open, setOpen] = useState(false)
 
   const openMenu = () => {
@@ -57,7 +57,7 @@ const LibraryPageLayout: React.FC<Props> = ({ title, id, description, children }
             tw="absolute inset-0 bg-near-black z-50 sm:relative sm:block sm:w-1/3 md:w-1/4"
           >
             <Container>
-              <LibraryCategories id={id} closeMenu={closeMenu} />
+              <LibraryCategories closeMenu={closeMenu} />
             </Container>
           </Col>
         </Container>

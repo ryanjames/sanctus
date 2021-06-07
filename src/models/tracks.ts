@@ -15,6 +15,7 @@ export interface TrackShape {
   moods: CategoryShape[]
   energy: CategoryShape
   search?: string
+  playlists: CategoryShape[]
   favorite?: boolean
   filter?: Function
   reduce?: Function
@@ -27,6 +28,11 @@ export interface EnergyQueryShape {
 export interface MoodQueryShape {
   id: string
   data: { Mood_Name: string }
+  map: Function
+}
+export interface PlaylistsQueryShape {
+  id: string
+  data: { Playlist_Name: string }
   map: Function
 }
 
@@ -44,7 +50,8 @@ export interface QueryNodeShape {
       URL: string
       Length: string
       Favorite: boolean
-      Moods: MoodQueryShape
+      Playlists: PlaylistsQueryShape[]
+      Moods: MoodQueryShape[]
       Energy: EnergyQueryShape[]
       Priority: number
     }
@@ -65,7 +72,6 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
       title: track.node.data.Track_Title,
       length: track.node.data.Length,
       priority: track.node.data.Priority,
-      favorite: track.node.data.Favorite,
       energy: {
         id: track.node.data.Energy[0].id,
         name: track.node.data.Energy[0].data.Energy_Name,
@@ -76,13 +82,23 @@ export const getTracks = (query: QueryShape): Array<TrackShape> => {
         name: mood.data.Mood_Name,
         slug: slugify(mood.data.Mood_Name, { lower: true, strict: true }),
       })),
+      playlists: track.node.data.Playlists
+        ? track.node.data.Playlists.map((playlist: PlaylistsQueryShape) => ({
+            id: playlist.id,
+            name: playlist.data.Playlist_Name,
+            slug: slugify(playlist.data.Playlist_Name, { lower: true, strict: true }),
+          }))
+        : null,
       search: "",
       url: track.node.data.URL,
     }
+    trackObj.search = trackObj.title
+    /*
     const moods = trackObj.moods.reduce(function (prevVal: { name: string }, currVal: { name: string }, idx: number) {
       return idx == 0 ? currVal.name : prevVal + ", " + currVal.name
     }, "")
     trackObj.search = "".concat(trackObj.title, " | ", moods)
+    */
 
     // Return everything
     return trackObj

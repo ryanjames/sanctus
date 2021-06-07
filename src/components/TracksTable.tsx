@@ -1,10 +1,10 @@
-import React, { useMemo, useContext, useEffect, useState, SyntheticEvent } from "react"
+import React, { useMemo, useRef, useContext, useEffect, useState, SyntheticEvent } from "react"
 import PageLink from "./PageLink"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { mQw, sizes, gutters } from "../utils/mediaQueries"
 import { matchSorter } from "match-sorter"
-import { TrackShape, CategoryShape } from "../models/tracks"
+import { CategoryShape } from "../models/tracks"
 import { ActiveTrackContext, ActiveTrackContextType, versionDefault } from "../contexts/ActiveTrackContext"
 import { AutoSizer, List, CellMeasurer, CellMeasurerCache } from "react-virtualized"
 import "react-virtualized/styles.css"
@@ -17,10 +17,13 @@ export interface Props {
   data: any
   title?: string
   placeholder?: any
+  urlQuery: any
 }
 
-const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
+const TracksTable: React.FC<Props> = ({ data, title, placeholder, urlQuery }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
+
+  const inputRef = useRef(null)
 
   const cache = new CellMeasurerCache({
     fixedWidth: true,
@@ -33,11 +36,39 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
 
   const filterResults = (inputValue: string) => {
     const query = inputValue
-    const filteredData = matchSorter(memoizedData, inputValue, {
+
+    const filteredQueryData = memoizedData
+      .filter(obj => {
+        const playlists = obj.playlists
+        if (playlists && urlQuery.playlist) {
+          const checkPlaylists = obj => obj.slug === urlQuery.playlist
+          return playlists.some(checkPlaylists)
+        } else {
+          return true
+        }
+      })
+      .filter(obj => {
+        const moods = obj.moods
+        if (moods && urlQuery.mood) {
+          const checkMoods = obj => obj.slug === urlQuery.mood
+          return moods.some(checkMoods)
+        } else {
+          return true
+        }
+      })
+      .filter(obj => {
+        if (obj.energy && urlQuery.energy) {
+          return obj.energy.slug == urlQuery.energy
+        } else {
+          return true
+        }
+      })
+
+    const filteredData = matchSorter(filteredQueryData, inputValue, {
       keys: searchFields,
     })
     const keys = searchFields
-    return !inputValue && memoizedData ? memoizedData : highlightSearch(query, filteredData, keys)
+    return !inputValue && filteredQueryData ? filteredQueryData : highlightSearch(query, filteredData, keys)
   }
 
   const [filteredData, setFilteredData] = useState(filterResults(""))
@@ -53,6 +84,11 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
     }
   }, [typeof window !== "undefined" ? window : null])
 
+  /* Only when urlQuery changes */
+  useEffect(() => {
+    setFilteredData(filterResults(inputRef.current.value))
+  }, [urlQuery])
+
   const handleSearch = (e: SyntheticEvent<HTMLInputElement>) => {
     const inputValue: string = (e.target as HTMLInputElement).value
     setSearchValue(inputValue)
@@ -61,6 +97,7 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
 
   const SearchInput = (
     <input
+      ref={inputRef}
       tw="w-full lg:w-2/3 xl:w-1/2 py-3 pl-3"
       type="text"
       onChange={handleSearch}
@@ -80,12 +117,12 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
             >
               <div tw="w-full md:w-3/8 text-lg font-bold" />
               <div tw="hidden md:block w-2/8" className="category-link">
-                <PageLink to={`/library/energy/${track.energy?.slug}`}>{track.energy?.name}</PageLink>
+                <PageLink to={`/library?energy=${track.energy?.slug}`}>{track.energy?.name}</PageLink>
               </div>
               <div tw="hidden md:block w-3/8">
                 {track.moods?.map((mood: CategoryShape, index: number) => (
                   <span key={mood.id} className="category-link">
-                    <PageLink to={`/library/mood/${mood.slug}`}>{mood.name}</PageLink>
+                    <PageLink to={`/library?mood=${mood.slug}`}>{mood.name}</PageLink>
                     {index < track.moods.length - 1 ? ", " : ""}
                   </span>
                 ))}
@@ -117,7 +154,7 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
             </div>
           </div>
           <div className="table-rows" tw="overflow-y-scroll overflow-x-hidden">
-            <AutoSizer>
+            <AutoSizer key={Math.random()}>
               {({height, width}) => (
                 <List
                   height={height}
@@ -126,6 +163,7 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder }) => {
                   rowHeight={cache.rowHeight}
                   rowRenderer={rowRenderer}
                   overscanRowCount={10}
+                  data={filteredData}
                   width={width}
                 />
               )}

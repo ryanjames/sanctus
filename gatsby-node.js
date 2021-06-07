@@ -51,45 +51,6 @@ exports.createPages = ({ actions, graphql }) => {
       return Promise.reject(result.errors)
     }
 
-    const playlists = result.data.playlists.edges
-    playlists.forEach(playlist => {
-      const id = playlist.node.id
-      const slug = slugify(playlist.node.data.Playlist_Name, { lower: true, strict: true })
-      createPage({
-        path: "/library/playlist/" + slug,
-        component: path.resolve(`src/templates/library-playlist.tsx`),
-        context: {
-          id,
-        },
-      })
-    })
-
-    const moods = result.data.moods.edges
-    moods.forEach(mood => {
-      const id = mood.node.id
-      const slug = slugify(mood.node.data.Mood_Name, { lower: true, strict: true })
-      createPage({
-        path: "/library/mood/" + slug,
-        component: path.resolve(`src/templates/library-mood.tsx`),
-        context: {
-          id,
-        },
-      })
-    })
-
-    const energies = result.data.energies.edges
-    energies.forEach(energy => {
-      const id = energy.node.id
-      const slug = slugify(energy.node.data.Energy_Name, { lower: true, strict: true })
-      createPage({
-        path: "/library/energy/" + slug,
-        component: path.resolve(`src/templates/library-energy.tsx`),
-        context: {
-          id,
-        },
-      })
-    })
-
     const caseStudies = result.data.caseStudies.edges
     caseStudies.forEach(caseStudy => {
       const id = caseStudy.node.id

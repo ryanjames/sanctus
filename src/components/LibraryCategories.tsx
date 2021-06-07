@@ -2,18 +2,48 @@ import React from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import PageLink from "../components/PageLink"
-
+import withLocation from "../utils/withLocation"
 import Close from "../graphics/close.svg"
 import playlists, { PlaylistShape } from "../staticQueries/playlists"
 import moods, { MoodShape } from "../staticQueries/moods"
 import energies, { EnergyShape } from "../staticQueries/energies"
+import queryString from "query-string"
 
 interface Props {
-  id?: string
   closeMenu: Function
+  location: {
+    origin: string
+  }
 }
 
-const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
+const LibraryCategories: React.FC<Props> = ({ closeMenu }) => {
+  const assembleUrl = (string: string) => {
+    const newQuery = []
+    const newQueryCategory = string.split("=")[0]
+    const newQueryValue = string.split("=")[1]
+    const existingQuery = location.search.replace("?", "").split("&")
+    let remove = false
+    if (existingQuery[0] == "") {
+      return `?${string}`
+    } else {
+      existingQuery.forEach((parameter: string) => {
+        const keyvalue = parameter.split("=")
+        const key = keyvalue[0]
+        const value = keyvalue[1]
+        if (!key.includes(newQueryCategory)) {
+          newQuery.push(`${key}=${value}`)
+        }
+        if (key.includes(newQueryCategory) && value.includes(newQueryValue)) {
+          remove = true
+        }
+      })
+      if (!remove) {
+        newQuery.push(`${newQueryCategory}=${newQueryValue}`)
+      }
+      return "?" + newQuery.join("&")
+    }
+  }
+
   return (
     <>
       <Close className="close" onClick={closeMenu} tw="cursor-pointer absolute right-6 top-6 sm:hidden" />
@@ -21,7 +51,10 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
       <StyledLibraryCategories>
         <ul>
           <li>
-            <PageLink className={!id ? "-selected" : ""} to="/library/">
+            <PageLink
+              className={Object.keys(queryString.parse(location.search)).length === 0 ? "-selected" : ""}
+              to="/library/"
+            >
               All Tracks
             </PageLink>
           </li>
@@ -29,7 +62,10 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
             .filter((playlist: PlaylistShape) => playlist.title == "Favorites")
             .map((playlist: PlaylistShape) => (
               <li key={playlist.id}>
-                <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/playlist/${playlist.slug}`}>
+                <PageLink
+                  className={queryString.parse(location.search).playlist == playlist.slug ? "-selected" : ""}
+                  to={assembleUrl(`playlist=${playlist.slug}`)}
+                >
                   {playlist.title}
                 </PageLink>
               </li>
@@ -42,7 +78,10 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
             .filter((playlist: PlaylistShape) => playlist.active)
             .map((playlist: PlaylistShape) => (
               <li key={playlist.id}>
-                <PageLink className={id == playlist.id ? "-selected" : ""} to={`/library/playlist/${playlist.slug}`}>
+                <PageLink
+                  className={queryString.parse(location.search).playlist == playlist.slug ? "-selected" : ""}
+                  to={assembleUrl(`playlist=${playlist.slug}`)}
+                >
                   {playlist.title}
                 </PageLink>
               </li>
@@ -53,7 +92,10 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
           <ul>
             {energies().map((energy: EnergyShape) => (
               <li key={energy.id}>
-                <PageLink className={id == energy.id ? "-selected" : ""} to={`/library/energy/${energy.slug}`}>
+                <PageLink
+                  className={queryString.parse(location.search).energy == energy.slug ? "-selected" : ""}
+                  to={assembleUrl(`energy=${energy.slug}`)}
+                >
                   {energy.title}
                 </PageLink>
               </li>
@@ -65,7 +107,10 @@ const LibraryCategories: React.FC<Props> = ({ id, closeMenu }) => {
           <ul>
             {moods().map((mood: MoodShape) => (
               <li key={mood.id}>
-                <PageLink className={id == mood.id ? "-selected" : ""} to={`/library/mood/${mood.slug}`}>
+                <PageLink
+                  className={queryString.parse(location.search).mood == mood.slug ? "-selected" : ""}
+                  to={assembleUrl(`mood=${mood.slug}`)}
+                >
                   {mood.title}
                 </PageLink>
               </li>
@@ -126,4 +171,4 @@ const StyledLibraryCategories = styled.div`
   }
 `
 
-export default LibraryCategories
+export default withLocation(LibraryCategories)
