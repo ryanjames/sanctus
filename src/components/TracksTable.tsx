@@ -6,6 +6,7 @@ import { mQw, sizes, gutters } from "../utils/mediaQueries"
 import { matchSorter } from "match-sorter"
 import { CategoryShape } from "../models/tracks"
 import { ActiveTrackContext, ActiveTrackContextType, versionDefault } from "../contexts/ActiveTrackContext"
+import { FilteredTracksContext, FilteredTracksContextType } from "../contexts/FilteredTracksContext"
 import { AutoSizer, List, CellMeasurer, CellMeasurerCache } from "react-virtualized"
 import "react-virtualized/styles.css"
 
@@ -15,15 +16,15 @@ import highlightSearch from "../utils/highlightSearch"
 
 export interface Props {
   data: any
-  title?: string
   placeholder?: any
   urlQuery: any
 }
 
-const TracksTable: React.FC<Props> = ({ data, title, placeholder, urlQuery }) => {
+const TracksTable: React.FC<Props> = ({ data, placeholder, urlQuery }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
+  const { updateFilteredTracks } = useContext(FilteredTracksContext) as FilteredTracksContextType
 
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const cache = new CellMeasurerCache({
     fixedWidth: true,
@@ -34,35 +35,35 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder, urlQuery }) =>
 
   const searchFields = ["search"]
 
+  const filteredQueryData = memoizedData
+    .filter((obj: { playlists: [] }) => {
+      const playlists = obj.playlists
+      if (playlists && urlQuery.playlist) {
+        const checkPlaylists = (obj: { slug: string }) => obj.slug === urlQuery.playlist
+        return playlists.some(checkPlaylists)
+      } else {
+        return true
+      }
+    })
+    .filter((obj: { moods: [] }) => {
+      const moods = obj.moods
+      if (moods && urlQuery.mood) {
+        const checkMoods = (obj: { slug: string }) => obj.slug === urlQuery.mood
+        return moods.some(checkMoods)
+      } else {
+        return true
+      }
+    })
+    .filter((obj: { energy: { slug: string } }) => {
+      if (obj.energy && urlQuery.energy) {
+        return obj.energy.slug == urlQuery.energy
+      } else {
+        return true
+      }
+    })
+
   const filterResults = (inputValue: string) => {
     const query = inputValue
-
-    const filteredQueryData = memoizedData
-      .filter(obj => {
-        const playlists = obj.playlists
-        if (playlists && urlQuery.playlist) {
-          const checkPlaylists = obj => obj.slug === urlQuery.playlist
-          return playlists.some(checkPlaylists)
-        } else {
-          return true
-        }
-      })
-      .filter(obj => {
-        const moods = obj.moods
-        if (moods && urlQuery.mood) {
-          const checkMoods = obj => obj.slug === urlQuery.mood
-          return moods.some(checkMoods)
-        } else {
-          return true
-        }
-      })
-      .filter(obj => {
-        if (obj.energy && urlQuery.energy) {
-          return obj.energy.slug == urlQuery.energy
-        } else {
-          return true
-        }
-      })
 
     const filteredData = matchSorter(filteredQueryData, inputValue, {
       keys: searchFields,
@@ -86,7 +87,8 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder, urlQuery }) =>
 
   /* Only when urlQuery changes */
   useEffect(() => {
-    setFilteredData(filterResults(inputRef.current.value))
+    setFilteredData(filterResults(null !== inputRef.current ? inputRef.current.value : ""))
+    updateFilteredTracks(filteredQueryData)
   }, [urlQuery])
 
   const handleSearch = (e: SyntheticEvent<HTMLInputElement>) => {
@@ -101,25 +103,40 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder, urlQuery }) =>
       tw="w-full lg:w-2/3 xl:w-1/2 py-3 pl-3"
       type="text"
       onChange={handleSearch}
-      placeholder={`Search ${title ? title.toLowerCase() + " " : ""}tracks (moods, energy, or title)`}
+      placeholder={`Search tracks`}
     />
   )
 
-  const rowRenderer = ({ key, index, style, parent }) => {
+  type RowRendererType = {
+    key: string
+    index: number
+    style: {}
+    parent: {}
+  }
+
+  const rowRenderer: React.FC<RowRendererType> = ({ key, index, style, parent }) => {
     const track = filteredData[index]
     return (
       <CellMeasurer cache={cache} key={key} parent={parent} rowIndex={index} columnIndex={0}>
-        {({ measure, registerChild }) => (
-          <div ref={registerChild} tw="border-gray-200 border-0 border-b border-solid text-sm" style={style}>
+        {() => (
+          <div tw="border-gray-200 border-0 border-b border-solid text-sm" style={style}>
             <div
               tw="flex flex-wrap w-full h-16 items-center"
               className={`track-row ${activeTrack.id == track.id ? "hide" : ""}`}
             >
-              <div tw="w-full md:w-3/8 text-lg font-bold" />
+              <div tw="w-full md:w-2/8 text-lg font-bold" />
               <div tw="hidden md:block w-2/8" className="category-link">
                 <PageLink to={`/library?energy=${track.energy?.slug}`}>{track.energy?.name}</PageLink>
               </div>
-              <div tw="hidden md:block w-3/8">
+              <div tw="hidden md:block w-2/8">
+                {track.playlists?.map((playlist: CategoryShape, index: number) => (
+                  <span key={playlist.id} className="category-link">
+                    <PageLink to={`/library?playlist=${playlist.slug}`}>{playlist.name}</PageLink>
+                    {index < track.playlists.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+              </div>
+              <div tw="hidden md:block w-2/8">
                 {track.moods?.map((mood: CategoryShape, index: number) => (
                   <span key={mood.id} className="category-link">
                     <PageLink to={`/library?mood=${mood.slug}`}>{mood.name}</PageLink>
@@ -150,14 +167,15 @@ const TracksTable: React.FC<Props> = ({ data, title, placeholder, urlQuery }) =>
             <div className="tracks-table">
               <div className="table-headings">
                 <div tw="text-xs font-bold pt-9 uppercase tracking-widest pb-4 border-gray-200 border-0 border-b border-solid flex">
-                  <div tw="w-full md:w-3/8">Title</div>
+                  <div tw="w-full md:w-2/8">Title</div>
                   <div tw="hidden md:block w-2/8">Energy</div>
-                  <div tw="hidden md:block w-3/8">Moods</div>
+                  <div tw="hidden md:block w-2/8">Playlists</div>
+                  <div tw="hidden md:block w-2/8">Moods</div>
                 </div>
               </div>
               <div className="table-rows" tw="overflow-y-scroll overflow-x-hidden">
                 <AutoSizer key={Math.random()}>
-                  {({height, width}) => (
+                  {({ height, width }) => (
                     <List
                       height={height}
                       rowCount={filteredData.length}

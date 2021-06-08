@@ -1,12 +1,15 @@
-import React from "react"
+import React, { useMemo } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import PageLink from "../components/PageLink"
+import { TrackShape } from "../models/tracks"
+import { CategoryShape } from "../models/tracks"
 import withLocation from "../utils/withLocation"
 import Close from "../graphics/close.svg"
 import playlists, { PlaylistShape } from "../staticQueries/playlists"
 import moods, { MoodShape } from "../staticQueries/moods"
 import energies, { EnergyShape } from "../staticQueries/energies"
+// import { FilteredTracksContext, FilteredTracksContextType } from "../contexts/FilteredTracksContext"
 import queryString from "query-string"
 
 interface Props {
@@ -14,9 +17,14 @@ interface Props {
   location: {
     search: string
   }
+  tracksData: TrackShape[]
 }
 
-const LibraryCategories: React.FC<Props> = ({ location, closeMenu }) => {
+const LibraryCategories: React.FC<Props> = ({ location, tracksData, closeMenu }) => {
+  // const { filteredTracks } = useContext(FilteredTracksContext) as FilteredTracksContextType
+  const urlQuery = queryString.parse(location.search)
+  const memoizedData = useMemo(() => tracksData, [tracksData])
+
   const assembleUrl = (string: string) => {
     const newQuery = []
     const newQueryCategory = string.split("=")[0]
@@ -44,6 +52,90 @@ const LibraryCategories: React.FC<Props> = ({ location, closeMenu }) => {
     }
   }
 
+  let availablePlaylists: string[] = []
+  let availableMoods: string[] = []
+  let availableEnergies: string[] = []
+  const dupedPlaylists: CategoryShape[] = []
+  const dupedMoods: CategoryShape[] = []
+  const dupedEnergies: string[] = []
+
+  const filteredPlaylistTracks = memoizedData
+    .filter(obj => {
+      const moods = obj.moods
+      if (moods && urlQuery.mood) {
+        const checkMoods = (obj: { slug: string }) => obj.slug === urlQuery.mood
+        return moods.some(checkMoods)
+      } else {
+        return true
+      }
+    })
+    .filter(obj => {
+      if (obj.energy && urlQuery.energy) {
+        return obj.energy.slug == urlQuery.energy
+      } else {
+        return true
+      }
+    })
+
+  const filteredEnergyTracks = memoizedData
+    .filter(obj => {
+      const playlists = obj.playlists
+      if (playlists && urlQuery.playlist) {
+        const checkPlaylists = (obj: { slug: string }) => obj.slug === urlQuery.playlist
+        return playlists.some(checkPlaylists)
+      } else {
+        return true
+      }
+    })
+    .filter(obj => {
+      const moods = obj.moods
+      if (moods && urlQuery.mood) {
+        const checkMoods = (obj: { slug: string }) => obj.slug === urlQuery.mood
+        return moods.some(checkMoods)
+      } else {
+        return true
+      }
+    })
+
+  const filteredMoodTracks = memoizedData
+    .filter(obj => {
+      const playlists = obj.playlists
+      if (playlists && urlQuery.playlist) {
+        const checkPlaylists = (obj: { slug: string }) => obj.slug === urlQuery.playlist
+        return playlists.some(checkPlaylists)
+      } else {
+        return true
+      }
+    })
+    .filter(obj => {
+      if (obj.energy && urlQuery.energy) {
+        return obj.energy.slug == urlQuery.energy
+      } else {
+        return true
+      }
+    })
+
+  if (Object.keys(urlQuery).length > 0) {
+    filteredPlaylistTracks.forEach(track => {
+      if (track.playlists) {
+        dupedPlaylists.push(...track.playlists)
+      }
+    })
+    availablePlaylists = [...new Set(dupedPlaylists.map(item => item.slug))]
+    filteredMoodTracks.forEach(track => {
+      if (track.moods) {
+        dupedMoods.push(...track.moods)
+      }
+    })
+    availableMoods = [...new Set(dupedMoods.map(item => item.slug))]
+    filteredEnergyTracks.forEach(track => {
+      if (track.energy) {
+        dupedEnergies.push(track.energy.slug)
+      }
+    })
+    availableEnergies = [...new Set(dupedEnergies)]
+  }
+
   return (
     <>
       <Close className="close" onClick={closeMenu} tw="cursor-pointer absolute right-6 top-6 sm:hidden" />
@@ -62,12 +154,16 @@ const LibraryCategories: React.FC<Props> = ({ location, closeMenu }) => {
             .filter((playlist: PlaylistShape) => playlist.title == "Favorites")
             .map((playlist: PlaylistShape) => (
               <li key={playlist.id}>
-                <PageLink
-                  className={queryString.parse(location.search).playlist == playlist.slug ? "-selected" : ""}
-                  to={assembleUrl(`playlist=${playlist.slug}`)}
-                >
-                  {playlist.title}
-                </PageLink>
+                {!availablePlaylists.length || availablePlaylists.includes(playlist.slug) ? (
+                  <PageLink
+                    className={queryString.parse(location.search).playlist == playlist.slug ? "-selected" : ""}
+                    to={assembleUrl(`playlist=${playlist.slug}`)}
+                  >
+                    {playlist.title}
+                  </PageLink>
+                ) : (
+                  <div tw="opacity-50">{playlist.title}</div>
+                )}
               </li>
             ))}
         </ul>
@@ -78,12 +174,16 @@ const LibraryCategories: React.FC<Props> = ({ location, closeMenu }) => {
             .filter((playlist: PlaylistShape) => playlist.active)
             .map((playlist: PlaylistShape) => (
               <li key={playlist.id}>
-                <PageLink
-                  className={queryString.parse(location.search).playlist == playlist.slug ? "-selected" : ""}
-                  to={assembleUrl(`playlist=${playlist.slug}`)}
-                >
-                  {playlist.title}
-                </PageLink>
+                {!availablePlaylists.length || availablePlaylists.includes(playlist.slug) ? (
+                  <PageLink
+                    className={queryString.parse(location.search).playlist == playlist.slug ? "-selected" : ""}
+                    to={assembleUrl(`playlist=${playlist.slug}`)}
+                  >
+                    {playlist.title}
+                  </PageLink>
+                ) : (
+                  <div tw="opacity-50">{playlist.title}</div>
+                )}
               </li>
             ))}
         </ul>
@@ -92,12 +192,16 @@ const LibraryCategories: React.FC<Props> = ({ location, closeMenu }) => {
           <ul>
             {energies().map((energy: EnergyShape) => (
               <li key={energy.id}>
-                <PageLink
-                  className={queryString.parse(location.search).energy == energy.slug ? "-selected" : ""}
-                  to={assembleUrl(`energy=${energy.slug}`)}
-                >
-                  {energy.title}
-                </PageLink>
+                {!availableEnergies.length || availableEnergies.includes(energy.slug) ? (
+                  <PageLink
+                    className={queryString.parse(location.search).energy == energy.slug ? "-selected" : ""}
+                    to={assembleUrl(`energy=${energy.slug}`)}
+                  >
+                    {energy.title}
+                  </PageLink>
+                ) : (
+                  <div tw="opacity-50">{energy.title}</div>
+                )}
               </li>
             ))}
           </ul>
@@ -107,12 +211,16 @@ const LibraryCategories: React.FC<Props> = ({ location, closeMenu }) => {
           <ul>
             {moods().map((mood: MoodShape) => (
               <li key={mood.id}>
-                <PageLink
-                  className={queryString.parse(location.search).mood == mood.slug ? "-selected" : ""}
-                  to={assembleUrl(`mood=${mood.slug}`)}
-                >
-                  {mood.title}
-                </PageLink>
+                {!availableMoods.length || availableMoods.includes(mood.slug) ? (
+                  <PageLink
+                    className={queryString.parse(location.search).mood == mood.slug ? "-selected" : ""}
+                    to={assembleUrl(`mood=${mood.slug}`)}
+                  >
+                    {mood.title}
+                  </PageLink>
+                ) : (
+                  <div tw="opacity-50">{mood.title}</div>
+                )}
               </li>
             ))}
           </ul>
@@ -152,11 +260,7 @@ const StyledLibraryCategories = styled.div`
     }
     li {
       margin-bottom: 0;
-      padding-left: 14px;
-      a {
-        display: inline-block;
-        padding: 3px 0;
-      }
+      padding: 3px 0 3px 14px;
     }
   }
   & .-selected {

@@ -12,9 +12,6 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
   const [ready, setReady] = useState(false)
   const letters = ["s1", "a", "n", "c", "t", "u", "s2"]
 
-  if (typeof window !== "undefined") {
-  }
-
   useEffect(() => {
     const context = window.logoAudioContext
 

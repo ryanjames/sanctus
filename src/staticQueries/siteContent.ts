@@ -1,5 +1,4 @@
 import { graphql, useStaticQuery } from "gatsby"
-import { FluidObject } from "gatsby-image"
 
 type PageShape = {
   node: {
@@ -27,7 +26,7 @@ interface ContentShape {
   description: string
   licensingIntro: string
   downloadSampleIntro: string
-  ogImage: FluidObject
+  ogImage: string
   musicLibrarySeoDescription: string
   pages: PagesShape
 }
@@ -45,11 +44,7 @@ const siteContent = (): ContentShape => {
               licensingIntro
               openGraphImage {
                 localFile {
-                  childImageSharp {
-                    fluid(maxWidth: 2000) {
-                      ...GatsbyImageSharpFluid
-                    }
-                  }
+                  publicURL
                 }
               }
               musicLibrarySeoDescription

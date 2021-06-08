@@ -13,6 +13,7 @@ export const versionDefault = {
   length: "",
   url: "",
   moods: [],
+  playlists: [],
   energy: {
     name: "",
     id: "",

@@ -6,6 +6,7 @@ import styled from "@emotion/styled"
 import { getTracks, QueryShape } from "../models/tracks"
 import queryString from "query-string"
 import withLocation from "../utils/withLocation"
+import FilteredTracksProvider from "../contexts/FilteredTracksContext"
 
 type Props = {
   data: { tracks: QueryShape }
@@ -21,9 +22,16 @@ const Library: React.FC<Props> = ({ data, location, className }) => {
 
   return (
     <>
-      <StyledLibraryPageLayout className={className} title="Music Library" description={description}>
-        <TracksTable data={tracksData} urlQuery={queryString.parse(location.search)} />
-      </StyledLibraryPageLayout>
+      <FilteredTracksProvider>
+        <StyledLibraryPageLayout
+          tracksData={tracksData}
+          className={className}
+          title="Music Library"
+          description={description}
+        >
+          <TracksTable data={tracksData} urlQuery={queryString.parse(location.search)} />
+        </StyledLibraryPageLayout>
+      </FilteredTracksProvider>
     </>
   )
 }

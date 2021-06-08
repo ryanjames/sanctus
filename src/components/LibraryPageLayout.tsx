@@ -19,10 +19,11 @@ interface Props extends LayoutProps {
     track: string
   }
   tracksData: TrackShape[]
+  selectedData: []
   setTracksData: Function
 }
 
-const LibraryPageLayout: React.FC<Props> = ({ title, description, children }) => {
+const LibraryPageLayout: React.FC<Props> = ({ title, tracksData, description, children }) => {
   const [open, setOpen] = useState(false)
 
   const openMenu = () => {
@@ -57,7 +58,7 @@ const LibraryPageLayout: React.FC<Props> = ({ title, description, children }) =>
             tw="absolute inset-0 bg-near-black z-50 sm:relative sm:block sm:w-1/3 md:w-1/4"
           >
             <Container>
-              <LibraryCategories closeMenu={closeMenu} />
+              <LibraryCategories tracksData={tracksData} closeMenu={closeMenu} />
             </Container>
           </Col>
         </Container>
