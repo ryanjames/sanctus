@@ -46,10 +46,10 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
     setModal("")
   }
 
-  const handleLicensingSubmit = e => {
+  const handleLicensingSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const licenseForm = document.getElementById("licenseForm")
-    const formData = new FormData(licenseForm)
+    const licenseForm = document.getElementById("licenseForm") as HTMLFormElement
+    const formData = new FormData(licenseForm) as URLSearchParams
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -83,10 +83,14 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
               name="email"
             />
             <input type="hidden" name="track" value={track.title} />
-            <button tw="text-white border-0 text-sm rounded bg-gray-700 py-2 px-6 mr-3 cursor-pointer" type="submit">Send</button>
+            <button tw="text-white border-0 text-sm rounded bg-gray-700 py-2 px-6 mr-3 cursor-pointer" type="submit">
+              Send
+            </button>
           </form>
         ) : (
-          <div tw="p-4 bg-gray-900 rounded">Thank you for your inquiry. We'll get back to you as soon as we can.</div>
+          <div tw="p-4 bg-gray-900 rounded">
+            Thank you for your inquiry. We&apos;ll get back to you as soon as we can.
+          </div>
         )}
       </div>
     )

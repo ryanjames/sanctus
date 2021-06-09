@@ -12,7 +12,6 @@ interface Props {
 
 const SEO: React.FC<Props> = ({ ogImage, owner, title, meta, description }) => {
   const content = siteContent()
-  console.log(content.ogImage)
   return (
     <Helmet
       htmlAttributes={{

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import styled from "@emotion/styled"
 import { keyframes } from "@emotion/react"
 import colors from "../config/colors"
@@ -24,6 +24,7 @@ const InlinePlayer: React.FC<Props> = ({ track }) => {
       version: {
         id: track.id,
         title: track.title,
+        playlists: [],
         length: "",
         url: track.url,
         moods: [],

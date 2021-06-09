@@ -13,10 +13,11 @@ interface Props {
   color: string
   poster: FluidObject
   autoplay: boolean
+  nativeControls?: boolean
   className?: string
 }
 
-const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, className }) => {
+const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, className, nativeControls = false }) => {
   const color1 = hex2rgba(color)
   const color2 = hex2rgba(color, 0)
 
@@ -137,7 +138,7 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
             width="100%"
             volume={volume}
             height="100%"
-            controls={true}
+            controls={nativeControls}
             onPause={handleOnPause}
             onPlay={handleOnPlay}
             onEnded={handleOnEnded}
@@ -147,11 +148,13 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
       </div>
       <div tw="flex justify-center pt-6">
         <div tw="h-16" className={`controls ${inProgress ? "show" : ""}`}>
-      {/*
-          <Play className={`play-control ${isPlaying ? "" : "show"}`} onClick={handleResume} />
-          <Pause className={`pause-control ${isPlaying ? "show" : ""}`} onClick={handlePause} />
-          <Restart className="restart-control" tw="ml-8 cursor-pointer" onClick={handleRestart} />
-      */}
+          {!nativeControls && (
+            <>
+              <Play className={`play-control ${isPlaying ? "" : "show"}`} onClick={handleResume} />
+              <Pause className={`pause-control ${isPlaying ? "show" : ""}`} onClick={handlePause} />
+              <Restart className="restart-control" tw="ml-8 cursor-pointer" onClick={handleRestart} />
+            </>
+          )}
         </div>
       </div>
     </StyledVideo>

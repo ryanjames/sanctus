@@ -37,7 +37,7 @@ const TrackPlayer: React.FC<Props> = ({ track, className, pause }) => {
   }
 
   const loadPlayer = () => {
-    if (!document.getElementById(`t-${track.id}`).firstChild) {
+    if (!document.getElementById(`t-${track.id}`)?.firstChild) {
       const color1 = hex2rgba(colors["white"], 0.6)
       const color2 = hex2rgba(colors["white"], 0.4)
       const progressColor = hex2rgba(colors["white"], 0.7)

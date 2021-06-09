@@ -85,53 +85,68 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
     setMobileMenuOpen(mobileMenuOpen ? false : true)
   }
 
+  type TransitionProps = {
+    transitionStatus: string
+    entry: {
+      state: object
+    }
+    exit: {
+      state: object
+      length: number
+    }
+  }
+
   return (
     <TransitionState>
-      {({ transitionStatus, entry, exit }) => (
-        <StyledLayout className={className}>
-          <GlobalCss />
-          <Helmet>
-            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-            <link rel="manifest" href="/site.webmanifest" />
-            <meta name="msapplication-TileColor" content="#da532c" />
-            <meta name="theme-color" content="#ffffff" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
-          </Helmet>
-          <SEO title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
-          <motion.div
-            tw="fixed top-0 left-4 sm:top-4 sm:left-10 z-50"
-            initial={entry.state}
-            animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
-            transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
-          >
-            <div tw="hidden md:block relative">{page !== "home" ? <LogoWaveform /> : <LogoWordmark />}</div>
+      {({ transitionStatus, entry, exit }: TransitionProps) => {
+        return (
+          <StyledLayout className={className}>
+            <GlobalCss />
+            <Helmet>
+              <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+              <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+              <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+              <meta name="msapplication-TileColor" content="#da532c" />
+              <meta name="theme-color" content="#ffffff" />
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"
+              />
+            </Helmet>
+            <SEO title={title} description={description} meta={meta} owner={owner} ogImage={ogImage} />
+            <motion.div
+              tw="fixed top-0 left-4 sm:top-4 sm:left-10 z-50"
+              initial={entry.state}
+              animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
+              transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
+            >
+              <div tw="hidden md:block relative">{page !== "home" ? <LogoWaveform /> : <LogoWordmark />}</div>
 
-            <div tw="relative md:hidden">
-              <LogoWordmarkMobile />
+              <div tw="relative md:hidden">
+                <LogoWordmarkMobile />
+              </div>
+            </motion.div>
+            <div className="desktop-nav" tw="hidden sm:block">
+              <Nav page={page} />
             </div>
-          </motion.div>
-          <div className="desktop-nav" tw="hidden sm:block">
-            <Nav page={page} />
-          </div>
-          <Menu onClick={toggleMobileMenu} tw="sm:hidden cursor-pointer absolute z-50 right-8 top-8" />
-          <div className={`mobile-nav ${mobileMenuOpen ? "active" : ""}`} tw="sm:hidden">
-            <Close onClick={toggleMobileMenu} tw="cursor-pointer absolute right-8 top-8" />
-            <Nav page={page} />
-          </div>
-          <motion.main
-            tw="w-full md:w-auto"
-            initial={entry.state}
-            animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
-            transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 3.4 }}
-          >
-            <HeaderGradient />
-            {children}
-          </motion.main>
-          <footer />
-        </StyledLayout>
-      )}
+            <Menu onClick={toggleMobileMenu} tw="sm:hidden cursor-pointer absolute z-50 right-8 top-8" />
+            <div className={`mobile-nav ${mobileMenuOpen ? "active" : ""}`} tw="sm:hidden">
+              <Close onClick={toggleMobileMenu} tw="cursor-pointer absolute right-8 top-8" />
+              <Nav page={page} />
+            </div>
+            <motion.main
+              tw="w-full md:w-auto"
+              initial={entry.state}
+              animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
+              transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 3.4 }}
+            >
+              <HeaderGradient />
+              {children}
+            </motion.main>
+            <footer />
+          </StyledLayout>
+        )
+      }}
     </TransitionState>
   )
 }
@@ -167,11 +182,6 @@ const StyledLayout = styled.div`
       color: ${colors["bright-sun"]};
     }
   }
-  /*
-      &.-selected {
-      border-color: ${colors["bright-sun"]};
-    }
-  */
   .header-spacer {
     height: 63px;
     @media (min-width: 640px) {

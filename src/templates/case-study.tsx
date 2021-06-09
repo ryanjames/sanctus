@@ -13,14 +13,6 @@ import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import formattingOptions from "../utils/formattingOptions"
 import assets from "../staticQueries/assets"
 
-/*
-import { renderRichText } from "gatsby-source-contentful/rich-text"
-
-const Bold = ({ children }) => <span className="bold">{children}</span>
-const Text = ({ children }) => <p className="align-center">{children}</p>
-
-*/
-
 type Props = {
   data: {
     caseStudy: {
@@ -45,7 +37,13 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
       </Helmet>
       {caseStudy.video ? (
         <div tw="lg:-mt-32 relative z-10">
-          <Video autoplay={false} src={caseStudy.video} poster={caseStudy.image} color={caseStudy.color} />
+          <Video
+            nativeControls={true}
+            autoplay={false}
+            src={caseStudy.video}
+            poster={caseStudy.image}
+            color={caseStudy.color}
+          />
         </div>
       ) : (
         <div
