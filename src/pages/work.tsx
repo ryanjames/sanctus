@@ -112,7 +112,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
       const img = new Image()
       img.src = caseStudy.image ? caseStudy.image.src : ""
     })
-  })
+  }, [])
 
   const categories: Category[] = []
   caseStudiesData.filter((item: CaseStudyShape) => {
