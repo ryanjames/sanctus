@@ -5,7 +5,7 @@ import tw from "twin.macro"
 import withLocation from "../utils/withLocation"
 import queryString from "query-string"
 import Layout from "../components/Layout"
-import caseStudies from "../staticQueries/caseStudies"
+import caseStudyCategories, { CaseStudyCategoryShape } from "../staticQueries/caseStudyCategories"
 import { CaseStudyShape } from "../models/case-study"
 import { Col } from "../components/Container"
 import PageLink from "../components/PageLink"
@@ -17,11 +17,6 @@ type Props = {
     origin: string
     search: string
   }
-}
-
-type Category = {
-  title: string
-  slug: string
 }
 
 type CaseStudy = {
@@ -85,9 +80,15 @@ const CaseStudy: React.FC<CaseStudy> = ({ caseStudy }) => {
 }
 
 const WorkPage: React.FC<Props> = ({ navigate, location }) => {
-  const caseStudiesData = caseStudies().sort((a: CaseStudyShape, b: CaseStudyShape) => (a.feature > b.feature ? 1 : -1))
   const [category, setCategory] = useState("nothing")
   const [visibility, setVisibility] = useState("visible")
+  const categories = caseStudyCategories()
+
+  const caseStudiesData: CaseStudyShape[] = []
+  categories.forEach((category: CaseStudyCategoryShape) => {
+    caseStudiesData.push(...category.caseStudies)
+  })
+  caseStudiesData.sort((a: CaseStudyShape, b: CaseStudyShape) => (a.order > b.order ? 1 : -1))
 
   const changeCategory = (e: SyntheticEvent) => {
     const target = e.target as HTMLTextAreaElement
@@ -114,15 +115,6 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
     })
   }, [])
 
-  const categories: Category[] = []
-  caseStudiesData.filter((item: CaseStudyShape) => {
-    const i = categories.findIndex(x => x.title == item.category.title)
-    if (i <= -1) {
-      categories.push({ title: item.category.title, slug: item.category.slug })
-    }
-    return null
-  })
-
   return (
     <StyledLayout title="Work" page="features">
       <Col>
@@ -130,21 +122,21 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
           <span className={category == "all" ? "-selected" : ""} id="all" onClick={changeCategory}>
             All Work
           </span>
-          {categories.map(item => (
+          {categories.map((item: CaseStudyCategoryShape) => (
             <span
               className={category == item.slug ? "-selected" : ""}
               id={item.slug}
               onClick={changeCategory}
               key={item.slug}
             >
-              {item.title}
+              {item.categoryName}
             </span>
           ))}
         </div>
         <motion.div className="caseStudies" initial="hidden" animate={visibility} variants={itemsAnimation}>
           {caseStudiesData
             .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
+              return category == "all" ? caseStudy.title != "" : caseStudy.category === category
             })
             .filter((caseStudy: CaseStudyShape) => {
               return caseStudy.priority == "Feature"
@@ -154,7 +146,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
             ))}
           {caseStudiesData
             .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
+              return category == "all" ? caseStudy.title != "" : caseStudy.category === category
             })
             .filter((caseStudy: CaseStudyShape) => {
               return caseStudy.priority == "High Priority"
@@ -164,7 +156,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
             ))}
           {caseStudiesData
             .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
+              return category == "all" ? caseStudy.title != "" : caseStudy.category === category
             })
             .filter((caseStudy: CaseStudyShape) => {
               return !caseStudy.priority || caseStudy.priority == "No Priority"
