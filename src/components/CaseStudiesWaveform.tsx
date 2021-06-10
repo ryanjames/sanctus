@@ -128,8 +128,8 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className = "" }) => {
       {featuredCaseStudies.map((caseStudy: CaseStudyShape, index: number) => (
         <PageLink
           className="case-study-card"
-          key={caseStudy.slug}
-          to={`/work?category=${caseStudy.category}`}
+          key={caseStudy.category.slug}
+          to={`/work?category=${caseStudy.category.slug}`}
           onMouseEnter={shuffleWaveform}
         >
           <div className="content-container">
