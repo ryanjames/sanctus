@@ -160,10 +160,6 @@ export const pageQuery = graphql`
             }
           }
           videoUrl
-          category {
-            title
-            slug
-          }
           body {
             raw
           }
