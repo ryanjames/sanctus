@@ -1,5 +1,5 @@
 import React, { useState, useEffect, SyntheticEvent } from "react"
-// import PageLink from "../components/PageLink"
+import PageLink from "../components/PageLink"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import withLocation from "../utils/withLocation"
@@ -8,7 +8,6 @@ import Layout from "../components/Layout"
 import caseStudyCategories, { CaseStudyCategoryShape } from "../staticQueries/caseStudyCategories"
 import { CaseStudyShape } from "../models/case-study"
 import { Col } from "../components/Container"
-import PageLink from "../components/PageLink"
 import { motion } from "framer-motion"
 
 type Props = {
@@ -136,7 +135,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
         <motion.div className="caseStudies" initial="hidden" animate={visibility} variants={itemsAnimation}>
           {caseStudiesData
             .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category === category
+              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
             })
             .filter((caseStudy: CaseStudyShape) => {
               return caseStudy.priority == "Feature"
@@ -146,7 +145,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
             ))}
           {caseStudiesData
             .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category === category
+              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
             })
             .filter((caseStudy: CaseStudyShape) => {
               return caseStudy.priority == "High Priority"
@@ -156,7 +155,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
             ))}
           {caseStudiesData
             .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category === category
+              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
             })
             .filter((caseStudy: CaseStudyShape) => {
               return !caseStudy.priority || caseStudy.priority == "No Priority"

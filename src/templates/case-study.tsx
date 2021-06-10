@@ -1,10 +1,12 @@
 import React from "react"
+import slugify from "slugify"
 import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
 import styled from "@emotion/styled"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
+import caseStudyCategories, { CaseStudyCategoryShape } from "../staticQueries/caseStudyCategories"
 import PageLink from "../components/PageLink"
 import tw from "twin.macro"
 import { getCaseStudy } from "../models/case-study"
@@ -29,6 +31,15 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
   const caseStudyAssets = assets()
 
   const content = JSON.parse(caseStudy.body)
+
+  let caseStudyCategory = ""
+  caseStudyCategories().forEach((category: CaseStudyCategoryShape) => {
+    if (category.caseStudies.some(i => i.id.includes(caseStudy.id))) {
+      caseStudyCategory = category.categoryName
+    }
+  })
+
+  console.log(caseStudy)
 
   return (
     <StyledLayout title={`Case Study: ${caseStudy.title}`}>
@@ -61,24 +72,35 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
               <p>{caseStudy.client}</p>
             </div>
           )}
-          {caseStudy.project && (
+          {caseStudy.credit && (
             <div tw="sm:w-1/2 md:w-full pr-8">
-              <label tw="text-xs pt-9 uppercase tracking-widest mb-4">{caseStudy.projectLabel ?? "Studio"}</label>
-              <p>{caseStudy.project}</p>
+              <label tw="text-xs pt-9 uppercase tracking-widest mb-4">{caseStudy.creditLabel ?? "Studio"}</label>
+              <p>{caseStudy.credit}</p>
+            </div>
+          )}
+          {caseStudy.credit2 && (
+            <div tw="sm:w-1/2 md:w-full pr-8">
+              <label tw="text-xs pt-9 uppercase tracking-widest mb-4">{caseStudy.credit2Label ?? "Studio"}</label>
+              <p>{caseStudy.credit2}</p>
             </div>
           )}
           <div tw="sm:w-1/2 md:w-full pr-8">
             <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Role</label>
             <p>{caseStudy.role}</p>
           </div>
-          <div tw="sm:w-1/2 md:w-full pr-8">
-            <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Category</label>
-            <p>
-              <PageLink tw="text-gray-500 hover:text-white" to={`/work/?category=${caseStudy.category.slug}`}>
-                {caseStudy.category.title}
-              </PageLink>
-            </p>
-          </div>
+          {caseStudyCategory !== "" && (
+            <div tw="sm:w-1/2 md:w-full pr-8">
+              <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Category</label>
+              <p>
+                <PageLink
+                  tw="text-gray-500 hover:text-white"
+                  to={`/work/?category=${slugify(caseStudyCategory, { lower: true, strict: true })}`}
+                >
+                  {caseStudyCategory}
+                </PageLink>
+              </p>
+            </div>
+          )}
         </Col>
         <Col tw="md:w-3/4">
           <h1 tw="text-3xl font-normal mb-12">{caseStudy.title}</h1>
@@ -122,8 +144,10 @@ export const pageQuery = graphql`
           id
           title
           client
-          project
-          projectLabel
+          credit
+          creditLabel
+          credit2
+          credit2Label
           role
           overlayColor
           image {

@@ -11,11 +11,16 @@ export interface CaseStudyShape {
   body: string
   client: string
   role: string
-  project: string
-  projectLabel: string
+  credit: string
+  creditLabel: string
+  credit2: string
+  credit2Label: string
   feature: boolean
   priority: string
-  category: string
+  category: {
+    slug: string
+    categoryName: string
+  }
   map: Function
   sort: Function
   filter: Function
@@ -34,9 +39,14 @@ export const getCaseStudy = (query: any): CaseStudyShape => {
     body: node.body.raw,
     client: node.client,
     role: node.role,
-    project: node.project,
-    projectLabel: node.projectLabel,
-    category: "",
+    credit: node.credit,
+    creditLabel: node.creditLabel,
+    credit2: node.credit2,
+    credit2Label: node.credit2Label,
+    category: {
+      slug: "",
+      categoryName: "",
+    },
     feature: node.feature,
     priority: node.priority,
     map: Function,

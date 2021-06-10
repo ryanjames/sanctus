@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-import caseStudies from "../staticQueries/caseStudies"
+import caseStudyCategories, { CaseStudyCategoryShape } from "../staticQueries/caseStudyCategories"
 import { CaseStudyShape } from "../models/case-study"
 import { motion } from "framer-motion"
 import PageLink from "./PageLink"
@@ -29,7 +29,13 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className = "" }) => {
 
   const [waveformIndex, setWaveformIndex] = useState(0)
 
-  const featuredCaseStudies = caseStudies()
+  const caseStudies: CaseStudyShape[] = []
+  caseStudyCategories().forEach((category: CaseStudyCategoryShape) => {
+    caseStudies.push(...category.caseStudies)
+  })
+  caseStudies.sort((a: CaseStudyShape, b: CaseStudyShape) => (a.order > b.order ? 1 : -1))
+
+  const featuredCaseStudies = caseStudies
     .filter((obj: CaseStudyShape) => obj.feature == true)
     .sort((a: CaseStudyShape, b: CaseStudyShape) => (a.title > b.title ? 1 : -1))
 
@@ -122,15 +128,15 @@ const CaseStudiesWaveform: React.FC<Props> = ({ className = "" }) => {
       {featuredCaseStudies.map((caseStudy: CaseStudyShape, index: number) => (
         <PageLink
           className="case-study-card"
-          key={caseStudy.id}
-          to={`/work?category=${caseStudy.category.slug}`}
+          key={caseStudy.slug}
+          to={`/work?category=${caseStudy.category}`}
           onMouseEnter={shuffleWaveform}
         >
           <div className="content-container">
             <div className="content">
-              <motion.small variants={waveItem.label}>{caseStudy.category.title}</motion.small>
+              <motion.small variants={waveItem.label}>{caseStudy.category.slug}</motion.small>
               <motion.h2 variants={waveItem.title} tw="pl-1/3 text-xl">
-                <span>{caseStudy.category.title}</span>
+                <span>{caseStudy.category.categoryName}</span>
               </motion.h2>
             </div>
           </div>

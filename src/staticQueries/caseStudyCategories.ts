@@ -53,7 +53,10 @@ const caseStudyCategories = (): CaseStudyCategoryShape => {
     categoryName: category.node.categoryName,
     caseStudies: category.node.caseStudies.map((study: any, index: number) => ({
       order: index,
-      category: category.node.slug,
+      category: {
+        slug: category.node.slug,
+        categoryName: category.node.categoryName,
+      },
       id: study.id,
       title: study.title,
       slug: study.slug,

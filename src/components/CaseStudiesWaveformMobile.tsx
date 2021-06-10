@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { Col } from "./Container"
-import caseStudies from "../staticQueries/caseStudies"
+import caseStudyCategories, { CaseStudyCategoryShape } from "../staticQueries/caseStudyCategories"
 import { CaseStudyShape } from "../models/case-study"
 import { motion } from "framer-motion"
 import PageLink from "./PageLink"
@@ -20,7 +20,13 @@ const CaseStudiesWaveformMobile: React.FC<Props> = ({ className = "" }) => {
 
   const [waveformIndex, setWaveformIndex] = useState(0)
 
-  const featuredCaseStudies = caseStudies()
+  const caseStudies: CaseStudyShape[] = []
+  caseStudyCategories().forEach((category: CaseStudyCategoryShape) => {
+    caseStudies.push(...category.caseStudies)
+  })
+  caseStudies.sort((a: CaseStudyShape, b: CaseStudyShape) => (a.order > b.order ? 1 : -1))
+
+  const featuredCaseStudies = caseStudies
     .filter((obj: CaseStudyShape) => obj.feature == true)
     .sort((a: CaseStudyShape, b: CaseStudyShape) => (a.title > b.title ? 1 : -1))
 
@@ -97,7 +103,7 @@ const CaseStudiesWaveformMobile: React.FC<Props> = ({ className = "" }) => {
             <div className="content-container">
               <div className="content">
                 <motion.h2 variants={waveItem.title} tw="text-lg">
-                  <span>{caseStudy.category.title}</span>
+                  <span>{caseStudy.category.categoryName}</span>
                 </motion.h2>
               </div>
             </div>
