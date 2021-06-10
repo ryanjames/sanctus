@@ -7,11 +7,15 @@ const formattingOptions = assets => {
   return {
     renderMark: {
       [MARKS.CODE]: node => {
-        return (
-          <div className="inline-video">
-            <ReactPlayer url={node} controls={true} />
-          </div>
-        )
+        if (node.includes("iframe")) {
+          return <div dangerouslySetInnerHTML={{ __html: node }} />
+        } else {
+          return (
+            <div className="inline-video">
+              <ReactPlayer url={node} controls={true} />
+            </div>
+          )
+        }
       },
     },
     renderNode: {
