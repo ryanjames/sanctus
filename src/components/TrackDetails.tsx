@@ -117,7 +117,13 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
           <div className="track-versions" tw="lg:flex justify-between items-center">
             <h4 tw="text-base pb-4 lg:mb-0 lg:text-xl mb-0 font-bold">{track.title}</h4>
             <div className="track-actions" tw="flex">
-              <div onClick={() => setModal("license")}>License</div>
+              <a
+                href="https://hello.dubsado.com:443/public/form/view/5e26224cab9a3f109883843c"
+                target="_blank"
+                rel="noreferrer"
+              >
+                License
+              </a>
               <div onClick={() => setModal("download")}>Download Sample</div>
               {modal == "download" && (
                 <Modal close={closeModal}>
@@ -180,6 +186,7 @@ const StyledTrackDetails = styled.div<{ color: string; id: string }>`
   .track-actions {
     ${tw`-mt-2`}
   }
+  .track-actions > a,
   .track-actions > div {
     transition: all 0.2s ease-in-out;
     ${tw`rounded bg-gray-700 py-2 px-3 mr-3`}
