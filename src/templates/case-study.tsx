@@ -39,8 +39,6 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
     }
   })
 
-  console.log(caseStudy)
-
   return (
     <StyledLayout title={`Case Study: ${caseStudy.title}`}>
       <Helmet>
