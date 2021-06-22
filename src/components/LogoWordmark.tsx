@@ -21,12 +21,6 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
       }
       if (Object.keys(window.logoAudio).length == letters.length) {
         setReady(true)
-        if (!window.logoAudioReady) {
-          window.logoAudioReady = true
-          for (const letter of letters) {
-            window.logoAudio[letter].obj.start(0)
-          }
-        }
       }
     }
 
@@ -73,6 +67,12 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
     const parent = (event.target as HTMLElement).parentElement
     const target = (parent == event.target ? event.target : parent) as HTMLElement
     const letter = target.id
+    if (!window.logoAudioReady) {
+      window.logoAudioReady = true
+      for (const letr of letters) {
+        window.logoAudio[letr].obj.start(0)
+      }
+    }
     if (target.getAttribute("class") == "letter-active") {
       target.setAttribute("class", "")
       let vol = 1
