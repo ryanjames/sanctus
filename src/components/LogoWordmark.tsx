@@ -69,9 +69,13 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
     const letter = target.id
     if (!window.logoAudioReady) {
       window.logoAudioReady = true
-      for (const letr of letters) {
-        window.logoAudio[letr].obj.start(0)
-      }
+      window.logoAudio["s1"].obj.start(0)
+      window.logoAudio["t"].obj.start(0)
+      window.logoAudio["u"].obj.start(0)
+      window.logoAudio["a"].obj.start(0)
+      window.logoAudio["n"].obj.start(0)
+      window.logoAudio["c"].obj.start(0)
+      window.logoAudio["s2"].obj.start(0)
     }
     if (target.getAttribute("class") == "letter-active") {
       target.setAttribute("class", "")
