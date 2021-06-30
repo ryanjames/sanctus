@@ -12,13 +12,6 @@ export default function HTML(props) {
         <script> window.logoAudioContext = new (window.AudioContext || window.webkitAudioContext)() </script>
         <script> window.logoAudio = new Object() </script>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-QPWEMSFCP7"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-QPWEMSFCP7');
-        </script>
       </head>
       <body {...props.bodyAttributes}>
         {props.preBodyComponents}
