@@ -27,7 +27,7 @@ const IndexPage: React.FC<Props> = () => {
           <h2 tw="text-5xl text-hippie-blue leading-tight">{content.heading}</h2>
         </Col>
         <Col tw="md:w-2/3 flex flex-wrap pt-6 md:pt-16">
-          <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24 relative">
+          <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24 relative pb-32">
             <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
           </div>
         </Col>
@@ -53,6 +53,9 @@ const StyledLayout = styled(Layout)`
   }
   p {
     ${tw`text-base leading-relaxed`}
+  }
+  hr {
+    ${tw`border-0 border-t border-solid border-gray-500 mt-12 mb-12`}
   }
   h3 {
     ${tw`text-xl py-8 font-normal`}

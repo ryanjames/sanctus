@@ -123,6 +123,9 @@ const StyledLayout = styled(Layout)`
   }
   .caseStudy-content {
     .description {
+      hr {
+        ${tw`border-0 border-t border-solid border-gray-500 mt-12 mb-12`}
+      }
       p {
         ${tw`text-base leading-relaxed`}
       }
