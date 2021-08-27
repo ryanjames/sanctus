@@ -185,7 +185,7 @@ const TracksTable: React.FC<Props> = ({ data, placeholder, urlQuery }) => {
                       overscanRowCount={10}
                       data={filteredData}
                       width={width}
-                      scrollToIndex={activeTrack.index}
+                      scrollToIndex={(activeTrack.index || 0) + 5}
                     />
                   )}
                 </AutoSizer>
