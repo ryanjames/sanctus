@@ -234,7 +234,7 @@ const StyledLibraryCategories = styled.div`
   ${tw`mt-0 sm:-mt-8`}
   height: calc(100vh - 76px);
   @media (min-width: 640px) {
-    height: calc(100vh - 140px);
+    height: calc(100vh - 180px);
   }
   width: 100%;
   margin-left: -14px;

@@ -99,6 +99,7 @@ const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
   }
   .library-categories {
     ${tw`pt-24 sm:pt-12`}
+    overflow: hidden;
     .close {
       position: fixed;
     }

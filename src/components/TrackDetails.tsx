@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import styled from "@emotion/styled"
 import { keyframes } from "@emotion/react"
 import colors from "../config/colors"
@@ -13,7 +13,10 @@ import { ActiveTrackContext, ActiveTrackContextType } from "../contexts/ActiveTr
 
 interface Props {
   track: TrackShape
-  open?: boolean
+  index: number
+}
+interface TrackProps {
+  track: TrackShape
 }
 
 const handleMuteAll = () => {
@@ -22,25 +25,22 @@ const handleMuteAll = () => {
   }
 }
 
-const TrackDetails: React.FC<Props> = ({ track, open }) => {
+const TrackDetails: React.FC<Props> = ({ track, index }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
   const [modal, setModal] = useState("")
   const [licenseSubmitted, setLicenseSubmitted] = useState(false)
 
   const handleExpand = () => {
     document.body.className = ""
+    // const expandedTrack = document.getElementById(track.id) as HTMLElement
+    // const scrollOffset = tracksTable.offsetTop - expandedTrack.offsetTop
     handleMuteAll()
     updateActiveTrack({
       id: track.id,
       version: track,
+      index: index,
     })
   }
-
-  useEffect(() => {
-    if (open) {
-      handleExpand()
-    }
-  }, [open])
 
   const closeModal = () => {
     setModal("")
@@ -60,7 +60,7 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
   }
   const content = siteContent()
 
-  const License: React.FC<Props> = ({ track }) => {
+  const License: React.FC<TrackProps> = ({ track }) => {
     return (
       <div tw="w-56 sm:w-96">
         <h2 tw="text-lg pr-12">{track.title}</h2>
@@ -96,7 +96,7 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
     )
   }
 
-  const Download: React.FC<Props> = ({ track }) => {
+  const Download: React.FC<TrackProps> = ({ track }) => {
     const download = track.url.replace("raw=1", "dl=1").replace("dl.dropboxusercontent", "www.dropbox")
     return (
       <div tw="w-96">
@@ -137,11 +137,7 @@ const TrackDetails: React.FC<Props> = ({ track, open }) => {
               )}
             </div>
           </div>
-          <TrackPlayer
-            className="track-player"
-            pause={open ? true : false}
-            track={{ id: activeTrack.version.id, url: activeTrack.version.url }}
-          />
+          <TrackPlayer className="track-player" track={{ id: activeTrack.version.id, url: activeTrack.version.url }} />
         </div>
       ) : (
         <div onClick={handleExpand} className="launcher" tw="text-sm absolute flex items-center">

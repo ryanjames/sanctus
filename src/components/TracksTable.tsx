@@ -146,7 +146,7 @@ const TracksTable: React.FC<Props> = ({ data, placeholder, urlQuery }) => {
               </div>
             </div>
             <div tw="w-full">
-              <TrackDetails track={track} />
+              <TrackDetails track={track} index={index} />
             </div>
           </div>
         )}
@@ -185,6 +185,7 @@ const TracksTable: React.FC<Props> = ({ data, placeholder, urlQuery }) => {
                       overscanRowCount={10}
                       data={filteredData}
                       width={width}
+                      scrollToIndex={activeTrack.index}
                     />
                   )}
                 </AutoSizer>

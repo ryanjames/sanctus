@@ -17,6 +17,7 @@ export interface TrackShape {
   search?: string
   playlists: CategoryShape[]
   favorite?: boolean
+  index?: number
   filter?: Function
   reduce?: Function
 }

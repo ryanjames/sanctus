@@ -5,6 +5,7 @@ import { TrackShape } from "../models/tracks"
 export interface ITrack {
   id: string
   version: TrackShape
+  index?: number
 }
 
 export const versionDefault = {
@@ -33,6 +34,7 @@ const ActiveTrackProvider: React.FC = ({ children }) => {
   const [activeTrack, setActiveTrack] = React.useState<ITrack>({
     id: "",
     version: versionDefault,
+    index: 0,
   })
 
   const updateActiveTrack = (track: ITrack) => {
