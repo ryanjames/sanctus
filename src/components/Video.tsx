@@ -14,10 +14,11 @@ interface Props {
   poster: FluidObject
   autoplay: boolean
   nativeControls?: boolean
+  fitContainer?: boolean
   className?: string
 }
 
-const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, className, nativeControls = false }) => {
+const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, className, nativeControls = false, fitContainer = false }) => {
   const color1 = hex2rgba(color)
   const color2 = hex2rgba(color, 0)
 
@@ -116,7 +117,7 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
   const player = useRef<ReactPlayer>(null)
 
   return (
-    <StyledVideo className={className} color1={color1} color2={color2}>
+    <StyledVideo fitContainer={fitContainer} className={className} color1={color1} color2={color2}>
       <div className={`video-container ${inProgress ? "playing" : ""}`} tw="relative overflow-hidden">
         <div tw="absolute inset-0">
           <div
@@ -161,17 +162,42 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
   )
 }
 
-const StyledVideo = styled.div<{ color1: string; color2: string }>`
-  .video-container {
-    height: 56.25vw;
-    max-height: 80vh;
-  }
-  .image-container {
-    transition: all 0.6s ease-in-out;
-    ${tw`absolute left-0 right-0 z-0`}
-    top: 50%;
-    transform: translateY(-50%) scale(1);
-  }
+const StyledVideo = styled.div<{ fitContainer: boolean; color1: string; color2: string }>`
+  ${tw``}
+  ${props => props.fitContainer ? (
+    `
+      height: 100%;
+      .video-container {
+        height: 100%;
+      }
+    .image-container {
+      transition: all 0.6s ease-in-out;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .gatsby-image-wrapper {
+      height: 100%;
+    }
+    `
+  ) : (
+    `
+      .video-container {
+        height: 56.25vw;
+        max-height: 80vh;
+      }
+      .image-container {
+        transition: all 0.6s ease-in-out;
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 0;
+        top: 50%;
+        transform: translateY(-50%) scale(1);
+        background: #fc0;
+      }
+    `
+  )}
   .image-overlay {
     z-index: 1;
     background: linear-gradient(0deg, ${props => props.color1} 0%, ${props => props.color2} 100%);
