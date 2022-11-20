@@ -120,7 +120,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
               animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
               transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
             >
-              <div tw="hidden md:block relative">{page !== "home" ? <LogoWaveform /> : <LogoWordmark />}</div>
+              <div tw="hidden md:block relative"><LogoWaveform /></div>
 
               <div tw="relative md:hidden">
                 <LogoWordmarkMobile />

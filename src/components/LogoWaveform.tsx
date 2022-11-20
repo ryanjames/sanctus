@@ -54,6 +54,10 @@ const LogoWaveform: React.FC<Props> = ({ className = "" }) => {
 
 const StyledLogoWaveform = styled.div`
   ${tw``}
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
   .wordmark div {
     opacity: 0;
   }

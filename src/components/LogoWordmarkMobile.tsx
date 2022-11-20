@@ -5,6 +5,7 @@ import PageLink from "./PageLink"
 
 const LogoWordmarkMobile: React.FC = () => {
   return (
+    <PageLink to="/">
     <StyledLogo>
       <svg
         id="logo-wordmark"
@@ -64,10 +65,11 @@ const LogoWordmarkMobile: React.FC = () => {
           />
         </g>
       </svg>
-      <PageLink tw="block text-base ml-1 -mt-4 text-muted" to="/">
+      <p tw="block text-base ml-1 -mt-4 text-muted">
         A sound and music design studio
-      </PageLink>
+      </p>
     </StyledLogo>
+    </PageLink>
   )
 }
 
