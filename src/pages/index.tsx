@@ -26,6 +26,7 @@ const IndexPage: React.FC = () => {
           nativeControls={true}
           autoplay={false}
           src={demoReel.video}
+          demoReel={true}
           poster={demoReel.image}
           color={demoReel.color}
           fitContainer={true}
