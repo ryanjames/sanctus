@@ -4,6 +4,7 @@ import tw from "twin.macro"
 import Layout from "../components/Layout"
 import Feature from "../components/Feature"
 import Partners from "../components/Partners"
+import Cta from "../components/Cta"
 import Video from "../components/Video"
 
 const IndexPage: React.FC = () => {
@@ -88,6 +89,8 @@ const IndexPage: React.FC = () => {
       />
       <Partners heading="We’ve joined agencies and studios like these:" partners={partners} />
       <Partners heading="In serving clients like these:" light={true} partners={partners} />
+
+      <Cta heading="Let us join you" background="/static/28e5242f1ab52422c58973c247f13b67/0e329/persuit-feature.jpg" button={{ link: "/contact", label: "Contact Us" }} />
 
     </StyledLayout>
   )

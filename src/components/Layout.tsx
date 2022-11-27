@@ -5,6 +5,7 @@ import colors from "../config/colors"
 import LogoWaveform from "../components/LogoWaveform"
 import LogoWordmarkMobile from "../components/LogoWordmarkMobile"
 import HeaderGradient from "../components/HeaderGradient"
+import Container, { Col } from "./Container"
 import tw from "twin.macro"
 import GlobalCss from "../config/GlobalCss"
 import Close from "../graphics/close.svg"
@@ -142,6 +143,13 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
               <HeaderGradient />
               {children}
             </motion.main>
+            <Col className="footer">
+              <LogoWordmarkMobile />
+              <div className="footer-nav" tw="hidden sm:block">
+                <Nav page={page} />
+              </div>
+              <div className="copyright">Copyright &copy; Sono Sanctus LLC</div>
+            </Col>
             <footer />
           </StyledLayout>
         )
@@ -154,11 +162,31 @@ const StyledLayout = styled.div`
   ${tw`pt-32`}
   .desktop-nav {
     ${tw`fixed top-12 right-12 z-50`}
+  }
+  .desktop-nav, .footer-nav {
     a {
       ${tw`pb-2 ml-8`}
       &.-selected {
         ${tw`border-0 border-b-2 border-solid`}
         border-color: ${colors["bright-sun"]};
+      }
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 3em 1.2em;
+    .copyright {
+      width: 100%;
+      padding-top: 16px;
+      opacity: 0.4;
+    }
+    @media (min-width: 480px) {
+      padding: 4em 3em;
+      .copyright {
+        text-align: center;
       }
     }
   }
