@@ -83,7 +83,7 @@ const StyledFeature = styled.section`
     justify-content: center;
     h2 {
       font-weight:700;
-      font-size: 1.8em;
+      font-size: 1.7em;
     }
   }
 
