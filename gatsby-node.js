@@ -79,6 +79,15 @@ exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
   const typeDefs = `
     type ContentfulCaseStudy implements ContentfulReference & ContentfulEntry & Node @derivedTypes @dontInfer {
+      contentful_id: String!
+      node_locale: String!
+      title: String
+      feature: Boolean
+      slug: String
+      overlayColor: String
+      role: String
+      body: ContentfulCaseStudyBody
+      image: ContentfulAsset @link(by: "id", from: "image___NODE")
       section1Body: ContentfulCaseStudySection1Body
       section2Body: ContentfulCaseStudySection2Body
       section3Body: ContentfulCaseStudySection3Body
@@ -100,6 +109,34 @@ exports.createSchemaCustomization = ({ actions }) => {
       section8Media: ContentfulAsset @link(by: "id", from: "section8Media___NODE")
       section9Media: ContentfulAsset @link(by: "id", from: "section9Media___NODE")
       section10Media: ContentfulAsset @link(by: "id", from: "section10Media___NODE")
+      case_study_category: [ContentfulCaseStudyCategory] @link(by: "id", from: "case study category___NODE") @proxy(from: "case study category___NODE")
+      spaceId: String
+      createdAt: Date @dateformat
+      updatedAt: Date @dateformat
+      sys: ContentfulCaseStudySys
+      priority: String
+      videoUrl: String
+      client: String
+      credit: String
+      creditLabel: String
+      case_study: [ContentfulCaseStudy] @link(by: "id", from: "case study___NODE") @proxy(from: "case study___NODE")
+      credit2: String
+      credit2Label: String
+    }
+    type ContentfulCaseStudySys @derivedTypes {
+      type: String
+      revision: Int
+      contentType: ContentfulCaseStudySysContentType
+    }
+    
+    type ContentfulCaseStudySysContentType @derivedTypes {
+      sys: ContentfulCaseStudySysContentTypeSys
+    }
+    
+    type ContentfulCaseStudySysContentTypeSys {
+      type: String
+      linkType: String
+      id: String
     }
     interface ContentfulReference {
       contentful_id: String!
@@ -109,6 +146,10 @@ exports.createSchemaCustomization = ({ actions }) => {
       contentful_id: String!
       id: ID!
       node_locale: String!
+    }
+    type ContentfulCaseStudyBody {
+      raw: String
+      references: [ContentfulAsset] @link(by: "id", from: "references___NODE")
     }
     type ContentfulCaseStudySection1Body {
       raw: String
@@ -158,6 +199,33 @@ exports.createSchemaCustomization = ({ actions }) => {
     type ContentfulCaseStudySection10Body {
       raw: String
       references: [ContentfulAsset] @link(by: "id", from: "references___NODE")
+    }
+    type ContentfulCaseStudyCategory implements ContentfulReference & ContentfulEntry & Node @derivedTypes @dontInfer {
+      contentful_id: String!
+      node_locale: String!
+      categoryName: String
+      slug: String
+      caseStudies: [ContentfulCaseStudy] @link(by: "id", from: "caseStudies___NODE")
+      spaceId: String
+      createdAt: Date @dateformat
+      updatedAt: Date @dateformat
+      sys: ContentfulCaseStudyCategorySys
+    }
+    
+    type ContentfulCaseStudyCategorySys @derivedTypes {
+      type: String
+      revision: Int
+      contentType: ContentfulCaseStudyCategorySysContentType
+    }
+    
+    type ContentfulCaseStudyCategorySysContentType @derivedTypes {
+      sys: ContentfulCaseStudyCategorySysContentTypeSys
+    }
+    
+    type ContentfulCaseStudyCategorySysContentTypeSys {
+      type: String
+      linkType: String
+      id: String
     }
     type ContentfulAsset implements ContentfulReference & Node @derivedTypes @dontInfer {
       contentful_id: String!
