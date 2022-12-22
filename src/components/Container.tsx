@@ -88,11 +88,12 @@ mQw.forEach((value: string, key: string) => {
 
 interface ContainerProps extends SharedProps {
   className?: string
+  style?: {}
 }
 
-export const Container: React.FC<ContainerProps> = ({ children, className = "" }) => {
+export const Container: React.FC<ContainerProps> = ({ children, style, className = "" }) => {
   return (
-    <StyledContainer className={`container ${className}`}>
+    <StyledContainer className={`container ${className}`} style={style}>
       <div>{children}</div>
     </StyledContainer>
   )

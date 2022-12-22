@@ -4,11 +4,13 @@ import tw from "twin.macro"
 import Img, { FluidObject } from "gatsby-image"
 import PageLink from "./PageLink"
 import Container, { Col } from "./Container"
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
+import formattingOptions from "../utils/formattingOptions"
+import assets from "../staticQueries/assets"
 
 type Props = {
   className?: string,
-  image: FluidObject,
-  title: string,
+  media: FluidObject,
   body: string,
   button?: {
     link: string,
@@ -17,16 +19,17 @@ type Props = {
   orientation?: string,
 }
 
-const Feature: React.FC<Props> = ({ className, image, title, body, button, orientation = "left" }) => {
+const CaseStudyFeature: React.FC<Props> = ({ className, media, body, button, orientation = "left" }) => {
+  const content = JSON.parse(body)
+  const caseStudyAssets = assets()
   return (
     <StyledFeature className={className} data-orientation={orientation}>
       <div className="feature-text-space" />
-      <Img className="feature-image" fluid={image} />
+      <Img className="feature-image" fluid={media} />
       <div className="feature-text">
         <Container className="feature-text-inner">
           <Col tw="w-full xs:w-1/2">
-            <h2>{title}</h2>
-            <div>{body}</div>
+            {documentToReactComponents(content, formattingOptions(caseStudyAssets))}
             {button && (
               <PageLink to={button.link} className="feature-button">
                 {button.label}
@@ -88,4 +91,4 @@ const StyledFeature = styled.section`
   }
 
 `
-export default Feature
+export default CaseStudyFeature
