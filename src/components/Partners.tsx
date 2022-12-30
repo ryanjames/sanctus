@@ -6,10 +6,7 @@ import Container, { Col } from "./Container"
 type Props = {
   className?: string,
   heading: string,
-  partners: {
-    logo: ReactNode,
-    link: string,
-  }[],
+  partners: string[],
   light?: boolean,
 }
 
@@ -21,10 +18,8 @@ const Partners: React.FC<Props> = ({ className, partners, heading, light = false
           <h2>{heading}</h2>
         </Col>
         <StyledCol>
-          {partners.map((partner) => 
-            <a href={partner.link} target="_blank" rel="noreferrer">
-              {partner.logo}
-            </a>
+          {partners.map((partner, i) => 
+            <img key={i} src={partner} />
           )}
         </StyledCol>
       </Container>
@@ -34,11 +29,12 @@ const Partners: React.FC<Props> = ({ className, partners, heading, light = false
 
 const StyledCol = styled(Col)`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 24px;
-  svg {
-    width: 48px;
+  gap: 40px;
+  img {
+    opacity: 0.5;
   }
 `
 

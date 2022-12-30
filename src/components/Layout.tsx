@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import SEO from "../components/SEO"
 import styled from "@emotion/styled"
 import colors from "../config/colors"
-import LogoWaveform from "../components/LogoWaveform"
+import LogoWordmark from "../components/LogoWordmark"
 import LogoWordmarkMobile from "../components/LogoWordmarkMobile"
 import HeaderGradient from "../components/HeaderGradient"
 import Container, { Col } from "./Container"
@@ -120,7 +120,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
               animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
               transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
             >
-              <div tw="hidden md:block relative"><LogoWaveform /></div>
+              <div tw="hidden md:block relative"><LogoWordmark/></div>
 
               <div tw="relative md:hidden">
                 <LogoWordmarkMobile />

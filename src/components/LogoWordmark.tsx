@@ -130,7 +130,7 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
 
   return (
     <PageLink to="/">
-    <StyledLogo className={`${className} ${ready ? "ready" : ""} ${waveFinished ? "-withWave" : ""}`}>
+    <StyledLogo>
       <svg
         id="logo-wordmark"
         width="180"
@@ -196,7 +196,6 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
           />
         </g>
       </svg>
-      <p tw="block text-base ml-1 -mt-4 text-muted">A sound and music design studio</p>
     </StyledLogo>
     </PageLink>
   )
@@ -205,34 +204,15 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
 const StyledLogo = styled.div`
   ${tw``}
   transition: all 0.3s ease-in-out;
-  opacity: 0;
-  &.ready {
-    opacity: 1;
-  }
+  opacity: 1;
   g,
   path,
   rect {
     transition: all 0.1s ease-in-out;
+    fill: white;
   }
   g#x {
-    transform: translateX(-20px);
     opacity: 0;
-    path {
-      opacity: 0.1;
-    }
-  }
-  .is-playing g#x {
-    transform: translateX(0);
-    opacity: 1;
-    &:hover {
-      cursor: pointer;
-      path {
-        opacity: 0.5;
-      }
-    }
-  }
-  g:not(.letter-active):not(#x) path {
-    fill: white;
   }
 `
 export default LogoWordmark
