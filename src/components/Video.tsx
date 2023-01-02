@@ -11,8 +11,8 @@ import SanctusSpectrum from "../components/SanctusSpectrum"
 
 interface Props {
   src: string
-  color: string
-  poster: FluidObject
+  color?: string
+  poster?: FluidObject
   autoplay: boolean
   nativeControls?: boolean
   fitContainer?: boolean
@@ -21,8 +21,8 @@ interface Props {
 }
 
 const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, className, nativeControls = false, demoReel = false,  fitContainer = false }) => {
-  const color1 = hex2rgba(color)
-  const color2 = hex2rgba(color, 0)
+  const color1 = color ? hex2rgba(color) : "transparent"
+  const color2 = color ? hex2rgba(color, 0) : "transparent"
 
   const [play, setPlay] = useState<boolean>(false)
   const [inProgress, setInProgress] = useState<boolean>(false)
@@ -147,7 +147,9 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
             <div style={{ backgroundColor: color }} />
             <div className="image-container">
               <div tw="absolute inset-0" className="image-overlay"></div>
-              <Img fluid={poster} />
+              {poster && (
+                <Img fluid={poster} />
+              )}
             </div>
             <ReactPlayer
               playing={play}

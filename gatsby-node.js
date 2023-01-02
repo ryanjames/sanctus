@@ -88,6 +88,17 @@ exports.createSchemaCustomization = ({ actions }) => {
       role: String
       body: ContentfulCaseStudyBody
       image: ContentfulAsset @link(by: "id", from: "image___NODE")
+      section1Stacked: Boolean
+      section1Stacked: Boolean
+      section2Stacked: Boolean
+      section3Stacked: Boolean
+      section4Stacked: Boolean
+      section5Stacked: Boolean
+      section6Stacked: Boolean
+      section7Stacked: Boolean
+      section8Stacked: Boolean
+      section9Stacked: Boolean
+      section10Stacked: Boolean
       section1Body: ContentfulCaseStudySection1Body
       section2Body: ContentfulCaseStudySection2Body
       section3Body: ContentfulCaseStudySection3Body
@@ -100,7 +111,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       section10Body: ContentfulCaseStudySection10Body
       relatedStudies: [ContentfulCaseStudy] @link(by: "id", from: "relatedStudies___NODE")
       section1Media: ContentfulAsset @link(by: "id", from: "section1Media___NODE")
-      section2Media: ContentfulAsset @link(by: "id", from: "section3Media___NODE")
+      section2Media: ContentfulAsset @link(by: "id", from: "section2Media___NODE")
       section3Media: ContentfulAsset @link(by: "id", from: "section3Media___NODE")
       section4Media: ContentfulAsset @link(by: "id", from: "section4Media___NODE")
       section5Media: ContentfulAsset @link(by: "id", from: "section5Media___NODE")

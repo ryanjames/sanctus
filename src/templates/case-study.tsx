@@ -2,9 +2,9 @@ import React from "react"
 import slugify from "slugify"
 import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
-import CaseStudyFeature from "../components/CaseStudyFeature"
+import Section from "../components/Section"
 import RelatedCaseStudies from "../components/RelatedCaseStudies"
-import { FluidObject } from "gatsby-image"
+import { SectionShape } from "../models/sections"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
 import styled from "@emotion/styled"
@@ -42,21 +42,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
     }
   })
 
-  const caseStudyBlocks = () => {
-    let orientation: string
-    const blocks = [...Array(10)].map((value, i) => {
-      const num = i + 1;
-      const studyBody = 'section' + num + 'Body' as keyof typeof caseStudy
-      const studyMedia = 'section' + num + 'Media' as keyof typeof caseStudy
-      if(caseStudy[studyBody]) {
-        orientation = orientation == 'left' ? 'right' : 'left'
-        return <CaseStudyFeature body={caseStudy[studyBody] as string} orientation={orientation} media={caseStudy[studyMedia] as FluidObject} />
-      } else {
-        return
-      }
-    })
-    return <>{blocks}</>
-  }
+  console.log(caseStudy)
 
   return (
     <ActiveTrackProvider>
@@ -82,7 +68,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
             }}
           />
         )}
-        <Container className="caseStudy-content" style={caseStudy.section1Body ? {} : { paddingBottom: "8rem" }}>
+        <Container className="caseStudy-content" style={caseStudy.sections ? {} : { paddingBottom: "8rem" }}>
           <Col tw="md:w-1/4 flex flex-wrap md:block pb-12 md:pb-0 text-gray-500">
             {caseStudy.client && (
               <div tw="sm:w-1/2 md:w-full pr-8">
@@ -127,7 +113,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
             </div>
           </Col>
         </Container>
-        {caseStudyBlocks()}
+        {caseStudy.sections.map((section: SectionShape, i: number) => <Section key={i} section={section} />)}
       </StyledLayout>
     </ActiveTrackProvider>
   )
@@ -206,8 +192,23 @@ export const pageQuery = graphql`
                 }
               }
             }
+            file { 
+              url 
+              fileName
+              contentType
+            }
           }
           section1Body { raw }
+          section1Stacked
+          section2Stacked
+          section3Stacked
+          section4Stacked
+          section5Stacked
+          section6Stacked
+          section7Stacked
+          section8Stacked
+          section9Stacked
+          section10Stacked
           section2Media {
             localFile {
               childImageSharp {
@@ -215,6 +216,11 @@ export const pageQuery = graphql`
                   ...GatsbyImageSharpFluid
                 }
               }
+            }
+            file { 
+              url 
+              fileName
+              contentType
             }
           }
           section2Body { raw }
@@ -226,6 +232,11 @@ export const pageQuery = graphql`
                 }
               }
             }
+            file { 
+              url 
+              fileName
+              contentType
+            }
           }
           section3Body { raw }
           section4Media {
@@ -235,6 +246,11 @@ export const pageQuery = graphql`
                   ...GatsbyImageSharpFluid
                 }
               }
+            }
+            file { 
+              url 
+              fileName
+              contentType
             }
           }
           section4Body { raw }
@@ -246,6 +262,11 @@ export const pageQuery = graphql`
                 }
               }
             }
+            file { 
+              url 
+              fileName
+              contentType
+            }
           }
           section5Body { raw }
           section6Media {
@@ -255,6 +276,11 @@ export const pageQuery = graphql`
                   ...GatsbyImageSharpFluid
                 }
               }
+            }
+            file { 
+              url 
+              fileName
+              contentType
             }
           }
           section6Body { raw }
@@ -266,6 +292,11 @@ export const pageQuery = graphql`
                 }
               }
             }
+            file { 
+              url 
+              fileName
+              contentType
+            }
           }
           section7Body { raw }
           section8Media {
@@ -275,6 +306,11 @@ export const pageQuery = graphql`
                   ...GatsbyImageSharpFluid
                 }
               }
+            }
+            file { 
+              url 
+              fileName
+              contentType
             }
           }
           section8Body { raw }
@@ -286,6 +322,11 @@ export const pageQuery = graphql`
                 }
               }
             }
+            file { 
+              url 
+              fileName
+              contentType
+            }
           }
           section9Body { raw }
           section10Media {
@@ -295,6 +336,11 @@ export const pageQuery = graphql`
                   ...GatsbyImageSharpFluid
                 }
               }
+            }
+            file { 
+              url 
+              fileName
+              contentType
             }
           }
           section10Body { raw }

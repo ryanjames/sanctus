@@ -3,8 +3,9 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
 import { graphql } from "gatsby"
-import { getHome, Media } from "../models/home"
-import Feature from "../components/Feature"
+import { getHome } from "../models/home"
+import { SectionShape } from "../models/sections"
+import Section from "../components/Section"
 import Partners from "../components/Partners"
 import Cta from "../components/Cta"
 import Video from "../components/Video"
@@ -20,27 +21,6 @@ type Props = {
 const IndexPage: React.FC<Props> = ({ data }) => {
 
   const homeContent = getHome(data.home.edges[0])
-
-  console.log(homeContent)
-
-  const featureBlocks = () => {
-    let orientation: string
-    const blocks = [...Array(4)].map((value, i) => {
-      const num = i + 1;
-      const featureBody = 'feature' + num + 'Body' as keyof typeof homeContent
-      const featureMedia = 'feature' + num + 'Media' as keyof typeof homeContent
-      const featureButtonLabel = 'feature' + num + 'ButtonLabel' as keyof typeof homeContent
-      const featureButtonLink = 'feature' + num + 'ButtonLink' as keyof typeof homeContent
-      const featureButton = { label: homeContent[featureButtonLabel] as string, link: homeContent[featureButtonLink] as string}
-      if(homeContent[featureBody]) {
-        orientation = orientation == 'left' ? 'right' : 'left'
-        return <Feature key={i} body={homeContent[featureBody] as string} button={featureButton} orientation={orientation} media={homeContent[featureMedia] as Media } />
-      } else {
-        return
-      }
-    })
-    return <>{blocks}</>
-  }
 
   return (
     <StyledLayout page="home">
@@ -60,11 +40,11 @@ const IndexPage: React.FC<Props> = ({ data }) => {
           </svg>
         </StyledContinue>
       </StyledReelContainer>
-      {featureBlocks()}
-      <Partners heading="We’ve joined agencies and studios like these:" partners={homeContent.agencies} />
+      {homeContent.sections.map((section: SectionShape, i: number) => <Section key={i} section={section} />)}
+      <Partners heading="We've joined agencies and studios like these:" partners={homeContent.agencies} />
       <Partners heading="In serving clients like these:" light={true} partners={homeContent.clients} />
 
-      <Cta heading="Let us join you" background="/static/28e5242f1ab52422c58973c247f13b67/0e329/persuit-feature.jpg" button={{ link: "/contact", label: "Contact Us" }} />
+      <Cta heading="Let us join you" background="/static/28e5242f1ab52422c58973c247f13b67/0e329/persuit-section.jpg" button={{ link: "/contact", label: "Contact Us" }} />
 
     </StyledLayout>
   )
@@ -122,7 +102,7 @@ export const pageQuery = graphql`
               }
             }
           }
-          feature1Media {
+          section1Media {
             localFile {
               childImageSharp {
                 fluid(maxWidth: 2400) {
@@ -135,10 +115,10 @@ export const pageQuery = graphql`
               contentType
             }
           }
-          feature1Body { raw }
-          feature1ButtonLabel
-          feature1ButtonLink
-          feature2Media {
+          section1Body { raw }
+          section1Button
+          section1Link
+          section2Media {
             localFile {
               childImageSharp {
                 fluid(maxWidth: 2400) {
@@ -151,10 +131,10 @@ export const pageQuery = graphql`
               contentType
             }
           }
-          feature2Body { raw }
-          feature2ButtonLabel
-          feature2ButtonLink
-          feature3Media {
+          section2Body { raw }
+          section2Button
+          section2Link
+          section3Media {
             localFile {
               childImageSharp {
                 fluid(maxWidth: 2400) {
@@ -167,10 +147,10 @@ export const pageQuery = graphql`
               contentType
             }
           }
-          feature3Body { raw }
-          feature3ButtonLabel
-          feature3ButtonLink
-          feature4Media {
+          section3Body { raw }
+          section3Button
+          section3Link
+          section4Media {
             localFile {
               childImageSharp {
                 fluid(maxWidth: 2400) {
@@ -183,9 +163,9 @@ export const pageQuery = graphql`
               contentType
             }
           }
-          feature4Body { raw }
-          feature4ButtonLabel
-          feature4ButtonLink
+          section4Body { raw }
+          section4Button
+          section4Link
         }
       }
     }
