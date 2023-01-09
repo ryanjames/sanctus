@@ -1,12 +1,13 @@
 import React, { ReactNode } from "react"
 import styled from "@emotion/styled"
+import { Partner } from "../models/home"
 import tw from "twin.macro"
 import Container, { Col } from "./Container"
 
 type Props = {
   className?: string,
   heading: string,
-  partners: string[],
+  partners: Partner[],
   light?: boolean,
 }
 
@@ -18,9 +19,19 @@ const Partners: React.FC<Props> = ({ className, partners, heading, light = false
           <h2>{heading}</h2>
         </Col>
         <StyledCol>
-          {partners.map((partner, i) => 
-            <img key={i} src={partner} />
-          )}
+          {partners.map((partner, i) => {
+            return (
+              <>
+                {partner.link ? (
+                  <a href={partner.link} target="_blank" rel="noreferrer">
+                    <img key={i} src={partner.image} />
+                  </a>
+                ) : (
+                  <img key={i} src={partner.image} />
+                )}
+              </>
+            )
+          })}
         </StyledCol>
       </Container>
     </StyledPartners>
@@ -34,7 +45,11 @@ const StyledCol = styled(Col)`
   flex-wrap: wrap;
   gap: 40px;
   img {
+    transition: opacity 0.3s ease-in-out;
     opacity: 0.5;
+  }
+  a:hover img {
+    opacity: 1;
   }
 `
 
