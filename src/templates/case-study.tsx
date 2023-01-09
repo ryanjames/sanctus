@@ -114,6 +114,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
           </Col>
         </Container>
         {caseStudy.sections.map((section: SectionShape, i: number) => <Section key={i} section={section} />)}
+        <RelatedCaseStudies heading="Related Case Studies" studies={caseStudy.relatedStudies} />
       </StyledLayout>
     </ActiveTrackProvider>
   )
