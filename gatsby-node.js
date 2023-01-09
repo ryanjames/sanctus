@@ -88,6 +88,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       role: String
       body: ContentfulCaseStudyBody
       image: ContentfulAsset @link(by: "id", from: "image___NODE")
+      live: Boolean
       section1Stacked: Boolean
       section1Stacked: Boolean
       section2Stacked: Boolean

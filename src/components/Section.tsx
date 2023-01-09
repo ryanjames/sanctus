@@ -35,7 +35,7 @@ const Section: React.FC<Props> = ({ className, section }) => {
         case "fluid":
           return <div className="section-image"><Img fluid={media.src as FluidObject} /></div>
         case "static":
-          return <div className="section-image"><img className="section-image" src={media.src as string} /></div>
+          return <div className="section-image"><img src={media.src as string} /></div>
         case "video":
           return (
             <div className="section-video">
@@ -71,11 +71,17 @@ const Section: React.FC<Props> = ({ className, section }) => {
 
   }
 
+  console.log(section.orientation)
 
   return (
     <StyledSection className={className} data-orientation={section.orientation}>
       <div className="section-text-space" />
-      {presentMedia(section.media)}
+      {section.orientation == "stacked" ? (
+          presentMedia(section.media)
+        ) : (
+          presentMedia(section.media)
+        )
+      }
       <div className="section-text">
         <Container className="section-text-inner">
           <Col>
@@ -138,6 +144,9 @@ const StyledSection = styled.section`
   .section-image, .section-video {
     margin-bottom: 2em;
     margin-top: 2em;
+    img {
+      width: 100%;
+    }
   }
   .section-video {
     width: 100%;
