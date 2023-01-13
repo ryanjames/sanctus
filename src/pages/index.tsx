@@ -1,4 +1,5 @@
 import React from "react"
+import { keyframes } from "@emotion/react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
@@ -50,12 +51,22 @@ const IndexPage: React.FC<Props> = ({ data }) => {
   )
 }
 
+const proceed = keyframes`
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-15px);
+  }
+`
+
 const StyledLayout = styled(Layout)`
   ${tw``}
 `
 
 const StyledContinue = styled.div`
   ${tw``}
+  animation: ${proceed} 0.5s infinite alternate;
   position: absolute;
   bottom: 24px;
   display: flex;
@@ -75,7 +86,6 @@ const StyledReelContainer = styled.div`
   height: 100vh;
   position: relative;
 `
-
 
 export const pageQuery = graphql`
   query HomeQuery {
