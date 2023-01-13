@@ -1,136 +1,12 @@
-import React, { useEffect, useState, SyntheticEvent } from "react"
+import React from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import PageLink from "./PageLink"
 
-type Props = {
-  className?: string
-  waveFinished?: boolean
-}
-
-const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
-  const [ready, setReady] = useState(false)
-  const letters = ["s1", "a", "n", "c", "t", "u", "s2"]
-
-  useEffect(() => {
-    const context = window.logoAudioContext
-
-    const loadedAudio = (id: string, obj: AudioBufferSourceNode, gain: AudioParam) => {
-      if (!window.logoAudio[id]) {
-        window.logoAudio[id] = { obj: obj, gain: gain }
-      }
-      if (Object.keys(window.logoAudio).length == letters.length) {
-        setReady(true)
-      }
-    }
-
-    for (const letter of letters) {
-      const fileSrc = `/audio/${letter}.mp3`
-      const source = context.createBufferSource()
-      const gainNode = context.createGain()
-      const request = new XMLHttpRequest()
-      source.connect(gainNode)
-      gainNode.connect(context.destination)
-      request.open("GET", fileSrc, true)
-      request.responseType = "arraybuffer"
-      request.onload = () => {
-        context.decodeAudioData(
-          request.response,
-          response => {
-            source.buffer = response
-            source.loop = true
-            gainNode.gain.value = 0
-            loadedAudio(letter, source, gainNode.gain)
-          },
-          () => {
-            console.error("The request failed.")
-          }
-        )
-      }
-      request.send()
-    }
-  }, [])
-
-  const setSvgStatus = () => {
-    const isPlaying = document.getElementsByClassName("letter-active").length > 0 ? true : false
-    const svg = document.getElementById("logo-wordmark") || null
-    if (svg) {
-      if (isPlaying) {
-        svg.setAttribute("class", "is-playing")
-      } else {
-        svg.setAttribute("class", "")
-      }
-    }
-  }
-
-  const toggleMute = (event: SyntheticEvent<SVGElement, MouseEvent>) => {
-    const parent = (event.target as HTMLElement).parentElement
-    const target = (parent == event.target ? event.target : parent) as HTMLElement
-    const letter = target.id
-    if (!window.logoAudioReady) {
-      window.logoAudioReady = true
-      window.logoAudio["s1"].obj.start(0)
-      window.logoAudio["t"].obj.start(0)
-      window.logoAudio["u"].obj.start(0)
-      window.logoAudio["a"].obj.start(0)
-      window.logoAudio["n"].obj.start(0)
-      window.logoAudio["c"].obj.start(0)
-      window.logoAudio["s2"].obj.start(0)
-    }
-    if (target.getAttribute("class") == "letter-active") {
-      target.setAttribute("class", "")
-      let vol = 1
-      const fade = setInterval(() => {
-        if (vol > 0) {
-          vol -= 0.05
-          window.logoAudio[letter].gain.value = vol
-        } else {
-          clearInterval(fade)
-        }
-      }, 50)
-    } else {
-      target.setAttribute("class", "letter-active")
-      let vol = 0
-      const fade = setInterval(() => {
-        if (vol < 1) {
-          vol += 0.05
-          window.logoAudio[letter].gain.value = vol
-        } else {
-          clearInterval(fade)
-        }
-      }, 50)
-    }
-    setSvgStatus()
-  }
-
-  if (typeof window !== "undefined") {
-    if (!window.muteAll) {
-      window.muteAll = () => {
-        Array.from(document.getElementsByClassName("letter-active")).forEach(element => {
-          element.setAttribute("class", "")
-          setSvgStatus()
-          const letter = element.id
-          const fade = setInterval(() => {
-            if (window.logoAudio[letter].gain.value > 0) {
-              window.logoAudio[letter].gain.value -= 0.05
-            } else {
-              clearInterval(fade)
-            }
-          }, 50)
-        })
-      }
-    }
-  }
-
-  const handleMuteAll = () => {
-    if (typeof window !== "undefined") {
-      window.muteAll()
-    }
-  }
-
+const LogoWordmark: React.FC = () => {
   return (
     <PageLink to="/">
-    <StyledLogo>
+    <StyledLogoWordmark>
       <svg
         id="logo-wordmark"
         width="180"
@@ -139,13 +15,6 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g id="x">
-          <rect opacity="0" x="155" y="29" width="21" height="24" fill="white" />
-          <path
-            d="M172.8 36.6L170.2 34L165.4 38.8L160.6 34L158 36.6L162.8 41.4L158 46.2L160.6 48.8L165.4 44L170.2 48.8L172.8 46.2L168 41.4L172.8 36.6Z"
-            fill="white"
-          />
-        </g>
         <g id="s2">
           <rect opacity="0" x="132.417" y="19.58" width="22.4325" height="33.898" fill="#BDAC94" />
           <path
@@ -196,23 +65,15 @@ const LogoWordmark: React.FC<Props> = ({ className, waveFinished }) => {
           />
         </g>
       </svg>
-    </StyledLogo>
+    </StyledLogoWordmark>
     </PageLink>
   )
 }
 
-const StyledLogo = styled.div`
+const StyledLogoWordmark = styled.div`
   ${tw``}
-  transition: all 0.3s ease-in-out;
-  opacity: 1;
-  g,
-  path,
-  rect {
-    transition: all 0.1s ease-in-out;
-    fill: white;
-  }
-  g#x {
-    opacity: 0;
+  svg path {
+    fill: #ffffff;
   }
 `
 export default LogoWordmark

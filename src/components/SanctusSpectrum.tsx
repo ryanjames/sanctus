@@ -27,7 +27,7 @@ const SanctusSpectrum: React.FC<Props> = ({ className = "" }) => {
   }
 
   return (
-    <StyledSpectrumContainer onMouseOver={handleHover} onMouseLeave={handleOut}>
+    <StyledSpectrumContainer className={`spectrum ${className}`} onMouseOver={handleHover} onMouseLeave={handleOut}>
       <StyledSpectrum>
         <Lottie options={defaultOptions} direction={direction} isClickToPauseDisabled={true} width="100%" height="auto" isStopped={!isRunning} />
       </StyledSpectrum>

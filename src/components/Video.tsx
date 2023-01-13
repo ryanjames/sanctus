@@ -7,7 +7,8 @@ import Img, { FluidObject } from "gatsby-image"
 import Play from "../graphics/play.svg"
 import Pause from "../graphics/pause.svg"
 import Restart from "../graphics/restart.svg"
-import SanctusSpectrum from "../components/SanctusSpectrum"
+import LogoInteractive from "./LogoInteractive"
+import SanctusSpectrum from "./SanctusSpectrum"
 
 interface Props {
   src: string
@@ -135,6 +136,9 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
               tw="absolute inset-0 flex px-6 justify-center items-center"
               className={`${autoplay ? "autoplay" : ""} demo-play`}
             >
+              <StyledLogoInteractive tw="hidden md:flex">
+                <LogoInteractive />
+              </StyledLogoInteractive>
               <SanctusSpectrum />
               <p tw="text-2xl mt-4 text-center">Sonic support for agencies and studios</p>
               <div className="button" onClick={handlePlay}>
@@ -181,6 +185,12 @@ const Video: React.FC<Props> = ({ src, poster, color, autoplay = false, classNam
   )
 }
 
+const StyledLogoInteractive = styled.div`
+  height: 50px;
+  align-items: center;
+  margin-bottom: 8px;
+`
+
 const StyledVideo = styled.div<{ fitContainer: boolean; color1: string; color2: string }>`
   ${tw``}
   ${props => props.fitContainer ? (
@@ -219,6 +229,12 @@ const StyledVideo = styled.div<{ fitContainer: boolean; color1: string; color2: 
   .image-overlay {
     z-index: 1;
     background: linear-gradient(0deg, ${props => props.color1} 0%, ${props => props.color2} 100%);
+  }
+  .spectrum {
+    z-index: 0;
+  }
+  .logo-interactive {
+    z-index: 1;
   }
   .controls {
     transition: all 0.4s ease-in-out;
@@ -287,16 +303,6 @@ const StyledVideo = styled.div<{ fitContainer: boolean; color1: string; color2: 
     opacity: 1;
     display: flex;
     flex-direction: column;
-    .logo-wordmark {
-      width: 100%;
-      height: auto;
-      @media (min-width: 310px) {
-        width: 300px;
-      }
-      path {
-      fill: #fff;
-      }
-    }
     .button {
       margin-top: 32px;
       display: flex;

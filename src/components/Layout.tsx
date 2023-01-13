@@ -2,10 +2,10 @@ import React, { useState } from "react"
 import SEO from "../components/SEO"
 import styled from "@emotion/styled"
 import colors from "../config/colors"
-import LogoWordmark from "../components/LogoWordmark"
-import LogoWordmarkMobile from "../components/LogoWordmarkMobile"
+import LogoWordmark from "./LogoWordmark"
+import LogoWaveform from "./LogoWaveform"
 import HeaderGradient from "../components/HeaderGradient"
-import Container, { Col } from "./Container"
+import { Col } from "./Container"
 import tw from "twin.macro"
 import GlobalCss from "../config/GlobalCss"
 import Close from "../graphics/close.svg"
@@ -120,10 +120,10 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
               animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
               transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
             >
-              <div tw="hidden md:block relative"><LogoWordmark/></div>
+              <div tw="hidden md:block relative"><LogoWaveform /></div>
 
               <div tw="relative md:hidden">
-                <LogoWordmarkMobile />
+                <LogoWordmark />
               </div>
             </motion.div>
             <div className="desktop-nav" tw="hidden sm:block">
@@ -144,7 +144,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
               {children}
             </motion.main>
             <Col className="footer">
-              <LogoWordmarkMobile />
+              <LogoWordmark />
               <div className="footer-nav" tw="hidden sm:block">
                 <Nav page={page} />
               </div>
