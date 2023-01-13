@@ -21,15 +21,15 @@ const Partners: React.FC<Props> = ({ className, partners, heading, light = false
         <StyledCol>
           {partners.map((partner, i) => {
             return (
-              <>
+              <span key={i}>
                 {partner.link ? (
                   <a href={partner.link} target="_blank" rel="noreferrer">
-                    <img key={i} src={partner.image} />
+                    <img src={partner.image} />
                   </a>
                 ) : (
-                  <img key={i} src={partner.image} />
+                  <img src={partner.image} />
                 )}
-              </>
+              </span>
             )
           })}
         </StyledCol>
