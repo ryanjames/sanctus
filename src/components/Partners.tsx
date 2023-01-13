@@ -56,7 +56,7 @@ const StyledCol = styled(Col)`
 const StyledPartners = styled.section<{ light: boolean }>`
   ${tw``}
   background-color: ${props => props.light ? '#2E3140' : '#252834'};
-  padding: 12% 0;
+  padding: 60px 0;
   h2 {
     text-align: center;
     width: 100%;

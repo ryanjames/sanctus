@@ -44,7 +44,7 @@ const IndexPage: React.FC<Props> = ({ data }) => {
       <Partners heading="We've joined agencies and studios like these:" partners={homeContent.agencies} />
       <Partners heading="In serving clients like these:" light={true} partners={homeContent.clients} />
 
-      <Cta heading="Let us join you" background="/static/28e5242f1ab52422c58973c247f13b67/0e329/persuit-section.jpg" button={{ link: "/contact", label: "Contact Us" }} />
+      <Cta heading="Let’s Collaborate" background="/static/28e5242f1ab52422c58973c247f13b67/0e329/persuit-section.jpg" button={{ link: "/contact", label: "Contact Us" }} />
 
     </StyledLayout>
   )

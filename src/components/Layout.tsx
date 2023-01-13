@@ -148,7 +148,7 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
               <div className="footer-nav" tw="hidden sm:block">
                 <Nav page={page} />
               </div>
-              <div className="copyright">Copyright &copy; Sono Sanctus LLC</div>
+              <div className="copyright">Copyright &copy; 2023 Sono Sanctus LLC</div>
             </Col>
             <footer />
           </StyledLayout>
