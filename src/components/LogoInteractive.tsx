@@ -53,7 +53,6 @@ const LogoInteractive: React.FC<Props> = ({ className }) => {
   const setSvgStatus = () => {
     const isPlaying = document.getElementsByClassName("letter-active").length > 0 ? true : false
     const svg = document.getElementById("logo-interactive") || null
-    console.log(svg)
     if (svg) {
       if (isPlaying) {
         svg.setAttribute("class", "is-playing")
@@ -89,7 +88,6 @@ const LogoInteractive: React.FC<Props> = ({ className }) => {
         }
       }, 50)
     } else {
-      console.log(target)
       target.setAttribute("class", "letter-active")
       let vol = 0
       const fade = setInterval(() => {

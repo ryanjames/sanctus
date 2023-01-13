@@ -42,8 +42,6 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
     }
   })
 
-  console.log(caseStudy)
-
   return (
     <ActiveTrackProvider>
       <StyledLayout title={`Case Study: ${caseStudy.title}`}>

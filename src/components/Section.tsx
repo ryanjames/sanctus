@@ -71,8 +71,6 @@ const Section: React.FC<Props> = ({ className, section }) => {
 
   }
 
-  console.log(section.orientation)
-
   return (
     <StyledSection className={className} data-orientation={section.orientation}>
       <div className="section-text-space" />
