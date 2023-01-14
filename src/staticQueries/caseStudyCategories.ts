@@ -14,29 +14,12 @@ const caseStudyCategories = (): CaseStudyCategoryShape => {
   const query = useStaticQuery(
     graphql`
       query {
-        query: allContentfulCaseStudyCategory {
+        query: allContentfulCaseStudyCategory(filter: {categoryName: {ne: "Hidden"}}) {
           edges {
             node {
               id
               categoryName
               slug
-              caseStudies {
-                id
-                title
-                slug
-                priority
-                feature
-                overlayColor
-                image {
-                  localFile {
-                    childImageSharp {
-                      fluid(maxWidth: 2000) {
-                        ...GatsbyImageSharpFluid
-                      }
-                    }
-                  }
-                }
-              }
             }
           }
         }
@@ -51,20 +34,6 @@ const caseStudyCategories = (): CaseStudyCategoryShape => {
     id: category.node.id,
     slug: category.node.slug,
     categoryName: category.node.categoryName,
-    caseStudies: category.node.caseStudies.map((study: any, index: number) => ({
-      order: index,
-      category: {
-        slug: category.node.slug,
-        categoryName: category.node.categoryName,
-      },
-      id: study.id,
-      title: study.title,
-      slug: study.slug,
-      priority: study.priority,
-      feature: study.feature,
-      color: study.overlayColor,
-      image: study.image.localFile ? study.image.localFile.childImageSharp.fluid : null,
-    })),
   }))
 
   CaseStudyCategories.push(CaseStudyCategories.shift())

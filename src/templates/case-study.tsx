@@ -4,12 +4,12 @@ import { graphql } from "gatsby"
 import Container, { Col } from "../components/Container"
 import Section from "../components/Section"
 import RelatedCaseStudies from "../components/RelatedCaseStudies"
+import DetailedCredits from "../components/DetailedCredits"
 import { SectionShape } from "../models/sections"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
 import styled from "@emotion/styled"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
-import caseStudyCategories, { CaseStudyCategoryShape } from "../staticQueries/caseStudyCategories"
 import PageLink from "../components/PageLink"
 import tw from "twin.macro"
 import { getCaseStudy } from "../models/case-study"
@@ -29,18 +29,14 @@ type Props = {
   }
 }
 
+
 const CaseStudyPage: React.FC<Props> = ({ data }) => {
   const caseStudy = getCaseStudy(data.caseStudy.edges[0])
   const caseStudyAssets = assets()
 
   const content = JSON.parse(caseStudy.body)
 
-  let caseStudyCategory = ""
-  caseStudyCategories().forEach((category: CaseStudyCategoryShape) => {
-    if (category.caseStudies.some(i => i.id.includes(caseStudy.id))) {
-      caseStudyCategory = category.categoryName
-    }
-  })
+  console.log(caseStudy)
 
   return (
     <ActiveTrackProvider>
@@ -51,7 +47,7 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
         {caseStudy.video ? (
           <div tw="lg:-mt-32 relative z-10">
             <Video
-              nativeControls={true}
+              nativeControls={false}
               autoplay={false}
               src={caseStudy.video}
               poster={caseStudy.image}
@@ -90,15 +86,15 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
               <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Role</label>
               <p>{caseStudy.role}</p>
             </div>
-            {caseStudyCategory !== "" && (
+            {caseStudy.category?.slug && caseStudy.category?.categoryName && (
               <div tw="sm:w-1/2 md:w-full pr-8">
                 <label tw="text-xs pt-9 uppercase tracking-widest mb-4">Category</label>
                 <p>
                   <PageLink
                     tw="text-gray-500 hover:text-white"
-                    to={`/work/?category=${slugify(caseStudyCategory, { lower: true, strict: true })}`}
+                    to={`/work/?category=${caseStudy.category?.slug}`}
                   >
-                    {caseStudyCategory}
+                    {caseStudy.category?.categoryName}
                   </PageLink>
                 </p>
               </div>
@@ -112,7 +108,23 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
           </Col>
         </Container>
         {caseStudy.sections.map((section: SectionShape, i: number) => <Section key={i} section={section} />)}
-        <RelatedCaseStudies heading="Related Case Studies" studies={caseStudy.relatedStudies} />
+        {caseStudy.relatedStudies && (
+          <RelatedCaseStudies heading="Related Case Studies" studies={caseStudy.relatedStudies} />
+        )}
+        {((caseStudy.detailedCredits1Title && caseStudy.detailedCredits1Body) 
+          ||
+          (caseStudy.detailedCredits2Title && caseStudy.detailedCredits2Body)) && (
+          <Container>
+            <Col tw="md:flex pt-24">
+              {caseStudy.detailedCredits1Title && caseStudy.detailedCredits1Body && (
+                <DetailedCredits heading={caseStudy.detailedCredits1Title} body={caseStudy.detailedCredits1Body} />
+              )}
+              {caseStudy.detailedCredits2Title && caseStudy.detailedCredits2Body && (
+                <DetailedCredits heading={caseStudy.detailedCredits2Title} body={caseStudy.detailedCredits2Body} />
+              )}
+            </Col>
+          </Container>
+        )}
       </StyledLayout>
     </ActiveTrackProvider>
   )
@@ -156,6 +168,10 @@ export const pageQuery = graphql`
           credit2Label
           role
           overlayColor
+          category {
+            slug
+            categoryName
+          }
           relatedStudies {
             image {
               localFile {
@@ -343,6 +359,10 @@ export const pageQuery = graphql`
             }
           }
           section10Body { raw }
+          detailedCredits1Title
+          detailedCredits2Body { raw }
+          detailedCredits2Title
+          detailedCredits1Body { raw }
         }
       }
     }

@@ -82,13 +82,14 @@ exports.createSchemaCustomization = ({ actions }) => {
       contentful_id: String!
       node_locale: String!
       title: String
-      feature: Boolean
       slug: String
       overlayColor: String
       role: String
       body: ContentfulCaseStudyBody
       image: ContentfulAsset @link(by: "id", from: "image___NODE")
       live: Boolean
+      category: [ContentfulCaseStudyCategory] @link(by: "id", from: "category___NODE")
+      relatedStudies: [ContentfulCaseStudy] @link(by: "id", from: "relatedStudies___NODE")
       section1Stacked: Boolean
       section1Stacked: Boolean
       section2Stacked: Boolean
@@ -110,7 +111,6 @@ exports.createSchemaCustomization = ({ actions }) => {
       section8Body: ContentfulCaseStudySection8Body
       section9Body: ContentfulCaseStudySection9Body
       section10Body: ContentfulCaseStudySection10Body
-      relatedStudies: [ContentfulCaseStudy] @link(by: "id", from: "relatedStudies___NODE")
       section1Media: ContentfulAsset @link(by: "id", from: "section1Media___NODE")
       section2Media: ContentfulAsset @link(by: "id", from: "section2Media___NODE")
       section3Media: ContentfulAsset @link(by: "id", from: "section3Media___NODE")
@@ -134,6 +134,10 @@ exports.createSchemaCustomization = ({ actions }) => {
       case_study: [ContentfulCaseStudy] @link(by: "id", from: "case study___NODE") @proxy(from: "case study___NODE")
       credit2: String
       credit2Label: String
+      detailedCredits1Title: String
+      detailedCredits1Body: ContentfulCaseStudyDetailedCredits1Body
+      detailedCredits2Title: String
+      detailedCredits2Body: ContentfulCaseStudyDetailedCredits2Body
     }
     type ContentfulCaseStudySys @derivedTypes {
       type: String
@@ -162,6 +166,12 @@ exports.createSchemaCustomization = ({ actions }) => {
     type ContentfulCaseStudyBody {
       raw: String
       references: [ContentfulAsset] @link(by: "id", from: "references___NODE")
+    }
+    type ContentfulCaseStudyDetailedCredits2Body {
+      raw: String
+    }
+    type ContentfulCaseStudyDetailedCredits1Body {
+      raw: String
     }
     type ContentfulCaseStudySection1Body {
       raw: String

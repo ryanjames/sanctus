@@ -6,6 +6,7 @@ import withLocation from "../utils/withLocation"
 import queryString from "query-string"
 import Layout from "../components/Layout"
 import caseStudyCategories, { CaseStudyCategoryShape } from "../staticQueries/caseStudyCategories"
+import caseStudies from "../staticQueries/caseStudies"
 import { CaseStudyShape } from "../models/case-study"
 import { Col } from "../components/Container"
 import { motion } from "framer-motion"
@@ -81,13 +82,10 @@ const CaseStudy: React.FC<CaseStudy> = ({ caseStudy }) => {
 const WorkPage: React.FC<Props> = ({ navigate, location }) => {
   const [category, setCategory] = useState("nothing")
   const [visibility, setVisibility] = useState("visible")
-  const categories = caseStudyCategories()
+  const allCaseStudies: CaseStudyShape = caseStudies()
 
-  const caseStudiesData: CaseStudyShape[] = []
-  categories.forEach((category: CaseStudyCategoryShape) => {
-    caseStudiesData.push(...category.caseStudies)
-  })
-  caseStudiesData.sort((a: CaseStudyShape, b: CaseStudyShape) => (a.order > b.order ? 1 : -1))
+  const categories = caseStudyCategories()
+  allCaseStudies.sort((a: CaseStudyShape, b: CaseStudyShape) => (a.order > b.order ? 1 : -1))
 
   const changeCategory = (e: SyntheticEvent) => {
     const target = e.target as HTMLTextAreaElement
@@ -108,7 +106,7 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
     const queryCategory = queryParam ? queryParam : "all"
     setCategory(queryCategory)
     //Preload Images
-    caseStudiesData.map((caseStudy: CaseStudyShape) => {
+    allCaseStudies.map((caseStudy: CaseStudyShape) => {
       const img = new Image()
       img.src = caseStudy.image ? caseStudy.image.src : ""
     })
@@ -133,36 +131,24 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
           ))}
         </div>
         <motion.div className="caseStudies" initial="hidden" animate={visibility} variants={itemsAnimation}>
-          {caseStudiesData
-            .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
-            })
-            .filter((caseStudy: CaseStudyShape) => {
-              return caseStudy.priority == "Feature"
-            })
-            .map((caseStudy: CaseStudyShape) => (
-              <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
-            ))}
-          {caseStudiesData
-            .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
-            })
-            .filter((caseStudy: CaseStudyShape) => {
-              return caseStudy.priority == "High Priority"
-            })
-            .map((caseStudy: CaseStudyShape) => (
-              <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
-            ))}
-          {caseStudiesData
-            .filter((caseStudy: CaseStudyShape) => {
-              return category == "all" ? caseStudy.title != "" : caseStudy.category.slug === category
-            })
-            .filter((caseStudy: CaseStudyShape) => {
-              return !caseStudy.priority || caseStudy.priority == "No Priority"
-            })
-            .map((caseStudy: CaseStudyShape) => (
-              <CaseStudy key={caseStudy.id} caseStudy={caseStudy} />
-            ))}
+          {allCaseStudies
+            .filter((caseStudy: CaseStudyShape) => (
+              caseStudy.priority == "Feature" && (category == "all" ? caseStudy.title != "" : caseStudy.category?.slug === category)
+            ))
+            .map((caseStudy: CaseStudyShape) => <CaseStudy key={caseStudy.id} caseStudy={caseStudy} /> )
+          }
+          {allCaseStudies
+            .filter((caseStudy: CaseStudyShape) => (
+              caseStudy.priority == "High Priority" && (category == "all" ? caseStudy.title != "" : caseStudy.category?.slug === category)
+            ))
+            .map((caseStudy: CaseStudyShape) => <CaseStudy key={caseStudy.id} caseStudy={caseStudy} /> )
+          }
+          {allCaseStudies
+            .filter((caseStudy: CaseStudyShape) => (
+              (!caseStudy.priority || caseStudy.priority == "No Priority") && (category == "all" ? caseStudy.title != "" : caseStudy.category?.slug === category)
+            ))
+            .map((caseStudy: CaseStudyShape) => <CaseStudy key={caseStudy.id} caseStudy={caseStudy} /> )
+          }
         </motion.div>
       </Col>
     </StyledLayout>

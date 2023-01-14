@@ -74,12 +74,9 @@ const Section: React.FC<Props> = ({ className, section }) => {
   return (
     <StyledSection className={className} data-orientation={section.orientation}>
       <div className="section-text-space" />
-      {section.orientation == "stacked" ? (
+      {section.media && (
           presentMedia(section.media)
-        ) : (
-          presentMedia(section.media)
-        )
-      }
+      )}
       <div className="section-text">
         <Container className="section-text-inner">
           <Col>
@@ -129,7 +126,7 @@ const StyledSection = styled.section`
       flex-direction: row-reverse;
     }
   }
-  .section-text-space, .section-image {
+  .section-text-space, .section-image, .section-video {
     flex: 1;
   }
   .section-button {
@@ -144,6 +141,16 @@ const StyledSection = styled.section`
     margin-top: 2em;
     img {
       width: 100%;
+      object-fit: cover;
+
+    }
+  }
+  &[!data-orientation="stacked"] {
+    .section-image, .section-video {
+      @media(min-width: 1600px) {
+        max-height: 420px;
+        overflow: hidden;
+      }
     }
   }
   .section-video {

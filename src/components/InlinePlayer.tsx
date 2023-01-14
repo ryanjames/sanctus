@@ -15,10 +15,9 @@ interface Props {
 
 const InlinePlayer: React.FC<Props> = ({ track }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
-
   const play = () => {
     document.body.className = ""
-    window.muteAll()
+    window.muteAll && window.muteAll()
     updateActiveTrack({
       id: track.id,
       version: {
@@ -47,12 +46,11 @@ const InlinePlayer: React.FC<Props> = ({ track }) => {
           </div>
           <TrackPlayer
             className="track-player"
-            pause={false}
             track={{ id: activeTrack.version.id, url: activeTrack.version.url }}
           />
         </div>
       ) : (
-        <div onClick={play} className="launcher" tw="text-xl font-bold top-0 absolute flex items-center">
+        <div onClick={play} className="launcher" tw="text-xl font-bold pl-4 top-0 bottom-0 absolute flex items-center">
           {!isMobile && <Play tw="mr-2" />}
           {track.title}
         </div>
@@ -70,7 +68,11 @@ const loading = keyframes`
 
 const StyledInlinePlayer = styled.div<{ color: string; id: string }>`
   ${tw`relative my-16 min-h-16`}
+  background: rgba(0,0,0,0.4);
   #c-${props => props.id} {
+    background: rgba(0,0,0,0.4);
+    padding-left: 24px;
+    padding-right: 24px;
     border-top: solid 1px ${props => props.color};
     border-bottom: solid 1px ${props => props.color};
     .track-player {
@@ -92,8 +94,6 @@ const StyledInlinePlayer = styled.div<{ color: string; id: string }>`
     }
   }
   .launcher {
-    bottom: 100%;
-    height: 64px;
     width: 100%;
     border-top: solid 1px ${props => props.color};
     border-bottom: solid 1px ${props => props.color};

@@ -22,14 +22,17 @@ export interface CaseStudyShape {
   creditLabel: string
   credit2: string
   credit2Label: string
-  feature: boolean
   priority: string
-  category: {
+  category?: {
     slug: string
     categoryName: string
   }
-  relatedStudies: relatedStudy[]
+  relatedStudies?: relatedStudy[]
   sections: SectionShape[]
+  detailedCredits1Title?: string
+  detailedCredits1Body?: string,
+  detailedCredits2Title?: string,
+  detailedCredits2Body?: string,
   map: Function
   sort: Function
   filter: Function
@@ -52,17 +55,20 @@ export const getCaseStudy = (query: any): CaseStudyShape => {
     creditLabel: node.creditLabel,
     credit2: node.credit2,
     credit2Label: node.credit2Label,
+    detailedCredits1Title: node.detailedCredits1Title,
+    detailedCredits2Title: node.detailedCredits2Title,
+    detailedCredits1Body: node.detailedCredits1Body?.raw,
+    detailedCredits2Body: node.detailedCredits2Body?.raw,
     category: {
-      slug: "",
-      categoryName: "",
+      slug: node.category.slug,
+      categoryName: node.category.categoryName,
     },
     relatedStudies: node.relatedStudies ? node.relatedStudies.map((study: relatedStudy ) => {
       return {
         title: study.title,
         slug: study.slug,
         image: study.image.localFile.childImageSharp.fluid,
-    }}): null,
-    feature: node.feature,
+    }}) : null,
     priority: node.priority,
     sections: getSections(node),
     map: Function,
