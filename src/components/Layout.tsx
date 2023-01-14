@@ -7,6 +7,7 @@ import LogoWaveform from "./LogoWaveform"
 import HeaderGradient from "../components/HeaderGradient"
 import { Col } from "./Container"
 import tw from "twin.macro"
+import PageLink from "./PageLink"
 import GlobalCss from "../config/GlobalCss"
 import Close from "../graphics/close.svg"
 import Menu from "../graphics/menu.svg"
@@ -25,7 +26,7 @@ export interface LayoutProps {
 }
 
 const handleMuteAll = () => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" && window.muteAll) {
     window.muteAll()
   }
 }
@@ -120,11 +121,11 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
               animate={transitionStatus === "exiting" ? exit.state : { opacity: 1 }}
               transition={transitionStatus === "exiting" ? { duration: exit.length } : { duration: 0.4 }}
             >
-              <div tw="hidden md:block relative"><LogoWaveform /></div>
+              <PageLink tw="hidden md:block relative" to="/"><LogoWaveform /></PageLink>
 
-              <div tw="relative md:hidden">
+              <PageLink to="/" tw="block relative md:hidden">
                 <LogoWordmark />
-              </div>
+              </PageLink>
             </motion.div>
             <div className="desktop-nav" tw="hidden sm:block">
               <Nav page={page} />
@@ -144,7 +145,9 @@ const Layout: React.FC<LayoutProps> = ({ title, description, page, children, met
               {children}
             </motion.main>
             <Col className="footer">
-              <LogoWordmark />
+              <PageLink to="/">
+                <LogoWordmark />
+              </PageLink>
               <div className="footer-nav" tw="hidden sm:block">
                 <Nav page={page} />
               </div>

@@ -5,7 +5,6 @@ import PageLink from "./PageLink"
 
 const LogoWordmark: React.FC = () => {
   return (
-    <PageLink to="/">
     <StyledLogoWordmark>
       <svg
         id="logo-wordmark"
@@ -66,7 +65,6 @@ const LogoWordmark: React.FC = () => {
         </g>
       </svg>
     </StyledLogoWordmark>
-    </PageLink>
   )
 }
 

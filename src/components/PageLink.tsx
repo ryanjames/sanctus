@@ -11,7 +11,7 @@ interface Props {
 }
 
 const handleMuteAll = () => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" && window.muteAll) {
     window.muteAll()
   }
 }
