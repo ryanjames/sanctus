@@ -2,6 +2,7 @@ import React, { ReactNode } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Container, { Col } from "./Container"
+import Img, { FluidObject } from "gatsby-image"
 import PageLink from "./PageLink"
 
 type Props = {
@@ -11,13 +12,15 @@ type Props = {
     link: string,
     label: string,
   },
-  background: string,
+  background: FluidObject,
 }
 
 const Cta: React.FC<Props> = ({ className, heading, button, background }) => {
   return (
     <StyledCta>
-      <div className="cta-background" style={{ backgroundImage: `url(${background})`}} />
+      <div className="cta-background">
+        <Img className="cta-background-image" fluid={background} />
+      </div>
       <Container className="cta-container">
         <Col className="cta-content">
           <h2>{heading}</h2>
@@ -44,6 +47,7 @@ const StyledCta = styled.section`
     align-items: center;
   }
   .cta-background {
+    display: block;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -51,6 +55,10 @@ const StyledCta = styled.section`
     right: 0;
     opacity: 0.3;
     z-index: 0;
+    .cta-background-image {
+      width: 100%;
+      height: 100%;
+    }
   }
   padding: 12% 0;
   h2 {
