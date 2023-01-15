@@ -59,10 +59,10 @@ export const getCaseStudy = (query: any): CaseStudyShape => {
     detailedCredits2Title: node.detailedCredits2Title,
     detailedCredits1Body: node.detailedCredits1Body?.raw,
     detailedCredits2Body: node.detailedCredits2Body?.raw,
-    category: {
-      slug: node.category.slug,
-      categoryName: node.category.categoryName,
-    },
+    category: node.category ? {
+      slug: node.category?.slug,
+      categoryName: node.category?.categoryName,
+    } : undefined,
     relatedStudies: node.relatedStudies ? node.relatedStudies.map((study: relatedStudy ) => {
       return {
         title: study.title,
