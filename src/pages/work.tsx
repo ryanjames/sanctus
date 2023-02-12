@@ -80,7 +80,7 @@ const CaseStudy: React.FC<CaseStudy> = ({ caseStudy }) => {
 }
 
 const WorkPage: React.FC<Props> = ({ navigate, location }) => {
-  const [category, setCategory] = useState("nothing")
+  const [category, setCategory] = useState("")
   const [visibility, setVisibility] = useState("visible")
   const allCaseStudies: CaseStudyShape = caseStudies()
 
@@ -112,6 +112,14 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
     })
   }, [])
 
+  const hasCategory = (caseStudyCategories: any, selectedCategory: string) => {
+    if(selectedCategory && caseStudyCategories?.length) {
+      return caseStudyCategories.filter((category: any) => { return category.slug === selectedCategory }).length > 0
+    } else {
+      return false
+    }
+  }
+
   return (
     <StyledLayout title="Work" page="features">
       <Col>
@@ -133,19 +141,19 @@ const WorkPage: React.FC<Props> = ({ navigate, location }) => {
         <motion.div className="caseStudies" initial="hidden" animate={visibility} variants={itemsAnimation}>
           {allCaseStudies
             .filter((caseStudy: CaseStudyShape) => (
-              caseStudy.priority == "Feature" && (category == "all" ? caseStudy.title != "" : caseStudy.category?.slug === category)
+              caseStudy.priority == "Feature" && (category == "all" ? caseStudy.title != "" : hasCategory(caseStudy.category, category))
             ))
             .map((caseStudy: CaseStudyShape) => <CaseStudy key={caseStudy.id} caseStudy={caseStudy} /> )
           }
           {allCaseStudies
             .filter((caseStudy: CaseStudyShape) => (
-              caseStudy.priority == "High Priority" && (category == "all" ? caseStudy.title != "" : caseStudy.category?.slug === category)
+              caseStudy.priority == "High Priority" && (category == "all" ? caseStudy.title != "" : hasCategory(caseStudy.category, category))
             ))
             .map((caseStudy: CaseStudyShape) => <CaseStudy key={caseStudy.id} caseStudy={caseStudy} /> )
           }
           {allCaseStudies
             .filter((caseStudy: CaseStudyShape) => (
-              (!caseStudy.priority || caseStudy.priority == "No Priority") && (category == "all" ? caseStudy.title != "" : caseStudy.category?.slug === category)
+              (!caseStudy.priority || caseStudy.priority == "No Priority") && (category == "all" ? caseStudy.title != "" : hasCategory(caseStudy.category, category))
             ))
             .map((caseStudy: CaseStudyShape) => <CaseStudy key={caseStudy.id} caseStudy={caseStudy} /> )
           }
