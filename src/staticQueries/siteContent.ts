@@ -4,6 +4,9 @@ type PageShape = {
   node: {
     page: string
     heading: string
+    subheading: {
+      subheading: string
+    }
     body: {
       raw: string
     }
@@ -15,6 +18,9 @@ type PagesShape = {
   [key: string]: {
     heading: string
     body: string
+    subheading: {
+      subheading: string
+    }
     description: string
   }
 }
@@ -56,6 +62,9 @@ const siteContent = (): ContentShape => {
             node {
               page
               heading
+              subheading {
+                subheading
+              }
               body {
                 raw
               }
@@ -72,6 +81,7 @@ const siteContent = (): ContentShape => {
   query.pages.edges.forEach((page: PageShape) => {
     pages[page.node.page] = {
       heading: page.node.heading,
+      subheading: page.node.subheading,
       body: page.node.body.raw,
       description: page.node.seoDescription,
     }

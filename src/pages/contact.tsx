@@ -4,6 +4,7 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
 import Container, { Col } from "../components/Container"
+import ContactForm from "../components/ContactForm"
 import siteContent from "../staticQueries/siteContent"
 import formattingOptions from "../utils/formattingOptions"
 import assets from "../staticQueries/assets"
@@ -22,10 +23,7 @@ const IndexPage: React.FC = () => {
         <Col tw="md:w-2/3 flex flex-wrap pt-6 md:pt-16">
           <div tw="w-full md:w-2/3 pt-2 md:pl-24 relative">
             <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
-            <iframe
-              src="https://hello.dubsado.com:443/public/form/view/5e261ec3aaf30e10a43fc372"
-              frameBorder="0"
-            ></iframe>
+            <ContactForm />
           </div>
         </Col>
       </Container>

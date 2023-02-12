@@ -17,7 +17,7 @@ type Props = {
 
 const Cta: React.FC<Props> = ({ className, heading, button, background }) => {
   return (
-    <StyledCta>
+    <StyledCta className={className}>
       <div className="cta-background">
         <Img className="cta-background-image" fluid={background} />
       </div>
