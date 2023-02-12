@@ -17,13 +17,24 @@ interface Props {
   poster?: FluidObject
   autoplay: boolean
   nativeControls?: boolean
+  customControls?: boolean
   fitContainer?: boolean
   demoReel?: boolean
   className?: string
   proceed?: boolean
 }
 
-const Video: React.FC<Props> = ({ src, proceed = false, poster, color, autoplay = false, className, nativeControls = false, demoReel = false,  fitContainer = false }) => {
+const Video: React.FC<Props> = ({ 
+  className, 
+  src, 
+  proceed = false, 
+  poster, color, 
+  autoplay = false, 
+  nativeControls = false, 
+  customControls = true, 
+  demoReel = false,  
+  fitContainer = false 
+}) => {
   const color1 = color ? hex2rgba(color) : "transparent"
   const color2 = color ? hex2rgba(color, 0) : "transparent"
 
@@ -167,9 +178,9 @@ const Video: React.FC<Props> = ({ src, proceed = false, poster, color, autoplay 
             />
         </div>
       </div>
-      <div tw="flex justify-center pt-6">
+      <div tw="flex justify-center pt-3">
         <div tw="h-16" className={`controls ${inProgress ? "show" : ""}`}>
-          {!nativeControls && (
+          {!nativeControls && customControls && (
             <>
               <Play className={`play-control ${play ? "" : "show"}`} onClick={handleResume} />
               <Pause className={`pause-control ${play ? "show" : ""}`} onClick={handlePause} />

@@ -5,7 +5,7 @@ import Container, { Col } from "../components/Container"
 import Section from "../components/Section"
 import RelatedCaseStudies from "../components/RelatedCaseStudies"
 import DetailedCredits from "../components/DetailedCredits"
-import { SectionShape } from "../models/sections"
+import { ISection } from "../models/section"
 import Layout from "../components/Layout"
 import Video from "../components/Video"
 import styled from "@emotion/styled"
@@ -107,7 +107,9 @@ const CaseStudyPage: React.FC<Props> = ({ data }) => {
             </div>
           </Col>
         </Container>
+        {/*
         {caseStudy.sections.map((section: SectionShape, i: number) => <Section key={i} section={section} />)}
+        */}
         {caseStudy.relatedStudies && (
           <RelatedCaseStudies heading="Related Case Studies" studies={caseStudy.relatedStudies} />
         )}

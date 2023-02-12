@@ -1,4 +1,4 @@
-import { getSections, SectionShape } from "./sections"
+import { getSections, ISection } from "./section"
 import { FluidObject } from "gatsby-image"
 
 type relatedStudy = {
@@ -28,7 +28,7 @@ export interface CaseStudyShape {
     categoryName: string
   }
   relatedStudies?: relatedStudy[]
-  sections: SectionShape[]
+  sections: ISection[]
   detailedCredits1Title?: string
   detailedCredits1Body?: string,
   detailedCredits2Title?: string,

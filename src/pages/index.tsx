@@ -3,24 +3,19 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
 import { graphql } from "gatsby"
-import { getHome } from "../models/home"
-import { SectionShape } from "../models/sections"
+import { IHome } from "../models/home"
+import { ISection, getSections } from "../models/section"
 import Section from "../components/Section"
 import Partners from "../components/Partners"
 import Cta from "../components/Cta"
 import Video from "../components/Video"
 
-type Props = {
-  data: {
-    home: {
-      edges: string[]
-    }
-  }
-}
+const IndexPage: React.FC<IHome> = ({ data }) => {
 
-const IndexPage: React.FC<Props> = ({ data }) => {
+  const content = data.home.nodes[0]
+  const sections = getSections(content.sections)
 
-  const homeContent = getHome(data.home.edges[0])
+  console.log(sections)
 
   return (
     <StyledLayout page="home">
@@ -28,18 +23,20 @@ const IndexPage: React.FC<Props> = ({ data }) => {
         <Video
           nativeControls={false}
           autoplay={false}
-          src={homeContent.demoReel}
+          src={content.demoReel}
           demoReel={true}
-          poster={homeContent.demoReelPoster}
+          poster={content.demoReelPoster.localFile.childImageSharp.fluid}
           color="#000000"
           fitContainer={true}
           proceed={true}
         />
       </StyledReelContainer>
-      {homeContent.sections.map((section: SectionShape, i: number) => <Section key={i} section={section} />)}
+      {sections.map((section: ISection, i: number) => <Section key={i} {...section} />)}
+      {/*
       <Partners heading="We've joined agencies and studios like these:" partners={homeContent.agencies} />
       <Partners heading="In serving clients like these:" light={true} partners={homeContent.clients} />
       <Cta heading="Let’s Collaborate" background={homeContent.demoReelPoster} button={{ link: "/contact", label: "Contact Us" }} />
+      */}
     </StyledLayout>
   )
 }
@@ -58,93 +55,46 @@ const StyledReelContainer = styled.div`
 export const pageQuery = graphql`
   query HomeQuery {
     home: allContentfulHomePage {
-      edges {
-        node {
-          agencies {
+      nodes {
+        agencies {
+          localFile {
+            publicURL
+          }
+          description
+        }
+        clients {
+          file {
+            url
+          }
+        }
+        demoReel
+        demoReelPoster {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 2400) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
+        }
+        sections {
+          body
+           {
+            raw
+          }
+          title
+          buttonText
+          link
+          mediaControls
+          mediaAsset {
+            localFile {
+              publicURL
+            }
             file {
-              url
-            }
-            description
-          }
-          clients {
-            file {
-              url
-            }
-          }
-          demoReel
-          demoReelPoster {
-            localFile {
-              childImageSharp {
-                fluid(maxWidth: 2400) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-          }
-          section1Media {
-            localFile {
-              childImageSharp {
-                fluid(maxWidth: 2400) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-            file { 
-              url 
               contentType
             }
           }
-          section1Body { raw }
-          section1Button
-          section1Link
-          section2Media {
-            localFile {
-              childImageSharp {
-                fluid(maxWidth: 2400) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-            file { 
-              url 
-              contentType
-            }
-          }
-          section2Body { raw }
-          section2Button
-          section2Link
-          section3Media {
-            localFile {
-              childImageSharp {
-                fluid(maxWidth: 2400) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-            file { 
-              url 
-              contentType
-            }
-          }
-          section3Body { raw }
-          section3Button
-          section3Link
-          section4Media {
-            localFile {
-              childImageSharp {
-                fluid(maxWidth: 2400) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-            file { 
-              url 
-              contentType
-            }
-          }
-          section4Body { raw }
-          section4Button
-          section4Link
+          stacked
         }
       }
     }
