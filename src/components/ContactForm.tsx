@@ -53,7 +53,7 @@ const ContactForm: React.FC<Props> = ({ className }) => {
     <StyledContactForm className={`container ${className}`}>
       {thanks ? (
         <>
-          <p>Thanks</p>
+          <p>Thanks for getting in touch. We'll get back to you shortly.</p>
           <PageLink to="/contact">Back to form</PageLink>
         </>
       ) : (
@@ -64,11 +64,10 @@ const ContactForm: React.FC<Props> = ({ className }) => {
           data-netlify="true"
           onSubmit={handleSubmit}
         >
-          <h3>Contact</h3>
-          <div tw="flex">
+          <div tw="flex pt-8">
             <div tw="w-1/2 pr-12">
               <label className="label" htmlFor={"name"}>
-                Your Name
+                Your Name*
               </label>
               <div className="control">
                 <input
@@ -83,7 +82,7 @@ const ContactForm: React.FC<Props> = ({ className }) => {
             </div>
             <div tw="w-1/2">
               <label className="label" htmlFor={"email"}>
-                Email
+                Email*
               </label>
               <div className="control">
                 <input
@@ -97,6 +96,35 @@ const ContactForm: React.FC<Props> = ({ className }) => {
               </div>
             </div>
           </div>
+            <div tw="w-full pt-4 pb-2">
+              <label className="label" htmlFor={"subject"}>
+                Company (if applicable)
+              </label>
+              <div className="control">
+                <input
+                  className="input"
+                  type={"text"}
+                  name={"company"}
+                  onChange={handleChange}
+                  id={"company"}
+                />
+              </div>
+            </div>
+            <div tw="w-full pb-2">
+              <label className="label" htmlFor={"subject"}>
+               Subject* 
+              </label>
+              <div className="control">
+                <input
+                  className="input"
+                  type={"subject"}
+                  name={"subject"}
+                  onChange={handleChange}
+                  id={"subject"}
+                  required={true}
+                />
+              </div>
+            </div>
           <div className="field" tw="pt-8">
             <label className="label" htmlFor={"message"}>
               Message
@@ -119,7 +147,7 @@ const ContactForm: React.FC<Props> = ({ className }) => {
 const StyledContactForm = styled.div`
   ${tw``}
   .label {
-    ${tw`text-xs font-bold pt-9 uppercase tracking-widest`}
+    ${tw`text-sm pt-9`}
   }
   input {
     width: 100%;
@@ -131,14 +159,14 @@ const StyledContactForm = styled.div`
   input,
   textarea {
     background: #131628;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 6px;
-    border: 1px solid transparent;
+    border: 1px solid rgba(255,255,255,0.3);
     color: #fff;
     padding: 6px;
     outline: none;
     &:focus {
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.6);
     }
   }
   button {
