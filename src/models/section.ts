@@ -1,11 +1,12 @@
 export interface ISectionMediaAsset {
   id: string
   title: string
-  file: {
-    contentType: string
-  }
   localFile: {
     publicURL: string
+  }
+  file: {
+    contentType: string
+    fileName: string
   }
 }
 
@@ -16,6 +17,7 @@ export interface ISection {
   }
   buttonText: string
   link: string
+  mediaUrl: string
   mediaAsset: ISectionMediaAsset
   mediaControls: boolean
   stacked: boolean
@@ -25,7 +27,7 @@ export interface ISection {
 export const getSections = (sections: ISection[]) => {
   let floatedOrientation: string
   const sectionNodes = sections.map((section: ISection, i: number) => {
-    if(section.stacked || section.body && !section.mediaAsset || section.mediaAsset && !section.body) {
+    if(section.stacked || section.body && (!section.mediaAsset && !section.mediaUrl) || (section.mediaAsset || section.mediaUrl) && !section.body) {
       section.orientation = 'stacked'
     } else {
       floatedOrientation = floatedOrientation == 'left' ? 'right' : 'left'

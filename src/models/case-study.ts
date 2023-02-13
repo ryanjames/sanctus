@@ -1,6 +1,18 @@
 import { ISection } from "./section"
 import { FluidObject } from "gatsby-image"
 
+export interface IRelatedStudy {
+  image: {
+    localFile: {
+      childImageSharp: {
+        fluid: FluidObject
+      }
+    }
+  }
+  slug: string
+  title: string
+}
+
 export default interface ICaseStudy {
   data: {
     caseStudy: {
@@ -30,17 +42,7 @@ export default interface ICaseStudy {
           slug: string
           categoryName: string
         }[]
-        relatedStudies: {
-          image: {
-            localFile: {
-              childImageSharp: {
-                fluid: FluidObject
-              }
-            }
-          }
-          slug: string
-          title: string
-        }[]
+        relatedStudies: IRelatedStudy[]
         sections: ISection[]
         detailedCredits1Title: string
         detailedCredits2Body: { 

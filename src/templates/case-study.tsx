@@ -22,7 +22,7 @@ const CaseStudyPage: React.FC<ICaseStudy> = ({ data }) => {
   const caseStudyAssets = assets()
 
   const content = data.caseStudy.nodes[0]
-  const sections = getSections(content.sections)
+  const sections = content.sections ? getSections(content.sections) : []
 
   return (
     <ActiveTrackProvider>
@@ -93,26 +93,24 @@ const CaseStudyPage: React.FC<ICaseStudy> = ({ data }) => {
             </div>
           </Col>
         </Container>
-        {sections.map((section: ISection, i: number) => <Section key={i} {...section} />)}
-        {/*
-        {content.relatedStudies && (
-          <RelatedCaseStudies heading="Related Case Studies" studies={content.relatedStudies} />
-        )}
+        {content.sections && sections.map((section: ISection, i: number) => <Section key={i} {...section} />)}
         {((content.detailedCredits1Title && content.detailedCredits1Body) 
           ||
           (content.detailedCredits2Title && content.detailedCredits2Body)) && (
           <Container>
             <Col tw="md:flex pt-24">
               {content.detailedCredits1Title && content.detailedCredits1Body && (
-                <DetailedCredits heading={content.detailedCredits1Title} body={content.detailedCredits1Body} />
+                <DetailedCredits heading={content.detailedCredits1Title} body={content.detailedCredits1Body.raw} />
               )}
               {content.detailedCredits2Title && content.detailedCredits2Body && (
-                <DetailedCredits heading={content.detailedCredits2Title} body={content.detailedCredits2Body} />
+                <DetailedCredits heading={content.detailedCredits2Title} body={content.detailedCredits2Body.raw} />
               )}
             </Col>
           </Container>
         )}
-        */}
+        {content.relatedStudies && (
+          <RelatedCaseStudies heading="Related Case Studies" studies={content.relatedStudies} />
+        )}
       </StyledLayout>
     </ActiveTrackProvider>
   )
@@ -194,6 +192,7 @@ export const pageQuery = graphql`
           buttonText
           link
           mediaControls
+          mediaUrl
           mediaAsset {
             id
             title
@@ -202,6 +201,7 @@ export const pageQuery = graphql`
             }
             file {
               contentType
+              fileName
             }
           }
           stacked

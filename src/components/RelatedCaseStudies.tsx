@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
+import { IRelatedStudy } from "../models/case-study"
 import Container, { Col } from "./Container"
 import PageLink from "../components/PageLink"
 import Img, { FluidObject } from "gatsby-image"
@@ -8,11 +9,7 @@ import Img, { FluidObject } from "gatsby-image"
 type Props = {
   className?: string,
   heading: string,
-  studies: {
-    title: string,
-    slug: string,
-    image: FluidObject,
-  }[],
+  studies: IRelatedStudy[]
   light?: boolean,
 }
 
@@ -26,7 +23,7 @@ const RelatedCaseStudies: React.FC<Props> = ({ className, studies, heading, ligh
         <StyledCol>
           {studies.map((study, i) => 
             <PageLink className="related-study" key={i} to={`/work/${study.slug}`}>
-              <Img fluid={study.image} />
+              <Img fluid={study.image.localFile.childImageSharp.fluid} />
               <h3>{study.title}</h3>
             </PageLink>
           )}

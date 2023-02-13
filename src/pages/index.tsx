@@ -30,11 +30,9 @@ const IndexPage: React.FC<IHome> = ({ data }) => {
         />
       </StyledReelContainer>
       {sections.map((section: ISection, i: number) => <Section key={i} {...section} />)}
-      {/*
-      <Partners heading="We've joined agencies and studios like these:" partners={homeContent.agencies} />
-      <Partners heading="In serving clients like these:" light={true} partners={homeContent.clients} />
-      <Cta heading="Let’s Collaborate" background={homeContent.demoReelPoster} button={{ link: "/contact", label: "Contact Us" }} />
-      */}
+      <Partners heading="We've joined agencies and studios like these:" partners={content.agencies} />
+      <Partners heading="In serving clients like these:" light={true} partners={content.clients} />
+      <Cta heading="Let’s Collaborate" background={content.demoReelPoster.localFile.childImageSharp.fluid} button={{ link: "/contact", label: "Contact Us" }} />
     </StyledLayout>
   )
 }
@@ -58,11 +56,10 @@ export const pageQuery = graphql`
           localFile {
             publicURL
           }
-          description
         }
         clients {
-          file {
-            url
+          localFile {
+            publicURL
           }
         }
         demoReel
@@ -90,6 +87,7 @@ export const pageQuery = graphql`
             }
             file {
               contentType
+              fileName
             }
           }
           stacked

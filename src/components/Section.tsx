@@ -1,7 +1,6 @@
-import React, { useRef } from "react"
+import React from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
-import ReactPlayer from "react-player"
 import PageLink from "./PageLink"
 import Video from "../components/Video"
 import Container, { Col } from "./Container"
@@ -13,10 +12,10 @@ import assets from "../staticQueries/assets"
 
 
 const Section: React.FC<ISection> = (section) => {
-  const player = useRef<ReactPlayer>(null)
   const body = section.body && JSON.parse(section.body.raw)
 
-  const presentMedia = (media: ISectionMediaAsset) => {
+  const presentMedia = (section: ISection) => {
+    const media = section.mediaAsset
     if(media) {
       if(media.file.contentType.includes("video")) {
         return (
@@ -57,11 +56,39 @@ const Section: React.FC<ISection> = (section) => {
         )
       } else if(media.file.contentType.includes("html")) {
         return (
-          <p>{media.localFile.publicURL}</p>
+          <div className="section-video">
+            <div className="section-video-inner">
+              <div className="section-video-sizer">
+                <Video
+                  nativeControls={false}
+                  customControls={section.mediaControls}
+                  autoplay={!section.mediaControls}
+                  src={`https://vimeo.com/${media.file.fileName}`}
+                  fitContainer={true}
+                />
+              </div>
+            </div>
+          </div>
         )
       } else {
         return <div className="section-image"><img src={media.localFile.publicURL} /></div>
       }
+    } else if(section.mediaUrl) {
+      return (
+        <div className="section-video">
+          <div className="section-video-inner">
+            <div className="section-video-sizer">
+              <Video
+                nativeControls={false}
+                customControls={true}
+                autoplay={false}
+                src={section.mediaUrl}
+                fitContainer={true}
+              />
+            </div>
+          </div>
+        </div>
+      )
     } else {
       return undefined
     }
@@ -70,14 +97,13 @@ const Section: React.FC<ISection> = (section) => {
   return (
     <StyledSection data-orientation={section.orientation}>
       <div className="section-text-space" />
-      {section.mediaAsset && (
-          presentMedia(section.mediaAsset)
+      {(section.mediaAsset || section.mediaUrl) && (
+          presentMedia(section)
       )}
       <div className="section-text">
         <Container className="section-text-inner">
           <Col>
             <div>
-              <h2>{section.mediaAsset?.file.contentType} - {section.title}</h2>
               {documentToReactComponents(body, formattingOptions(assets()))}
             </div>
             {section.buttonText && section.link && (
@@ -111,7 +137,10 @@ const StyledSection = styled.section`
     margin-top: 2em;
     display: flex;
     flex: 1;
-    div {
+    video {
+      object-fit: cover;
+    }
+    > div {
       width: 100%;
     }
     img {
@@ -125,6 +154,7 @@ const StyledSection = styled.section`
   .section-video-inner {
     width: 100%;
     max-width: 640px;
+    padding-bottom: 24px;
   }
   .section-video-sizer {
     width: 100%;
@@ -186,6 +216,10 @@ const StyledSection = styled.section`
     .section-text {
       position: relative;
       text-align: center;
+    }
+    .section-audio {
+      max-width: 864px;
+      margin: 0 auto;
     }
     .section-image {
       justify-content: center;
