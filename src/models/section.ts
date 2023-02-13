@@ -1,4 +1,6 @@
 export interface ISectionMediaAsset {
+  id: string
+  title: string
   file: {
     contentType: string
   }

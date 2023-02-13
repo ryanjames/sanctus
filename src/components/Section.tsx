@@ -5,6 +5,7 @@ import ReactPlayer from "react-player"
 import PageLink from "./PageLink"
 import Video from "../components/Video"
 import Container, { Col } from "./Container"
+import InlinePlayer from "../components/InlinePlayer"
 import { ISection, ISectionMediaAsset } from "../models/section"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import formattingOptions from "../utils/formattingOptions"
@@ -33,6 +34,31 @@ const Section: React.FC<ISection> = (section) => {
             </div>
           </div>
         )
+      } else if(media.file.contentType.includes("audio")) {
+        return (
+          <div className="section-audio">
+            <InlinePlayer
+              track={{
+                id: media.id,
+                title: media.title,
+                length: "",
+                url: media.localFile.publicURL,
+                moods: [],
+                energy: {
+                  name: "",
+                  id: "",
+                  slug: "",
+                },
+                playlists: [],
+                priority: 0,
+              }}
+            />
+          </div>
+        )
+      } else if(media.file.contentType.includes("html")) {
+        return (
+          <p>{media.localFile.publicURL}</p>
+        )
       } else {
         return <div className="section-image"><img src={media.localFile.publicURL} /></div>
       }
@@ -50,8 +76,8 @@ const Section: React.FC<ISection> = (section) => {
       <div className="section-text">
         <Container className="section-text-inner">
           <Col>
-            <h2>{section.title}</h2>
             <div>
+              <h2>{section.mediaAsset?.file.contentType} - {section.title}</h2>
               {documentToReactComponents(body, formattingOptions(assets()))}
             </div>
             {section.buttonText && section.link && (
@@ -135,7 +161,7 @@ const StyledSection = styled.section`
     h3 {
       font-weight:700;
       line-height: 1.2em;
-      font-size: 1.7em;
+      font-size: 1.9em;
     }
   }
   .section-button {

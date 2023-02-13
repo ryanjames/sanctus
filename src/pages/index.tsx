@@ -15,8 +15,6 @@ const IndexPage: React.FC<IHome> = ({ data }) => {
   const content = data.home.nodes[0]
   const sections = getSections(content.sections)
 
-  console.log(sections)
-
   return (
     <StyledLayout page="home">
       <StyledReelContainer>

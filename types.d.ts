@@ -9,6 +9,7 @@ interface Window {
     load: Function
     on: Function
     play: Function
+    stop: Function
     pause: Function
     getDuration: Function
     id?: string

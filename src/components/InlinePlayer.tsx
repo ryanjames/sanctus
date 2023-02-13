@@ -17,7 +17,9 @@ const InlinePlayer: React.FC<Props> = ({ track }) => {
   const { activeTrack, updateActiveTrack } = useContext(ActiveTrackContext) as ActiveTrackContextType
   const play = () => {
     document.body.className = ""
-    window.muteAll && window.muteAll()
+    if (typeof window !== "undefined" && window.muteAll) {
+      window.muteAll()
+    }
     updateActiveTrack({
       id: track.id,
       version: {

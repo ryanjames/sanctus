@@ -77,8 +77,7 @@ const LogoInteractive: React.FC<Props> = ({ className }) => {
     }
 
     window.addEventListener('scroll', function(e) {
-      const threshold = window.innerHeight / 2
-      if(this.scrollY > threshold && window.muteAll) {
+      if(this.scrollY > (window.innerHeight / 2) && window.muteAll) {
         window.muteAll()
       }
     })

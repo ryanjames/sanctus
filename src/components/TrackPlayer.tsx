@@ -16,7 +16,7 @@ type Props = {
 }
 
 const handleMuteAll = () => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" && window.muteAll) {
     window.muteAll()
   }
 }
@@ -61,6 +61,11 @@ const TrackPlayer: React.FC<Props> = ({ track, className }) => {
       })
       window.player.init()
       window.player.load(track.url)
+
+      window.player.on("finish", () => {
+        window.player.stop()
+        handlePause()
+      })
 
       window.player.on("ready", () => {
         setTimeout(() => {
