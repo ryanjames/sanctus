@@ -26,8 +26,12 @@ const ContactForm: React.FC<Props> = ({ className }) => {
     setFormState(f)
   }
 
-  const queryParameters = new URLSearchParams(window.location.search)
-  const thanks = queryParameters.get("thanks")
+  let thanks = undefined
+
+  if (typeof window !== "undefined") {
+    const queryParameters =   new URLSearchParams(window.location.search)
+    const thanks = queryParameters.get("thanks")
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
