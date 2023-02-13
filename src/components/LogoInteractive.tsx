@@ -7,6 +7,33 @@ type Props = {
   className?: string
 }
 
+const setSvgStatus = () => {
+  const isPlaying = document.getElementsByClassName("letter-active").length > 0 ? true : false
+  const svg = document.getElementById("logo-interactive") || null
+  if (svg) {
+    if (isPlaying) {
+      svg.setAttribute("class", "is-playing")
+    } else {
+      svg.setAttribute("class", "")
+    }
+  }
+}
+
+const muteAll = () => {
+  Array.from(document.getElementsByClassName("letter-active")).forEach(element => {
+    element.setAttribute("class", "")
+    setSvgStatus()
+    const letter = element.id
+    const fade = setInterval(() => {
+      if (window.logoAudio[letter].gain.value > 0) {
+        window.logoAudio[letter].gain.value -= 0.05
+      } else {
+        clearInterval(fade)
+      }
+    }, 50)
+  })
+}
+
 const LogoInteractive: React.FC<Props> = ({ className }) => {
   const [ready, setReady] = useState(false)
   const letters = ["s1", "a", "n", "c", "t", "u", "s2"]
@@ -48,19 +75,13 @@ const LogoInteractive: React.FC<Props> = ({ className }) => {
       }
       request.send()
     }
-  }, [])
 
-  const setSvgStatus = () => {
-    const isPlaying = document.getElementsByClassName("letter-active").length > 0 ? true : false
-    const svg = document.getElementById("logo-interactive") || null
-    if (svg) {
-      if (isPlaying) {
-        svg.setAttribute("class", "is-playing")
-      } else {
-        svg.setAttribute("class", "")
+    window.addEventListener('scroll', function(e) {
+      if(this.scrollY > (window.innerHeight / 2) && window.muteAll) {
+        window.muteAll()
       }
-    }
-  }
+    })
+  }, [])
 
   const toggleMute = (event: SyntheticEvent<SVGElement, MouseEvent>) => {
     const parent = (event.target as HTMLElement).parentElement
@@ -104,20 +125,7 @@ const LogoInteractive: React.FC<Props> = ({ className }) => {
 
   if (typeof window !== "undefined") {
     if (!window.muteAll) {
-      window.muteAll = () => {
-        Array.from(document.getElementsByClassName("letter-active")).forEach(element => {
-          element.setAttribute("class", "")
-          setSvgStatus()
-          const letter = element.id
-          const fade = setInterval(() => {
-            if (window.logoAudio[letter].gain.value > 0) {
-              window.logoAudio[letter].gain.value -= 0.05
-            } else {
-              clearInterval(fade)
-            }
-          }, 50)
-        })
-      }
+      window.muteAll = muteAll
     }
   }
 

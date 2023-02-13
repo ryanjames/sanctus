@@ -1,17 +1,16 @@
 import React, { ReactNode } from "react"
 import styled from "@emotion/styled"
-import { Partner } from "../models/home"
+import { IPartner } from "../models/home"
 import tw from "twin.macro"
 import Container, { Col } from "./Container"
 
 type Props = {
-  className?: string,
   heading: string,
-  partners: Partner[],
+  partners: IPartner[],
   light?: boolean,
 }
 
-const Partners: React.FC<Props> = ({ className, partners, heading, light = false }) => {
+const Partners: React.FC<Props> = ({ partners, heading, light = false }) => {
   return (
     <StyledPartners light={light}>
       <Container>
@@ -22,13 +21,7 @@ const Partners: React.FC<Props> = ({ className, partners, heading, light = false
           {partners.map((partner, i) => {
             return (
               <span key={i}>
-                {partner.link ? (
-                  <a href={partner.link} target="_blank" rel="noreferrer">
-                    <img src={partner.image} />
-                  </a>
-                ) : (
-                  <img src={partner.image} />
-                )}
+                <img src={partner.localFile.publicURL} />
               </span>
             )
           })}

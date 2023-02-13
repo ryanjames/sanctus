@@ -1,5 +1,6 @@
 import React from "react"
 // import PageLink from "../components/PageLink"
+import { graphql } from "gatsby"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
@@ -7,6 +8,8 @@ import Container, { Col } from "../components/Container"
 import withLocation from "../utils/withLocation"
 import siteContent from "../staticQueries/siteContent"
 import formattingOptions from "../utils/formattingOptions"
+import { getHome } from "../models/home"
+import Cta from "../components/Cta"
 import assets from "../staticQueries/assets"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
@@ -15,11 +18,18 @@ type Props = {
   location: {
     search: string
   }
+  data: {
+    home: {
+      edges: any
+    }
+  }
 }
 
-const IndexPage: React.FC<Props> = () => {
+const AboutPage: React.FC<Props> = ({ data }) => {
   const content = siteContent().pages["About"]
+  const homeContent = data.home.edges[0].node
   const body = JSON.parse(content.body)
+  const subheading = content.subheading.subheading
   return (
     <StyledLayout title="About" page="about" description={content.description}>
       <Container>
@@ -28,37 +38,55 @@ const IndexPage: React.FC<Props> = () => {
         </Col>
         <Col tw="md:w-2/3 flex flex-wrap pt-6 md:pt-16">
           <div tw="w-full md:w-2/3 pt-12 md:pt-0 md:pl-24 relative pb-32">
-            <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
+            {subheading}
           </div>
         </Col>
+        <Col>
+          <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
+        </Col>
       </Container>
+      <Cta heading="Let’s Collaborate" background={homeContent.demoReelPoster.localFile.childImageSharp.fluid} button={{ link: "/contact", label: "Contact Us" }} />
     </StyledLayout>
   )
 }
 
 const StyledLayout = styled(Layout)`
-  iframe {
-    width: 100%;
-    height: 800px;
-  }
-  img {
-    @media (min-width: 960px) {
-      position: absolute;
-      transform: translateX(-100%) translateX(-40px);
-      margin-top: 6px;
-      width: calc(100vw / 2);
-      max-width: none;
-      max-width: 700px;
-    }
-  }
   p {
     ${tw`text-base leading-relaxed`}
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      margin: 0;
+    }
   }
   hr {
     ${tw`border-0 border-t border-solid border-gray-500 mt-12 mb-12`}
   }
   h3 {
-    ${tw`text-xl py-8 font-normal`}
+    ${tw`text-xl py-4 font-normal`}
   }
 `
-export default withLocation(IndexPage)
+export default withLocation(AboutPage)
+
+export const pageQuery = graphql`
+  query AboutQuery {
+    home: allContentfulHomePage {
+      edges {
+        node {
+          demoReelPoster {
+            localFile {
+              childImageSharp {
+                fluid(maxWidth: 2400) {
+                  ...GatsbyImageSharpFluid
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
