@@ -76,11 +76,13 @@ const LogoInteractive: React.FC<Props> = ({ className }) => {
       request.send()
     }
 
-    window.addEventListener('scroll', function(e) {
-      if(this.scrollY > (window.innerHeight / 2) && window.muteAll) {
-        window.muteAll()
-      }
-    })
+    if (typeof window !== "undefined") {
+      window.addEventListener('scroll', function(e) {
+        if(this.scrollY > (window.innerHeight / 2) && window.muteAll) {
+          window.muteAll()
+        }
+      })
+    }
   }, [])
 
   const toggleMute = (event: SyntheticEvent<SVGElement, MouseEvent>) => {

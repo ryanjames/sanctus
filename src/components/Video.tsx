@@ -9,7 +9,6 @@ import Play from "../graphics/play.svg"
 import Pause from "../graphics/pause.svg"
 import Restart from "../graphics/restart.svg"
 import LogoInteractive from "./LogoInteractive"
-import SanctusSpectrum from "./SanctusSpectrum"
 
 interface Props {
   src: string
@@ -147,7 +146,6 @@ const Video: React.FC<Props> = ({
               <StyledLogoInteractive tw="hidden md:flex">
                 <LogoInteractive />
               </StyledLogoInteractive>
-              <SanctusSpectrum />
               <p tw="text-2xl mt-4 text-center">Sonic support for agencies and studios</p>
               <div className="button" onClick={handlePlay}>
                 Demo Reel
@@ -178,7 +176,7 @@ const Video: React.FC<Props> = ({
             />
         </div>
       </div>
-      <div tw="flex justify-center pt-3">
+      <div className="controls-container" tw="flex justify-center pt-3">
         <div tw="h-16" className={`controls ${inProgress ? "show" : ""}`}>
           {!nativeControls && customControls && (
             <>
