@@ -46,6 +46,14 @@ const StyledReelContainer = styled.div`
   margin-top: -8rem;
   height: 100vh;
   position: relative;
+  .video-container {
+    z-index: 1;
+    position: relative;
+  }
+  .controls-container {
+    margin-top: -48px;
+    z-index: 2;
+  }
 `
 
 export const pageQuery = graphql`

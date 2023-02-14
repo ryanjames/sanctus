@@ -176,7 +176,7 @@ const Video: React.FC<Props> = ({
             />
         </div>
       </div>
-      <div tw="flex justify-center pt-3">
+      <div className="controls-container" tw="flex justify-center pt-3">
         <div tw="h-16" className={`controls ${inProgress ? "show" : ""}`}>
           {!nativeControls && customControls && (
             <>

@@ -2,7 +2,6 @@ import React, { useState, ChangeEvent } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { navigate } from "gatsby-link"
-import PageLink from "./PageLink"
 //import Container, { Col } from "./Container"
 
 type Props = {
@@ -26,13 +25,6 @@ const ContactForm: React.FC<Props> = ({ className }) => {
     setFormState(f)
   }
 
-  let thanks = undefined
-
-  if (typeof window !== "undefined") {
-    const queryParameters =   new URLSearchParams(window.location.search)
-    const thanks = queryParameters.get("thanks")
-  }
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -51,95 +43,88 @@ const ContactForm: React.FC<Props> = ({ className }) => {
 
   return (
     <StyledContactForm className={`container ${className}`}>
-      {thanks ? (
-        <>
-          <p>Thanks for getting in touch. We'll get back to you shortly.</p>
-          <PageLink to="/contact">Back to form</PageLink>
-        </>
-      ) : (
-        <form
-          name="contact-form"
-          method="post"
-          action="/contact/?thanks=true"
-          data-netlify="true"
-          onSubmit={handleSubmit}
-        >
-          <div tw="flex pt-8">
-            <div tw="w-1/2 pr-12">
-              <label className="label" htmlFor={"name"}>
-                Your Name*
-              </label>
-              <div className="control">
-                <input
-                  className="input"
-                  type={"text"}
-                  name={"name"}
-                  onChange={handleChange}
-                  id={"name"}
-                  required={true}
-                />
-              </div>
-            </div>
-            <div tw="w-1/2">
-              <label className="label" htmlFor={"email"}>
-                Email*
-              </label>
-              <div className="control">
-                <input
-                  className="input"
-                  type={"email"}
-                  name={"email"}
-                  onChange={handleChange}
-                  id={"email"}
-                  required={true}
-                />
-              </div>
-            </div>
-          </div>
-            <div tw="w-full pt-4 pb-2">
-              <label className="label" htmlFor={"subject"}>
-                Company (if applicable)
-              </label>
-              <div className="control">
-                <input
-                  className="input"
-                  type={"text"}
-                  name={"company"}
-                  onChange={handleChange}
-                  id={"company"}
-                />
-              </div>
-            </div>
-            <div tw="w-full pb-2">
-              <label className="label" htmlFor={"subject"}>
-               Subject* 
-              </label>
-              <div className="control">
-                <input
-                  className="input"
-                  type={"subject"}
-                  name={"subject"}
-                  onChange={handleChange}
-                  id={"subject"}
-                  required={true}
-                />
-              </div>
-            </div>
-          <div className="field" tw="pt-8">
-            <label className="label" htmlFor={"message"}>
-              Message
+      <form
+        name="contact-form"
+        method="post"
+        action="/contact/?thanks=true"
+        data-netlify="true"
+        onSubmit={handleSubmit}
+      >
+        <div tw="flex pt-8">
+          <div tw="w-1/2 pr-12">
+            <label className="label" htmlFor={"name"}>
+              Your Name*
             </label>
             <div className="control">
-              <textarea className="textarea" name={"message"} onChange={handleChange} id={"message"} required={true} />
+              <input
+                className="input"
+                type={"text"}
+                name={"name"}
+                onChange={handleChange}
+                id={"name"}
+                required={true}
+              />
             </div>
           </div>
-          <div tw="pt-5" className="field">
-            <button tw="cursor-pointer" type="submit">
-              Send
-            </button>
+          <div tw="w-1/2">
+            <label className="label" htmlFor={"email"}>
+              Email*
+            </label>
+            <div className="control">
+              <input
+                className="input"
+                type={"email"}
+                name={"email"}
+                onChange={handleChange}
+                id={"email"}
+                required={true}
+              />
+            </div>
           </div>
-        </form>
-      )}
+        </div>
+          <div tw="w-full pt-4 pb-2">
+            <label className="label" htmlFor={"subject"}>
+              Company (if applicable)
+            </label>
+            <div className="control">
+              <input
+                className="input"
+                type={"text"}
+                name={"company"}
+                onChange={handleChange}
+                id={"company"}
+              />
+            </div>
+          </div>
+          <div tw="w-full pb-2">
+            <label className="label" htmlFor={"subject"}>
+             Subject* 
+            </label>
+            <div className="control">
+              <input
+                className="input"
+                type={"subject"}
+                name={"subject"}
+                onChange={handleChange}
+                id={"subject"}
+                required={true}
+              />
+            </div>
+          </div>
+        <div className="field" tw="pt-8">
+          <label className="label" htmlFor={"message"}>
+            Message
+          </label>
+          <div className="control">
+            <textarea className="textarea" name={"message"} onChange={handleChange} id={"message"} required={true} />
+          </div>
+        </div>
+        <div tw="pt-5" className="field">
+          <button tw="cursor-pointer" type="submit">
+            Send
+          </button>
+        </div>
+      </form>
     </StyledContactForm>
   )
 }
