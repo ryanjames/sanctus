@@ -8,7 +8,6 @@ import Container, { Col } from "../components/Container"
 import withLocation from "../utils/withLocation"
 import siteContent from "../staticQueries/siteContent"
 import formattingOptions from "../utils/formattingOptions"
-import { getHome } from "../models/home"
 import Cta from "../components/Cta"
 import assets from "../staticQueries/assets"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
@@ -28,10 +27,10 @@ type Props = {
 const AboutPage: React.FC<Props> = ({ data }) => {
   const content = siteContent().pages["About"]
   const homeContent = data.home.edges[0].node
-  const body = JSON.parse(content.body)
+  const body = content.body?.raw ? JSON.parse(content.body.raw) : undefined
   const subheading = content.subheading.subheading
   return (
-    <StyledLayout title="About" page="about" description={content.description}>
+    <StyledLayout title="About" page="about" description={content.seoDescription}>
       <Container>
         <Col tw="md:w-1/3 pt-16">
           <h2 tw="text-5xl text-hippie-blue leading-tight">{content.heading}</h2>
@@ -41,9 +40,11 @@ const AboutPage: React.FC<Props> = ({ data }) => {
             {subheading}
           </div>
         </Col>
-        <Col>
-          <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
-        </Col>
+        {body && (
+          <Col>
+            <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
+          </Col>
+        )}
       </Container>
       <Cta heading="Let’s Collaborate" background={homeContent.demoReelPoster.localFile.childImageSharp.fluid} button={{ link: "/contact", label: "Contact Us" }} />
     </StyledLayout>

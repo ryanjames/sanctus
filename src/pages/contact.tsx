@@ -14,13 +14,13 @@ import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 
 const IndexPage: React.FC = () => {
   const content = siteContent().pages["Contact"]
-  const body = JSON.parse(content.body)
+  const body = content.body?.raw ? JSON.parse(content.body.raw) : undefined
 
   const queryParameters =  typeof window !== "undefined" ?  new URLSearchParams(window.location.search) : undefined
   const thanks = queryParameters && queryParameters.get("thanks")
 
   return (
-    <StyledLayout title="Contact" page="contact" description={content.description}>
+    <StyledLayout title="Contact" page="contact" description={content.seoDescription}>
       <Container>
         {thanks ? (
           <Col tw="flex justify-center items-center flex-col w-full" className="thanks">
@@ -39,7 +39,10 @@ const IndexPage: React.FC = () => {
             </Col>
             <Col tw="md:w-2/3 flex flex-wrap pt-6 md:pt-16">
               <div tw="w-full md:w-2/3 pt-2 md:pl-24 relative">
-                <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
+                <h2 tw="text-2xl">{content.subheading.subheading}</h2>
+                {body && (
+                  <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
+                )}
                 <ContactForm />
               </div>
             </Col>

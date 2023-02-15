@@ -1,28 +1,19 @@
 import { graphql, useStaticQuery } from "gatsby"
 
 type PageShape = {
-  node: {
-    page: string
-    heading: string
-    subheading: {
-      subheading: string
-    }
-    body: {
-      raw: string
-    }
-    seoDescription: string
+  page: string
+  heading: string
+  subheading: {
+    subheading: string
   }
+  body?: {
+    raw: string
+  }
+  seoDescription: string
 }
 
 type PagesShape = {
-  [key: string]: {
-    heading: string
-    body: string
-    subheading: {
-      subheading: string
-    }
-    description: string
-  }
+  [key: string]: PageShape
 }
 
 interface ContentShape {
@@ -42,48 +33,45 @@ const siteContent = (): ContentShape => {
     graphql`
       query ContentQuery {
         metaData: allContentfulSiteMetadata {
-          edges {
-            node {
-              siteSeoTitle
-              siteSeoDescription
-              downloadSampleIntro
-              licensingIntro
-              openGraphImage {
-                localFile {
-                  publicURL
-                }
+          nodes {
+            siteSeoTitle
+            siteSeoDescription
+            downloadSampleIntro
+            licensingIntro
+            openGraphImage {
+              localFile {
+                publicURL
               }
-              musicLibrarySeoDescription
             }
+            musicLibrarySeoDescription
           }
         }
         pages: allContentfulPageContent {
-          edges {
-            node {
-              page
-              heading
-              subheading {
-                subheading
-              }
-              body {
-                raw
-              }
-              seoDescription
+          nodes {
+            page
+            heading
+            subheading {
+              subheading
             }
+            body {
+              raw
+            }
+            seoDescription
           }
         }
       }
     `
   )
 
-  const metaData = query.metaData.edges[0].node
+  const metaData = query.metaData.nodes[0]
   const pages: PagesShape = {}
-  query.pages.edges.forEach((page: PageShape) => {
-    pages[page.node.page] = {
-      heading: page.node.heading,
-      subheading: page.node.subheading,
-      body: page.node.body.raw,
-      description: page.node.seoDescription,
+  query.pages.nodes.forEach((page: PageShape) => {
+    pages[page.page] = {
+      page: page.page,
+      heading: page.heading,
+      subheading: page.subheading,
+      body: page.body ? page.body : undefined,
+      seoDescription: page.seoDescription,
     }
   })
   return {
