@@ -338,7 +338,6 @@ const StyledVideo = styled.div<{ fitContainer: boolean; color1: string; color2: 
     }
   }
   .demo-play {
-    transition-delay: 0.2s;
     z-index: 3;
     opacity: 1;
     display: flex;
