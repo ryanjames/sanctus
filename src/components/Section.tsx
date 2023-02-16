@@ -144,8 +144,9 @@ const StyledSection = styled.section`
       width: 100%;
     }
     img {
+      max-height: 500px;
       width: 100%;
-      object-fit: cover;
+      object-fit: contain;
       margin-bottom: 0;
       display: block;
       max-width: 640px;
