@@ -4,7 +4,7 @@ type PageShape = {
   page: string
   heading: string
   subheading: {
-    subheading: string
+    raw: string
   }
   body?: {
     raw: string
@@ -51,7 +51,7 @@ const siteContent = (): ContentShape => {
             page
             heading
             subheading {
-              subheading
+              raw 
             }
             body {
               raw
