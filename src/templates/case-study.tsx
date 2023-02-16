@@ -24,6 +24,7 @@ const CaseStudyPage: React.FC<ICaseStudy> = ({ data }) => {
   const content = data.caseStudy.nodes[0]
   const sections = content.sections ? getSections(content.sections) : []
 
+  console.log(content.image)
   return (
     <ActiveTrackProvider>
       <StyledLayout title={`Case Study: ${content.title}`}>
@@ -42,9 +43,9 @@ const CaseStudyPage: React.FC<ICaseStudy> = ({ data }) => {
           </div>
         ) : (
           <div
-            tw="lg:-mt-32 mb-24 h-40vh relative z-10 bg-cover bg-center"
+            tw="lg:-mt-32 mb-24 h-70vh relative z-10 bg-cover bg-center"
             style={{
-              backgroundImage: `url(${content.image.localFile.childImageSharp.fluid})`,
+              backgroundImage: `url(${content.image.localFile.childImageSharp.fluid.src})`,
             }}
           />
         )}
