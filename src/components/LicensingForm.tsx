@@ -97,6 +97,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
     },
     input: (styles) => ({ 
       ...styles,
+      color: '#fff',
     }),
     multiValue: (styles) => {
       return {
@@ -174,16 +175,28 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
           <label className="label" htmlFor={"track-interest"}>
             Select any specific tracks you’re interested in licensing.
           </label>
-          <Select
-            isMulti
-            name="tracks-interest"
-            defaultValue={[selectedTrack]}
-            placeholder="Search..."
-            options={tracks}
-            styles={selectFieldStyles}
-            className="select-field"
-            classNamePrefix="select-field"
-          />
+          {selectedTrack ? (
+            <Select
+              isMulti
+              name="tracks-interest"
+              defaultValue={[selectedTrack]}
+              placeholder="Search..."
+              options={tracks}
+              styles={selectFieldStyles}
+              className="select-field"
+              classNamePrefix="select-field"
+            />
+          ) : (
+            <Select
+              isMulti
+              name="tracks-interest"
+              placeholder="Search..."
+              options={tracks}
+              styles={selectFieldStyles}
+              className="select-field"
+              classNamePrefix="select-field"
+            />
+          )}
         </div>
         <div tw="w-full pb-2">
           <label className="label" htmlFor={"end-client"}>
