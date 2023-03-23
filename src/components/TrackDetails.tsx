@@ -118,8 +118,7 @@ const TrackDetails: React.FC<Props> = ({ track, index }) => {
             <h4 tw="text-base pb-4 lg:mb-0 lg:text-xl mb-0 font-bold">{track.title}</h4>
             <div className="track-actions" tw="flex">
               <a
-                href="https://hello.dubsado.com:443/public/form/view/5e26224cab9a3f109883843c"
-                target="_blank"
+                href={`/licensing?selectedtrack=${track.id}`}
                 rel="noreferrer"
               >
                 License

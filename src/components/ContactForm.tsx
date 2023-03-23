@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { navigate } from "gatsby-link"
-//import Container, { Col } from "./Container"
+// import Container, { Col } from "./Container"
 
 type Props = {
   className?: string
@@ -83,7 +83,7 @@ const ContactForm: React.FC<Props> = ({ className }) => {
           </div>
         </div>
           <div tw="w-full pt-4 pb-2">
-            <label className="label" htmlFor={"subject"}>
+            <label className="label" htmlFor={"company"}>
               Company (if applicable)
             </label>
             <div className="control">

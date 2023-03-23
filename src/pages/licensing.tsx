@@ -4,7 +4,7 @@ import styled from "@emotion/styled"
 import tw from "twin.macro"
 import Layout from "../components/Layout"
 import Container, { Col } from "../components/Container"
-import ContactForm from "../components/ContactForm"
+import LicensingForm from "../components/LicensingForm"
 import siteContent from "../staticQueries/siteContent"
 import formattingOptions from "../utils/formattingOptions"
 import assets from "../staticQueries/assets"
@@ -13,7 +13,7 @@ import PageLink from "../components/PageLink"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 
 const IndexPage: React.FC = () => {
-  const content = siteContent().pages["Contact"]
+  const content = siteContent().pages["Licensing"]
   const body = content.body?.raw ? JSON.parse(content.body.raw) : undefined
   const subheading = content.subheading?.raw ? JSON.parse(content.subheading.raw) : undefined
 
@@ -21,7 +21,7 @@ const IndexPage: React.FC = () => {
   const thanks = queryParameters && queryParameters.get("thanks")
 
   return (
-    <StyledLayout title="Contact" page="contact" description={content.seoDescription}>
+    <StyledLayout title="Licensing" page="licensing" description={content.seoDescription}>
       <Container>
         {thanks ? (
           <Col tw="flex justify-center items-center flex-col w-full" className="thanks">
@@ -46,7 +46,7 @@ const IndexPage: React.FC = () => {
                 {body && (
                   <ActiveTrackProvider>{documentToReactComponents(body, formattingOptions(assets()))}</ActiveTrackProvider>
                 )}
-                <ContactForm />
+                <LicensingForm />
               </div>
             </Col>
           </>

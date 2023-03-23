@@ -42,13 +42,19 @@ const LibraryPageLayout: React.FC<Props> = ({ title, tracksData, description, ch
         </Helmet>
         <TrackShare />
         <Container tw="pt-6 sm:pt-12">
-          <Col tw="flex-1 md:overflow-y-visible overflow-x-hidden relative" className="inner-container">
+          <Col>
             <div tw="sm:hidden flex justify-between pb-6">
               <h3 tw="mb-0">
                 <PageLink to="/library">Music Library</PageLink>
               </h3>
               <Filter onClick={openMenu} tw="cursor-pointer mt-1" />
             </div>
+            <StyledLicensingBar>
+              <p>We maintain an ever expanding library of music that’s ready for use or customization. You can contact us for more information, a quote, or to request a curated playlist for your project.</p>
+              <a href="/licensing">Licensing Contact</a>
+            </StyledLicensingBar>
+          </Col>
+          <Col tw="flex-1 md:overflow-y-visible overflow-x-hidden relative" className="inner-container">
             <ActiveTrackProvider>
               <div className="table-size">{children}</div>
             </ActiveTrackProvider>
@@ -92,6 +98,27 @@ mQw.forEach((value: string, key: string) => {
   i += 1
 })
 
+const StyledLicensingBar = styled.div`
+  margin-bottom: 32px;
+  gap: 24px;
+  align-items: center;
+  p { flex: 1; }
+  a {
+    height: 40px;
+    transition: all 0.2s ease-in-out;
+    ${tw`rounded bg-gray-700 py-2 px-3 mr-3 border-0 text-white`}
+    &:hover {
+      cursor: pointer;
+      ${tw`bg-gray-500`}
+    }
+  }
+  @media (min-width: 480px) {
+    display: flex;
+    p { margin-bottom: 0; }
+    a { display: flex; }
+  }
+`
+
 const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
   ${tw``}
   .inner-container {
@@ -99,6 +126,7 @@ const StyledLayout = styled(Layout)<{ maxWidths: Map<string, string> }>`
   }
   .library-categories {
     ${tw`pt-24 sm:pt-12`}
+    padding-left: 0 !important;
     overflow: hidden;
     .close {
       position: fixed;
