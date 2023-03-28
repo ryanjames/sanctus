@@ -1,13 +1,12 @@
-import React, { useState, ChangeEvent } from "react"
+import React, { useState, useEffect, ChangeEvent } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { navigate } from "gatsby-link"
 import withLocation from "../utils/withLocation"
 import trackSearchContent from "../staticQueries/trackSearch"
-import Select, { StylesConfig } from 'react-select'
+import Select from 'react-select'
+import selectFieldStyles from "../config/selectFieldStyles"
 import queryString from "query-string"
-
-// import Container, { Col } from "./Container"
 
 type Props = {
   className?: string,
@@ -24,16 +23,23 @@ const encode = (data: { [key: string]: string }) => {
 
 const LicensingForm: React.FC<Props> = ({ className, location }) => {
   const [formState, setFormState] = useState<{ [key: string]: string }>()
-
-  const urlQuery = queryString.parse(location.search)
-  const tracks = trackSearchContent()
-  const selectedTrack = tracks.find(track => track.id === urlQuery.selectedtrack)
+  const [selectedTrack, setSelectedTrack] = useState<any>()
 
   const videoCounts = [
     { value: "1-5", label: "1-5" },
     { value: "6-10", label: "6-10" },
     { value: "More than 10", label: "More than 10" },
   ]
+
+  const urlQuery = queryString.parse(location.search)
+  const tracks = trackSearchContent()
+
+  useEffect(() => {
+    if (urlQuery && tracks) {
+      setSelectedTrack(tracks.find(track => track.id === urlQuery.selectedtrack))
+    }
+  }, [])
+
 
   const handleChange = (e: ChangeEvent<any>) => {
     const f = { ...formState }
@@ -59,71 +65,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
       .catch(error => alert(error))
   }
 
-  
-  const selectFieldStyles: StylesConfig = {
-    control: (styles, { isFocused, menuIsOpen }) => {
-      return {
-        ...styles,
-        backgroundColor: '#131628',
-        boxShadow: 'none',
-        border: isFocused || menuIsOpen
-        ? '1px solid rgba(255,255,255,0.6)'
-        : '1px solid rgba(255,255,255,0.3)',
-        ':hover': {
-          border: '1px solid rgba(255,255,255,0.6)',
-          boxShadow: 'none'
-        },
-        ':active': {
-          border: '1px solid rgba(255,255,255,0.6)',
-          boxShadow: 'none'
-        },
-      }
-    },
-    option: (styles, { isFocused, isSelected }) => {
-      return {
-        ...styles,
-        backgroundColor: isFocused
-        ? '#120D1D'
-        : '#131628',
-        padding: '4px',
-        color: '#fff',
-        fontWeight: isSelected
-        ? 'bold'
-        : 'normal',
-        ':hover': {
-          cursor: 'pointer',
-        },
-      };
-    },
-    input: (styles) => ({ 
-      ...styles,
-      color: '#fff',
-    }),
-    multiValue: (styles) => {
-      return {
-        ...styles,
-        backgroundColor: '#131628',
-      };
-    },
-    singleValue: (styles) => ({
-      ...styles,
-      color: '#fff',
-    }),
-    multiValueLabel: (styles) => ({
-      ...styles,
-      color: '#fff',
-      backgroundColor: '#17203C',
-    }),
-    multiValueRemove: (styles) => ({
-      ...styles,
-      color: 'rgba(255,255,255,0.5)',
-      backgroundColor: '#17203C',
-      ':hover': {
-        color: 'white',
-        cursor: 'pointer',
-      },
-    }),
-  };
+
 
   return (
     <StyledLicensingForm className={`container ${className}`}>
@@ -187,6 +129,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
               classNamePrefix="select-field"
             />
           ) : (
+            <>
             <Select
               isMulti
               name="tracks-interest"
@@ -196,6 +139,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
               className="select-field"
               classNamePrefix="select-field"
             />
+            </>
           )}
         </div>
         <div tw="w-full pb-2">
