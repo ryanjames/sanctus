@@ -38,7 +38,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
     { value: "3", label: "3" },
     { value: "4", label: "4" },
     { value: "5", label: "5" },
-    { value: ">5", label: "More than 5" },
+    { value: "More than 5", label: "More than 5" },
   ]
 
   const urlQuery = queryString.parse(location.search)
@@ -279,6 +279,9 @@ const StyledLicensingForm = styled.div`
   ${tw``}
   .label {
     ${tw`text-sm pt-9 pb-2 leading-tight block`}
+  }
+  .hidden {
+    display: none;
   }
   input {
     width: 100%;
