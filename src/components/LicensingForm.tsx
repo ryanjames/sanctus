@@ -195,7 +195,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
           </div>
         </div>
         <div tw="w-full pb-2">
-          <label className="label">
+          <label className="label" htmlFor="video-count">
            How many videos will this be used in? (Not including cutdowns)*
           </label>
           <div className="control">
