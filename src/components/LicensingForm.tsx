@@ -46,10 +46,16 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
 
   useEffect(() => {
     if (urlQuery && tracks) {
-      setSelectedTrack(tracks.find(track => track.id === urlQuery.selectedtrack))
+      const f = { ...formState }
+      const track = tracks.find(track => track.id === urlQuery.selectedtrack)
+      setSelectedTrack(track)
+      if(trackInterestRef.current && track) {
+        trackInterestRef.current.value = track.value
+        f[trackInterestRef.current.name] = track.value
+        setFormState(f)
+      }
     }
   }, [])
-
 
   const handleChange = (e: ChangeEvent<any>) => {
     const f = { ...formState }
@@ -96,8 +102,6 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
       .then(() => navigate((form as any).getAttribute("action")))
       .catch(error => alert(error))
   }
-
-
 
   return (
     <StyledLicensingForm className={`container ${className}`}>
@@ -164,16 +168,18 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
             Select any specific tracks you’re interested in licensing.
           </label>
           {selectedTrack ? (
-            <Select
-              isMulti
-              defaultValue={[selectedTrack]}
-              placeholder="Search..."
-              options={tracks}
-              onChange={(newValue) => handleSelectChange(newValue, trackInterestRef)}
-              styles={selectFieldStyles}
-              className="select-field"
-              classNamePrefix="select-field"
-            />
+            <>
+              <Select
+                isMulti
+                defaultValue={[selectedTrack]}
+                placeholder="Search..."
+                options={tracks}
+                onChange={(newValue) => handleSelectChange(newValue, trackInterestRef)}
+                styles={selectFieldStyles}
+                className="select-field"
+                classNamePrefix="select-field"
+              />
+            </>
           ) : (
             <Select
               isMulti
@@ -281,7 +287,7 @@ const StyledLicensingForm = styled.div`
     ${tw`text-sm pt-9 pb-2 leading-tight block`}
   }
   .hidden {
-    display: none;
+    // display: none;
   }
   input {
     width: 100%;
