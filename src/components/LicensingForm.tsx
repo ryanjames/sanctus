@@ -67,14 +67,16 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
     setFormState(f)
   }
 
-  const handleSelectChange = (values: any, name: string) => {
+  const handleSelectChange = (values: any, ref: any) => {
     let value
+    const name: string = ref.current.name
     const f = { ...formState }
     if(Array.isArray(values)) {
       value = values.map(x => x.value).join(", ")
     } else {
       value = values.value
     }
+    ref.current.value = value
     f[name] = value
     setFormState(f)
   }
@@ -154,7 +156,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
         </div>
         <div tw="w-full">
           <label className="label checkbox-control" htmlFor={"curate-playlist"}>
-            <input type="checkbox" value="Yes" onChange={handleCheckboxChange} name="curate-playlist" id="curate-playlist" /> Please curate a playlist for my project.
+            <input type="checkbox" onChange={handleCheckboxChange} name="curate-playlist" id="curate-playlist" /> Please curate a playlist for my project.
           </label>
         </div>
         <div tw="w-full pb-2">
@@ -167,24 +169,29 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
               defaultValue={[selectedTrack]}
               placeholder="Search..."
               options={tracks}
-              onChange={(newValue) => handleSelectChange(newValue, "track-interest")}
+              onChange={(newValue) => handleSelectChange(newValue, trackInterestRef)}
               styles={selectFieldStyles}
               className="select-field"
               classNamePrefix="select-field"
             />
           ) : (
-            <>
             <Select
               isMulti
               placeholder="Search..."
               options={tracks}
-              onChange={(newValue) => handleSelectChange(newValue, "track-interest")}
+              onChange={(newValue) => handleSelectChange(newValue, trackInterestRef)}
               styles={selectFieldStyles}
               className="select-field"
               classNamePrefix="select-field"
             />
-            </>
           )}
+          <input
+            className="hidden"
+            type={"text"}
+            ref={trackInterestRef}
+            name={"track-interest"}
+            id={"track-interest"}
+          />
         </div>
         <div tw="w-full pb-2">
           <label className="label" htmlFor={"end-client"}>
@@ -209,11 +216,18 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
             <Select
               placeholder="Select..."
               options={videoCounts}
-              onChange={(newValue) => handleSelectChange(newValue, "video-count")}
+              onChange={(newValue) => handleSelectChange(newValue, videoCountRef)}
               styles={selectFieldStyles}
               className="select-field"
               classNamePrefix="select-field"
               required={true}
+            />
+            <input
+              className="hidden"
+              ref={videoCountRef}
+              type={"text"}
+              name={"video-count"}
+              id={"video-count"}
             />
           </div>
         </div>
@@ -242,12 +256,12 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
         </div>
         <div tw="w-full">
           <label className="label checkbox-control" tw="mb-5" htmlFor={"customized-track"}>
-            <input type="checkbox" onChange={handleCheckboxChange} value="Yes" name="customized-track" id="customized-track" /> I am interested in having Sanctus customize a library track for my project.
+            <input type="checkbox" onChange={handleCheckboxChange} name="customized-track" id="customized-track" /> I am interested in having Sanctus customize a library track for my project.
           </label>
         </div>
         <div tw="w-full pb-2">
           <label className="label checkbox-control" tw="mb-5" htmlFor={"sound-and-mixing"}>
-            <input type="checkbox" onChange={handleCheckboxChange} value="Yes" name="sound-and-mixing" id="sound-and-mixing" /> I am interested in Sanctus providing sound design and mixing for my project.
+            <input type="checkbox" onChange={handleCheckboxChange} name="sound-and-mixing" id="sound-and-mixing" /> I am interested in Sanctus providing sound design and mixing for my project.
           </label>
         </div>
         
