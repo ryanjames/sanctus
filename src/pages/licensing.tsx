@@ -27,7 +27,7 @@ const IndexPage: React.FC = () => {
           <Col tw="flex justify-center items-center flex-col w-full" className="thanks">
             <h2 tw="text-5xl text-hippie-blue leading-tight">{content.heading}</h2>
             <h3>Thanks for getting in touch. We'll get back to you shortly.</h3>
-            <PageLink to="/contact">
+            <PageLink to="/licensing">
               <button tw="cursor-pointer" type="submit">
                 Back to form
               </button>

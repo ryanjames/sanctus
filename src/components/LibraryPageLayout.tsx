@@ -49,10 +49,6 @@ const LibraryPageLayout: React.FC<Props> = ({ title, tracksData, description, ch
               </h3>
               <Filter onClick={openMenu} tw="cursor-pointer mt-1" />
             </div>
-            <StyledLicensingBar>
-              <p>We maintain an ever expanding library of music that’s ready for use or customization. You can contact us for more information, a quote, or to request a curated playlist for your project.</p>
-              <a href="/licensing">Licensing Contact</a>
-            </StyledLicensingBar>
           </Col>
           <Col tw="flex-1 md:overflow-y-visible overflow-x-hidden relative" className="inner-container">
             <ActiveTrackProvider>

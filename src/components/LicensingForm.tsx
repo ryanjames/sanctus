@@ -26,9 +26,12 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
   const [selectedTrack, setSelectedTrack] = useState<any>()
 
   const videoCounts = [
-    { value: "1-5", label: "1-5" },
-    { value: "6-10", label: "6-10" },
-    { value: "More than 10", label: "More than 10" },
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" },
+    { value: "5", label: "5" },
+    { value: ">5", label: "More than 5" },
   ]
 
   const urlQuery = queryString.parse(location.search)
@@ -109,8 +112,22 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
           </div>
         </div>
         <div tw="w-full">
+          <label className="label" htmlFor={"company"}>
+            Your Company
+          </label>
+          <div className="control">
+            <input
+              className="input"
+              type={"text"}
+              name={"company"}
+              onChange={handleChange}
+              id={"company"}
+            />
+          </div>
+        </div>
+        <div tw="w-full">
           <label className="label checkbox-control" htmlFor={"curate-playlist"}>
-            <input type="checkbox" name="curate-playlist" id="curate-playlist" /> Please curate a playlist for my project
+            <input type="checkbox" name="curate-playlist" id="curate-playlist" /> Please curate a playlist for my project.
           </label>
         </div>
         <div tw="w-full pb-2">
@@ -159,7 +176,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
         </div>
         <div tw="w-full pb-2">
           <label className="label" htmlFor={"videos-count"}>
-           How many videos will this be used in? (Please distinguish between primary videos and cutdowns.)*
+           How many videos will this be used in? (Not including cutdowns)*
           </label>
           <div className="control">
             <Select
@@ -196,11 +213,17 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
             <textarea className="textarea" name={"advertising-campaign"} onChange={handleChange} id={"advertising-campaign"} required={true} />
           </div>
         </div>
-        <div tw="w-full pb-2">
-          <label className="label checkbox-control" tw="mb-5" htmlFor={"customize-track"}>
-            <input type="checkbox" name="customize-track" id="customize-track" /> I am interested in having Sanctus customize a library track for my project
+        <div tw="w-full">
+          <label className="label checkbox-control" tw="mb-5" htmlFor={"customized-track"}>
+            <input type="checkbox" name="customized-track" id="customized-track" /> I am interested in having Sanctus customize a library track for my project.
           </label>
         </div>
+        <div tw="w-full pb-2">
+          <label className="label checkbox-control" tw="mb-5" htmlFor={"sound-and-mixing"}>
+            <input type="checkbox" name="sound-and-mixing" id="sound-and-mixing" /> I am interested in Sanctus providing sound design and mixing for my project.
+          </label>
+        </div>
+        
         <div tw="pt-5" className="field">
           <button tw="cursor-pointer" type="submit">
             Send
