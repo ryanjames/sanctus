@@ -287,7 +287,7 @@ const StyledLicensingForm = styled.div`
     ${tw`text-sm pt-9 pb-2 leading-tight block`}
   }
   .hidden {
-    // display: none;
+    display: none;
   }
   input {
     width: 100%;
