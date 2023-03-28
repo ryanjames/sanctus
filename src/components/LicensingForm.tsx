@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react"
+import React, { useState, useEffect, useRef, ChangeEvent } from "react"
 import styled from "@emotion/styled"
 import tw from "twin.macro"
 import { navigate } from "gatsby-link"
@@ -25,6 +25,9 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
   const [formState, setFormState] = useState<{ [key: string]: string }>()
   const [selectedTrack, setSelectedTrack] = useState<any>()
 
+  const trackInterestRef = useRef<HTMLInputElement>(null)
+  const videoCountRef = useRef<HTMLInputElement>(null)
+
   const videoCounts = [
     { value: "1", label: "1" },
     { value: "2", label: "2" },
@@ -50,6 +53,17 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
     const inputName: string = e.target.name
     f[inputName] = inputValue
     setFormState(f)
+  }
+
+  const handleSelectChange = (values: any, ref: any) => {
+    let value
+    if(Array.isArray(values)) {
+      value = values.map(x => x.value).join(", ")
+      console.log(value)
+    } else {
+      value = values.value
+    }
+    ref.current.value = value
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -127,7 +141,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
         </div>
         <div tw="w-full">
           <label className="label checkbox-control" htmlFor={"curate-playlist"}>
-            <input type="checkbox" name="curate-playlist" id="curate-playlist" /> Please curate a playlist for my project.
+            <input type="checkbox" value="Yes" name="curate-playlist" id="curate-playlist" /> Please curate a playlist for my project.
           </label>
         </div>
         <div tw="w-full pb-2">
@@ -137,10 +151,10 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
           {selectedTrack ? (
             <Select
               isMulti
-              name="tracks-interest"
               defaultValue={[selectedTrack]}
               placeholder="Search..."
               options={tracks}
+              onChange={(newValue) => handleSelectChange(newValue, trackInterestRef)}
               styles={selectFieldStyles}
               className="select-field"
               classNamePrefix="select-field"
@@ -149,15 +163,21 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
             <>
             <Select
               isMulti
-              name="tracks-interest"
               placeholder="Search..."
               options={tracks}
+              onChange={(newValue) => handleSelectChange(newValue, trackInterestRef)}
               styles={selectFieldStyles}
               className="select-field"
               classNamePrefix="select-field"
             />
             </>
           )}
+          <input ref={trackInterestRef}
+              className="hidden"
+              type={"text"}
+              name={"track-interest"}
+              id={"track-interest"}
+            />
         </div>
         <div tw="w-full pb-2">
           <label className="label" htmlFor={"end-client"}>
@@ -175,18 +195,24 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
           </div>
         </div>
         <div tw="w-full pb-2">
-          <label className="label" htmlFor={"videos-count"}>
+          <label className="label">
            How many videos will this be used in? (Not including cutdowns)*
           </label>
           <div className="control">
             <Select
-              name="videos-count"
               placeholder="Select..."
               options={videoCounts}
+              onChange={(newValue) => handleSelectChange(newValue, videoCountRef)}
               styles={selectFieldStyles}
               className="select-field"
               classNamePrefix="select-field"
               required={true}
+            />
+            <input ref={videoCountRef}
+              className="hidden"
+              type={"text"}
+              name={"video-count"}
+              id={"video-count"}
             />
           </div>
         </div>
@@ -215,12 +241,12 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
         </div>
         <div tw="w-full">
           <label className="label checkbox-control" tw="mb-5" htmlFor={"customized-track"}>
-            <input type="checkbox" name="customized-track" id="customized-track" /> I am interested in having Sanctus customize a library track for my project.
+            <input type="checkbox" value="Yes" name="customized-track" id="customized-track" /> I am interested in having Sanctus customize a library track for my project.
           </label>
         </div>
         <div tw="w-full pb-2">
           <label className="label checkbox-control" tw="mb-5" htmlFor={"sound-and-mixing"}>
-            <input type="checkbox" name="sound-and-mixing" id="sound-and-mixing" /> I am interested in Sanctus providing sound design and mixing for my project.
+            <input type="checkbox" value="Yes" name="sound-and-mixing" id="sound-and-mixing" /> I am interested in Sanctus providing sound design and mixing for my project.
           </label>
         </div>
         
@@ -245,6 +271,9 @@ const StyledLicensingForm = styled.div`
   textarea {
     width: 100%;
     height: 150px;
+  }
+  .hidden {
+    display: none;
   }
   input,
   textarea {
