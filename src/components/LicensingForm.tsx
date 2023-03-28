@@ -173,7 +173,6 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
             </>
           )}
           <input ref={trackInterestRef}
-              className="hidden"
               type={"text"}
               name={"track-interest"}
               id={"track-interest"}
@@ -209,7 +208,6 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
               required={true}
             />
             <input ref={videoCountRef}
-              className="hidden"
               type={"text"}
               name={"video-count"}
               id={"video-count"}
@@ -271,9 +269,6 @@ const StyledLicensingForm = styled.div`
   textarea {
     width: 100%;
     height: 150px;
-  }
-  .hidden {
-    display: none;
   }
   input,
   textarea {
