@@ -63,7 +63,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
     } else {
       value = values.value
     }
-    ref.current.value = value
+    ref.current.setAttribute("value", value)
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -174,7 +174,9 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
           )}
           <input ref={trackInterestRef}
               type={"text"}
+              readOnly
               name={"track-interest"}
+              value="Test"
               id={"track-interest"}
             />
         </div>
@@ -209,6 +211,8 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
             />
             <input ref={videoCountRef}
               type={"text"}
+              value="Test"
+              readOnly
               name={"video-count"}
               id={"video-count"}
             />
