@@ -26,11 +26,13 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
     "curate-playlist": "NO",
     "customized-track": "NO",
     "sound-and-mixing": "NO",
+    "original-music": "NO",
   })
   const [selectedTrack, setSelectedTrack] = useState<any>()
 
   const trackInterestRef = useRef<HTMLInputElement>(null)
   const videoCountRef = useRef<HTMLInputElement>(null)
+  const distributionRef = useRef<HTMLInputElement>(null)
 
   const videoCounts = [
     { value: "1", label: "1" },
@@ -39,6 +41,14 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
     { value: "4", label: "4" },
     { value: "5", label: "5" },
     { value: "More than 5", label: "More than 5" },
+  ]
+  const distribution = [
+    { value: "Non-Paid Media (Website, Internal, Event, etc)", label: "Non-Paid Media (Website, Internal, Event, etc)" },
+    { value: "Paid Web (Social, Youtube Preroll, etc)", label: "Paid Web (Social, Youtube Preroll, etc)" },
+    { value: "O.T.T. (Hulu, Peacock, etc)", label: "O.T.T. (Hulu, Peacock, etc)" },
+    { value: "Broadcast TV", label: "Broadcast TV" },
+    { value: "Online Audio (Spotify, Pandora, Podcast, etc)", label: "Online Audio (Spotify, Pandora, Podcast, etc)" },
+    { value: "Radio", label: "Radio" },
   ]
 
   const urlQuery = queryString.parse(location.search)
@@ -163,6 +173,16 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
             <input type="checkbox" onChange={handleCheckboxChange} name="curate-playlist" id="curate-playlist" /> Please curate a playlist for my project.
           </label>
         </div>
+        <div tw="w-full">
+          <label className="label checkbox-control" tw="mb-5" htmlFor={"customized-track"}>
+            <input type="checkbox" onChange={handleCheckboxChange} name="customized-track" id="customized-track" /> I am interested in having Sanctus customize a library track for my project.
+          </label>
+        </div>
+        <div tw="w-full">
+          <label className="label checkbox-control" tw="mb-5" htmlFor={"original-music"}>
+            <input type="checkbox" onChange={handleCheckboxChange} name="original-music" id="original-music" /> I am interested in an original music composition for my project.
+          </label>
+        </div>
         <div tw="w-full pb-2">
           <label className="label" htmlFor={"track-interest"}>
             Select any specific tracks you’re interested in licensing.
@@ -201,7 +221,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
         </div>
         <div tw="w-full pb-2">
           <label className="label" htmlFor={"end-client"}>
-           Who is the end client obtaining the license or roughly how many do they employ?*
+           Who is the end client obtaining the license (or roughly how many do they employ?)*
           </label>
           <div className="control">
             <input
@@ -216,7 +236,7 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
         </div>
         <div tw="w-full pb-2">
           <label className="label" htmlFor="video-count">
-           How many videos will this be used in? (Not including cutdowns)*
+           How many videos will this be used in? (Please distinguish between primary videos and cutdowns.)*
           </label>
           <div className="control">
             <Select
@@ -238,39 +258,45 @@ const LicensingForm: React.FC<Props> = ({ className, location }) => {
           </div>
         </div>
         <div tw="w-full pb-2">
-          <label className="label" htmlFor={"distribution-needs"}>
-           What distribution needs to be covered? (web, internal, ect)*
+          <label className="label" htmlFor={"distribution"}>
+           What distribution needs to be covered?*
           </label>
           <div className="control">
-            <input
-              className="input"
-              type={"text"}
-              name={"distribution-needs"}
-              onChange={handleChange}
-              id={"distribution-needs"}
+            <Select
+              isMulti
+              placeholder="Select..."
+              options={distribution}
+              onChange={(newValue) => handleSelectChange(newValue, distributionRef)}
+              styles={selectFieldStyles}
+              className="select-field"
+              classNamePrefix="select-field"
               required={true}
+            />
+            <input
+              className="hidden"
+              ref={distributionRef}
+              type={"text"}
+              name={"distribution"}
+              id={"distribution"}
             />
           </div>
         </div>
         <div className="field">
           <label className="label" htmlFor={"advertising-campaign"}>
-            If part of a paid advertising campaign (i.e. broadcast, social, ott, ect), please include details here (i.e. regions, length of campaign, etc)
+            Will this be part of a paid advertising campaign? (i.e. broadcast, social, OTT, etc.) If part of a paid advertising campaign, please include details here (I.e. regions, length of campaign, etc.)
           </label>
           <div className="control">
             <textarea className="textarea" name={"advertising-campaign"} onChange={handleChange} id={"advertising-campaign"} />
           </div>
         </div>
-        <div tw="w-full">
-          <label className="label checkbox-control" tw="mb-5" htmlFor={"customized-track"}>
-            <input type="checkbox" onChange={handleCheckboxChange} name="customized-track" id="customized-track" /> I am interested in having Sanctus customize a library track for my project.
+        <div className="field">
+          <label className="label" htmlFor={"additional-details"}>
+            Additional Details
           </label>
+          <div className="control">
+            <textarea className="textarea" name={"additional-details"} onChange={handleChange} id={"additional-details"} />
+          </div>
         </div>
-        <div tw="w-full pb-2">
-          <label className="label checkbox-control" tw="mb-5" htmlFor={"sound-and-mixing"}>
-            <input type="checkbox" onChange={handleCheckboxChange} name="sound-and-mixing" id="sound-and-mixing" /> I am interested in Sanctus providing sound design and mixing for my project.
-          </label>
-        </div>
-        
         <div tw="pt-5" className="field">
           <button tw="cursor-pointer" type="submit">
             Send
