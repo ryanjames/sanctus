@@ -1,3 +1,4 @@
+import { FluidObject } from "gatsby-image"
 import { graphql, useStaticQuery } from "gatsby"
 
 type PageShape = {
@@ -9,6 +10,11 @@ type PageShape = {
   body?: {
     raw: string
   }
+  collage?: {
+    localFile: {
+      publicURL: string
+    }
+  }[]
   seoDescription: string
 }
 
@@ -56,6 +62,11 @@ const siteContent = (): ContentShape => {
             body {
               raw
             }
+            collage {
+              localFile {
+                publicURL
+              }
+            }
             seoDescription
           }
         }
@@ -71,6 +82,7 @@ const siteContent = (): ContentShape => {
       heading: page.heading,
       subheading: page.subheading,
       body: page.body ? page.body : undefined,
+      collage: page.collage ? page.collage : undefined,
       seoDescription: page.seoDescription,
     }
   })

@@ -12,7 +12,7 @@ import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import PageLink from "../components/PageLink"
 import ActiveTrackProvider from "../contexts/ActiveTrackContext"
 
-const IndexPage: React.FC = () => {
+const ContactPage: React.FC = () => {
   const content = siteContent().pages["Contact"]
   const body = content.body?.raw ? JSON.parse(content.body.raw) : undefined
   const subheading = content.subheading?.raw ? JSON.parse(content.subheading.raw) : undefined
@@ -89,4 +89,4 @@ const StyledLayout = styled(Layout)`
     ${tw`text-xl py-8 font-normal`}
   }
 `
-export default IndexPage
+export default ContactPage
