@@ -32,7 +32,7 @@ const AboutPage: React.FC<Props> = ({ data }) => {
   const subheading = content.subheading?.raw ? JSON.parse(content.subheading.raw) : undefined
   return (
     <StyledLayout title="About" page="about" description={content.seoDescription}>
-      <Container tw="pb-12">
+      <Container tw="pb-24">
         <Col tw="md:w-1/3 pt-16">
           <h2 tw="text-5xl text-hippie-blue leading-tight">{content.heading}</h2>
         </Col>
