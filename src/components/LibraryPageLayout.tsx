@@ -38,7 +38,7 @@ const LibraryPageLayout: React.FC<Props> = ({ title, tracksData, description, ch
     <StyledLayout maxWidths={sizes} title={title} description={description} page="library">
       <SharedTrackProvider>
         <Helmet>
-          <script src="https://unpkg.com/wavesurfer.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/3.3.1/wavesurfer.js"></script>
         </Helmet>
         <TrackShare />
         <Container tw="pt-6 sm:pt-12">

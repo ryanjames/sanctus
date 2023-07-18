@@ -29,7 +29,7 @@ const CaseStudyPage: React.FC<ICaseStudy> = ({ data }) => {
     <ActiveTrackProvider>
       <StyledLayout title={`Case Study: ${content.title}`}>
         <Helmet>
-          <script src="https://unpkg.com/wavesurfer.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/3.3.1/wavesurfer.js"></script>
         </Helmet>
         {content.videoUrl ? (
           <div tw="lg:-mt-32 relative z-10">
