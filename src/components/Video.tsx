@@ -23,6 +23,10 @@ interface Props {
   proceed?: boolean
 }
 
+const isValidHex = (hex: any): boolean => {
+  return /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex)
+}
+
 const Video: React.FC<Props> = ({ 
   className, 
   src, 
@@ -34,8 +38,9 @@ const Video: React.FC<Props> = ({
   demoReel = false,  
   fitContainer = false 
 }) => {
-  const color1 = color ? hex2rgba(color) : "transparent"
-  const color2 = color ? hex2rgba(color, 0) : "transparent"
+  console.log(color)
+  const color1 = isValidHex(color) ? hex2rgba(color) : "transparent"
+  const color2 = isValidHex(color) ? hex2rgba(color, 0) : "transparent"
 
   const [play, setPlay] = useState<boolean>(false)
   const [inProgress, setInProgress] = useState<boolean>(false)
